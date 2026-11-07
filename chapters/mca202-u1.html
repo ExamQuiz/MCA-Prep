@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 202 Unit I: Introduction to Data Science and Big Data">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,58 @@
  <h1>Introduction to Data Science and Big Data</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Introduction to data science</span><span class="chip">Data science process</span><span class="chip">Exploratory data analysis</span><span class="chip">Big data: definition, risks, structure</span><span class="chip">Web data: the original big data</span><span class="chip">Evolution of analytic scalability</span><span class="chip">Analytic processes and tools</span><span class="chip">Analysis versus reporting</span><span class="chip">Core analytics versus advanced analytics</span><span class="chip">Modern data analytic tools</span><span class="chip">Statistical concepts: sampling distributions, re-sampling, statistical inference</span><span class="chip">Introduction to data visualization</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca202.html"><small>← Previous</small>MCA 202 · Big Data and Big Data Analysis</a><a class="next" href="mca202-u2.html"><small>Next →</small>Unit II: Data Analysis using R</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit introduces <b>data science</b> &ndash; extracting knowledge from data &ndash; and the world of <b>big data</b>. You learn the standard project process, how to explore data, how analytics scaled from a single server to clusters, the difference between reporting and analysis, and the statistical ideas (sampling, re-sampling, inference) that all later units rely on.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Introduction to data science</h3>
+<p>Data science combines <b>statistics, computer science and domain knowledge</b> to turn raw data into decisions. A data scientist asks a question, collects and cleans data, builds models and communicates the result. Applications: recommendation, fraud detection, churn prediction, healthcare, demand forecasting.</p>
+<h3>2. Data science process</h3>
+<ol><li><b>Set the goal</b> &ndash; define the business question and success measure.</li><li><b>Retrieve data</b> &ndash; databases, files, APIs, web.</li><li><b>Prepare data</b> &ndash; cleaning, integration, transformation, handling missing values.</li><li><b>Explore (EDA)</b> &ndash; summaries and plots.</li><li><b>Model</b> &ndash; select variables, train, validate.</li><li><b>Present and automate</b> &ndash; report results and deploy (operationalize).</li></ol>
+<p>The process is <i>iterative</i>: findings at any step may send you back to an earlier one. (An equivalent lifecycle: discovery, data preparation, model planning, model building, communicating results, operationalizing.)</p>
+<h3>3. Exploratory data analysis (EDA)</h3>
+<p>EDA (John Tukey) is the first look at data to understand its shape, spot errors and outliers, find patterns and form hypotheses. Tools: summary statistics (mean, median, quartiles), histograms, box plots, scatter plots and correlation tables.</p>
+<h3>4. Big data: definition, risks and structure</h3>
+<p><b>Big data</b> is data so large, fast or varied that traditional tools cannot store or process it. The <b>3 Vs</b>: Volume, Velocity, Variety (often + Veracity, Value). <b>Structure:</b></p>
+<ul><li><b>Structured</b> &ndash; fixed schema (RDBMS tables).</li><li><b>Semi-structured</b> &ndash; tags without rigid schema (XML, JSON, logs).</li><li><b>Unstructured</b> &ndash; text, images, audio, video.</li></ul>
+<p><b>Risks:</b> privacy and legal compliance, poor data quality (garbage in, garbage out), security breaches, bias, high infrastructure and skill cost, and over-reliance on correlation.</p>
+<h3>5. Web data: the original big data</h3>
+<p>Web logs and <b>clickstreams</b> were among the first big data sources: every page view, click, search and purchase is recorded. Web data is semi-structured and huge, which led companies like Google and Yahoo to create MapReduce/Hadoop. It supports personalisation, ad targeting and customer-journey analysis.</p>
+<h3>6. Evolution of analytic scalability</h3>
+<p>Traditional analytics pulled data into <b>one server</b> (limited by memory). Then came <b>massively parallel processing (MPP)</b> databases, <b>grid computing</b>, and finally <b>MapReduce / Hadoop</b> and cloud clusters, where computation moves to the data across many cheap commodity machines (scale-out).</p>
+<h3>7. Analytic processes and tools</h3>
+<p>Process: define problem &rarr; collect &rarr; prepare &rarr; analyse &rarr; interpret &rarr; act. Tools: spreadsheets, SQL, <b>R</b>, <b>Python</b>, SAS, SPSS, Tableau/Power BI, Hadoop, Spark.</p>
+<h3>8. Analysis versus reporting</h3>
+<table><tr><th>Reporting</th><th>Analysis</th></tr>
+<tr><td>Answers <i>what happened</i></td><td>Answers <i>why</i> and <i>what next</i></td></tr>
+<tr><td>Fixed, scheduled, standard formats</td><td>Ad-hoc, exploratory, customised</td></tr>
+<tr><td>Pushes information to users</td><td>Pulls insight; needs human interpretation</td></tr>
+<tr><td>Descriptive</td><td>Diagnostic, predictive, prescriptive</td></tr></table>
+<h3>9. Core vs advanced analytics</h3>
+<p><b>Core analytics:</b> slicing, aggregation, BI reports, dashboards, basic statistics. <b>Advanced analytics:</b> predictive modeling, data mining, machine learning, text and social-network analytics, optimisation and simulation.</p>
+<h3>10. Modern data analytic tools</h3>
+<p>Hadoop, Spark, Hive, Pig, NoSQL stores (MongoDB, HBase, Cassandra), R and Python libraries, and visualization tools such as Tableau and Power BI.</p>
+<h3>11. Statistical concepts</h3>
+<ul><li><b>Sampling distribution:</b> distribution of a statistic (e.g. the mean) over many samples. By the <b>Central Limit Theorem</b> the sample mean is approximately normal with standard error &sigma;/&radic;n for large n.</li><li><b>Re-sampling:</b> reuse the sample to estimate variability &ndash; <b>bootstrap</b> (sampling with replacement), <b>jackknife</b> (leave-one-out), <b>permutation tests</b> and cross-validation.</li><li><b>Statistical inference:</b> drawing conclusions about a population from a sample &ndash; <i>estimation</i> (point and confidence intervals) and <i>hypothesis testing</i> (null/alternative hypothesis, test statistic, p-value, Type I and II errors).</li></ul>
+<h3>12. Introduction to data visualization</h3>
+<p>Visualization communicates patterns quickly. Choose chart by purpose: <b>comparison</b> (bar), <b>trend</b> (line), <b>distribution</b> (histogram, box plot), <b>relationship</b> (scatter), <b>composition</b> (pie/stacked bar). Good practice: label axes, avoid clutter and misleading scales.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<pre><code># R: quick EDA and a bootstrap estimate of the mean
+x &lt;- c(12, 15, 11, 18, 20, 14, 13, 17)
+summary(x)                      # min, quartiles, median, mean, max
+boot &lt;- replicate(1000, mean(sample(x, replace = TRUE)))
+sd(boot)                        # bootstrap standard error
+quantile(boot, c(0.025, 0.975)) # 95% confidence interval</code></pre>
+<p><b>CLT idea:</b> if &sigma; = 10 and n = 25, the standard error of the sample mean is 10/&radic;25 = 2.</p>
+<div class="note"><b>Exam tip:</b> remember the order of the data science process and give one example for each of structured, semi-structured and unstructured data.</div>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Explain the data science process.</b></p><p>Set goal, retrieve data, prepare, explore, model, present/automate &ndash; iterative in nature.</p></div><div class="qa"><p><b>Q2. What is big data? Explain its characteristics and risks.</b></p><p>Data beyond traditional tools; volume, velocity, variety (+veracity, value); risks include privacy, quality and cost.</p></div><div class="qa"><p><b>Q3. Differentiate between analysis and reporting.</b></p><p>Reporting describes what happened in fixed formats; analysis explains why and predicts what next.</p></div><div class="qa"><p><b>Q4. What is bootstrapping?</b></p><p>A re-sampling method that draws many samples with replacement from the data to estimate the variability of a statistic.</p></div><div class="qa"><p><b>Q5. Explain core versus advanced analytics.</b></p><p>Core: BI, aggregation, dashboards. Advanced: predictive modeling, machine learning, text analytics, optimisation.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>Data science = statistics + computing + domain knowledge.</li><li>Process: goal &rarr; data &rarr; prepare &rarr; EDA &rarr; model &rarr; present.</li><li>Big data: 3 Vs; structured / semi / unstructured.</li><li>Scalability: single server &rarr; MPP &rarr; MapReduce/cloud.</li><li>Reporting = what; analysis = why/what next.</li><li>CLT, standard error &sigma;/&radic;n; bootstrap, jackknife; hypothesis testing and p-value.</li></ul>
+ <div class="pager"><a class="prev" href="mca202.html"><small>&larr; Previous</small>MCA 202 · Big Data and Big Data Analysis</a><a class="next" href="mca202-u2.html"><small>Next &rarr;</small>Unit II: Data Analysis using R</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

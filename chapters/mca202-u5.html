@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 202 Unit V: Stream Analytics">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,52 @@
  <h1>Stream Analytics</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Introduction to stream concepts</span><span class="chip">Stream data model and architecture</span><span class="chip">Stream computing</span><span class="chip">Sampling data in a stream</span><span class="chip">Filtering streams</span><span class="chip">Counting distinct elements in a stream</span><span class="chip">Estimating moments</span><span class="chip">Counting oneness in a window</span><span class="chip">Decaying window</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca202-u4.html"><small>← Previous</small>Unit IV: Data Analytical Frameworks</a><a class="next" href="mca202-u6.html"><small>Next →</small>Unit VI: Introduction to Big Data</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>In a <b>data stream</b>, data arrives continuously and rapidly and cannot be stored in full, so each item can be processed only once or a few times. This unit teaches the stream model and the classic <b>approximate algorithms</b>: sampling, Bloom filtering, Flajolet&ndash;Martin counting, moment estimation, DGIM and decaying windows.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Introduction to stream concepts</h3>
+<p>A stream is an unbounded, ordered sequence of elements (sensor readings, clicks, stock ticks, tweets, network packets). Features: continuous arrival, high speed, limited memory, one-pass processing, and answers often <b>approximate</b>. Queries can be <b>standing</b> (continuous) or <b>ad hoc</b>.</p>
+<h3>2. Stream data model and architecture</h3>
+<p>Streams enter a <b>Data Stream Management System (DSMS)</b> through stream processors. The DSMS holds a small <b>working store</b> (memory) for summaries/sliding windows and an <b>archival store</b> (disk) not suited to fast queries. Standing queries run on the streams and write results to an output stream. <b>DSMS vs DBMS:</b> the DBMS stores persistent data and answers one-time queries; the DSMS processes transient data with continuous queries.</p>
+<h3>3. Stream computing</h3>
+<p>Processing data <i>in motion</i> with low latency, e.g. Apache Storm, Spark Streaming, Flink, Kafka Streams. Windows: <b>sliding</b>, <b>tumbling</b>; time-based or count-based.</p>
+<h3>4. Sampling data in a stream</h3>
+<p>To keep a representative sample, e.g. 1/10 of users&rsquo; queries, sample <b>by key, not by tuple</b>: hash the user id into 10 buckets and keep tuples hashed to bucket 0, so each sampled user has <i>all</i> their data. For a fixed-size sample of s elements use <b>reservoir sampling</b>: keep the first s; the n-th element replaces a random sample member with probability s/n.</p>
+<h3>5. Filtering streams</h3>
+<p>Selecting elements with a property, e.g. membership in a large set (valid email list). A <b>Bloom filter</b> uses an m-bit array and k hash functions: to add an item set k bits; to test, check that all k bits are 1. It has <b>no false negatives</b> but possible <b>false positives</b>, approx. (1 &minus; e<sup>&minus;kn/m</sup>)<sup>k</sup>. Optimal k = (m/n)&middot;ln 2.</p>
+<h3>6. Counting distinct elements</h3>
+<p><b>Flajolet&ndash;Martin (FM):</b> hash each element to a bit string, record the number of <b>trailing zeros</b>; let R be the maximum seen. Estimate distinct count &asymp; 2<sup>R</sup>. Combine many hash functions (take averages within groups and the median of groups) to reduce error.</p>
+<h3>7. Estimating moments</h3>
+<p>For element frequencies m<sub>i</sub>, the k-th moment = &Sigma; m<sub>i</sub><sup>k</sup>. 0th moment = number of distinct elements, 1st = stream length, 2nd = <b>surprise number</b> (unevenness of distribution). <b>AMS algorithm:</b> pick random positions, count occurrences of that element from that position onward (c); the estimate for the second moment is n(2c &minus; 1), averaged over many variables.</p>
+<h3>8. Counting ones in a window: DGIM</h3>
+<p>To count 1s in the last N bits using only O(log&sup2;N) bits, <b>DGIM</b> divides the window into <b>buckets</b> whose sizes (number of 1s) are powers of two, with the timestamp of the most recent 1 in each. Rules: bucket sizes do not decrease going back in time; at most <b>two buckets of each size</b>; on a third, merge the two oldest. Estimate = sum of all buckets except half of the oldest. Error is at most <b>50%</b> (improvable with more buckets per size).</p>
+<h3>9. Decaying window</h3>
+<p>Gives <b>recent elements more weight</b>. Each element is weighted (1 &minus; c)<sup>i</sup> where i is its age and c is a small constant (e.g. 10<sup>&minus;6</sup>). Update on a new element a<sub>t+1</sub>: S &larr; S&middot;(1 &minus; c) + a<sub>t+1</sub>. Useful for finding &ldquo;currently popular/trending&rdquo; items.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>Flajolet&ndash;Martin example</b></p>
+<pre><code>Stream: 3, 1, 4, 1, 5, 9, 2, 6   with h(x) = (3x + 1) mod 32
+h(3)=10 (1010) -&gt; 1 trailing zero     h(1)=4  (00100) -&gt; 2
+h(4)=13 (01101) -&gt; 0                  h(5)=16 (10000) -&gt; 4   (max so far)
+R = 4  =&gt;  distinct estimate = 2^4 = 16 (rough; use many hashes in practice)</code></pre>
+<p><b>Second moment:</b> stream a,b,c,b,d,a,c,d,a,b,d,c,a,a,b has counts a=5, b=4, c=3, d=3 &rArr; 2nd moment = 25+16+9+9 = <b>59</b>.</p>
+<pre><code># Python: decaying window and reservoir sampling
+import random
+def decay(S, x, c=1e-6): return S*(1-c) + x
+def reservoir(stream, s):
+    R = []
+    for i, x in enumerate(stream, 1):
+        if i &lt;= s: R.append(x)
+        elif random.random() &lt; s/i: R[random.randrange(s)] = x
+    return R</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. What is a data stream? Explain stream architecture.</b></p><p>Unbounded rapid sequence of data; DSMS with stream processor, working store, archival store and standing queries.</p></div><div class="qa"><p><b>Q2. Explain the Bloom filter. Can it give false negatives?</b></p><p>Bit array with k hashes for membership; false positives are possible but there are no false negatives.</p></div><div class="qa"><p><b>Q3. Explain the Flajolet&ndash;Martin algorithm.</b></p><p>Hash elements, track the maximum number of trailing zeros R, estimate 2<sup>R</sup> distinct elements.</p></div><div class="qa"><p><b>Q4. What is the second moment of a stream? Compute for counts 5,4,3,3.</b></p><p>The surprise number &Sigma; m<sub>i</sub>&sup2; = 59.</p></div><div class="qa"><p><b>Q5. Explain DGIM and decaying window.</b></p><p>DGIM counts 1s in a window with power-of-two buckets; decaying window exponentially down-weights older items.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>Stream: one pass, limited memory, approximate answers.</li><li>Sample by key (hash users), reservoir for fixed size.</li><li>Bloom filter: no false negatives.</li><li>FM: 2<sup>R</sup> (R = max trailing zeros).</li><li>Moments: 0th distinct, 1st length, 2nd surprise number (AMS).</li><li>DGIM: buckets in powers of 2, &le; 2 per size, error &le; 50%.</li><li>Decaying window: S&times;(1&minus;c) + new.</li></ul>
+ <div class="pager"><a class="prev" href="mca202-u4.html"><small>&larr; Previous</small>Unit IV: Data Analytical Frameworks</a><a class="next" href="mca202-u6.html"><small>Next &rarr;</small>Unit VI: Introduction to Big Data</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

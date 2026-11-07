@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 202 Unit IV: Data Analytical Frameworks">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,60 @@
  <h1>Data Analytical Frameworks</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Hadoop overview</span><span class="chip">RDBMS versus Hadoop</span><span class="chip">HDFS: components and block replication</span><span class="chip">Introduction to MapReduce</span><span class="chip">Running algorithms using MapReduce</span><span class="chip">HBase: architecture, HLog and HFile, data replication</span><span class="chip">Introduction to Hive</span><span class="chip">Introduction to Spark</span><span class="chip">Introduction to Apache Sqoop</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca202-u3.html"><small>← Previous</small>Unit III: Data Modeling</a><a class="next" href="mca202-u5.html"><small>Next →</small>Unit V: Stream Analytics</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit introduces the <b>Hadoop ecosystem</b>: HDFS for storage, MapReduce for processing, HBase for random access, Hive for SQL-like queries, Spark for fast in-memory processing and Sqoop for moving data between Hadoop and relational databases.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Hadoop overview</h3>
+<p><b>Apache Hadoop</b> is an open-source framework for storing and processing very large data on clusters of commodity hardware. Core parts: <b>HDFS</b> (storage), <b>MapReduce</b> (processing) and <b>YARN</b> (resource management). Features: scalability, fault tolerance, low cost, data locality (move code to data).</p>
+<h3>2. RDBMS versus Hadoop</h3>
+<table><tr><th>Feature</th><th>RDBMS</th><th>Hadoop</th></tr>
+<tr><td>Data</td><td>Structured</td><td>Structured, semi-structured, unstructured</td></tr>
+<tr><td>Schema</td><td>Schema-on-write</td><td>Schema-on-read</td></tr>
+<tr><td>Scaling</td><td>Vertical (bigger server)</td><td>Horizontal (more nodes)</td></tr>
+<tr><td>Access</td><td>Interactive, low latency, updates</td><td>Batch, high throughput, write-once read-many</td></tr>
+<tr><td>Cost</td><td>Licensed, expensive hardware</td><td>Open source, commodity hardware</td></tr></table>
+<h3>3. HDFS: components and block replication</h3>
+<ul><li><b>NameNode</b> (master) &ndash; keeps metadata: namespace, file-to-block mapping.</li><li><b>DataNodes</b> (slaves) &ndash; store blocks, send heartbeats and block reports.</li><li><b>Secondary NameNode</b> &ndash; periodically merges the edit log with the fsimage (checkpointing); it is <i>not</i> a hot standby.</li></ul>
+<p>Files are split into large <b>blocks</b> (default 128 MB) and each block is <b>replicated</b> (default factor 3) across different DataNodes and racks (rack awareness) for fault tolerance; lost replicas are re-created automatically.</p>
+<h3>4. Introduction to MapReduce</h3>
+<p>A programming model with two functions: <b>map</b> (input &rarr; intermediate key/value pairs) and <b>reduce</b> (merges values of each key), with an automatic <b>shuffle and sort</b> between them. Optional <b>combiner</b> (local reduce) and <b>partitioner</b>.</p>
+<h3>5. Running algorithms using MapReduce</h3>
+<p>Common patterns: <b>word count</b>, <b>grep/filtering</b>, <b>sorting</b>, <b>inverted index</b>, <b>join</b> (reduce-side or map-side), <b>matrix multiplication</b> and iterative algorithms like PageRank and k-means (one MapReduce job per iteration).</p>
+<h3>6. HBase: architecture, HLog and HFile, replication</h3>
+<ul><li><b>HMaster</b> assigns regions and handles schema changes; <b>RegionServers</b> serve read/write requests for <b>regions</b> (row ranges); <b>ZooKeeper</b> coordinates the cluster.</li><li>Write path: write to <b>HLog</b> (write-ahead log) &rarr; <b>MemStore</b> (in-memory) &rarr; flushed to <b>HFile</b> on HDFS. HLog allows recovery after a RegionServer crash.</li><li><b>Data replication:</b> HDFS replicates HFiles for storage durability; HBase also supports cluster-to-cluster replication of edits for disaster recovery.</li></ul>
+<h3>7. Introduction to Hive</h3>
+<p>A data-warehouse layer on Hadoop providing <b>HiveQL</b> (SQL-like). Queries are translated into MapReduce/Tez/Spark jobs. The <b>metastore</b> stores table schemas. Suited to batch analytics, not real-time transactions.</p>
+<h3>8. Introduction to Spark</h3>
+<p>A fast cluster-computing engine that keeps data in memory using <b>RDDs</b> (Resilient Distributed Datasets) with lazy <b>transformations</b> and <b>actions</b> and a DAG scheduler. Up to ~100&times; faster than MapReduce for iterative jobs. Libraries: Spark SQL, Streaming, MLlib, GraphX. APIs in Scala, Java, Python, R.</p>
+<h3>9. Apache Sqoop</h3>
+<p>A tool to <b>import</b> data from relational databases (MySQL, Oracle) into HDFS/Hive/HBase and <b>export</b> results back, using parallel MapReduce jobs.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<pre><code>// Word count (Hadoop MapReduce, pseudo-code)
+map(key, line):        for word in line.split():  emit(word, 1)
+reduce(word, counts):  emit(word, sum(counts))
+
+Input : "to be or not to be"
+Map   : (to,1)(be,1)(or,1)(not,1)(to,1)(be,1)
+Shuffle: be:[1,1]  not:[1]  or:[1]  to:[1,1]
+Reduce: (be,2)(not,1)(or,1)(to,2)</code></pre>
+<pre><code># HDFS and Sqoop commands
+hdfs dfs -mkdir /data
+hdfs dfs -put sales.csv /data
+hdfs dfs -ls /data
+sqoop import --connect jdbc:mysql://localhost/shop --table orders --target-dir /data/orders -m 4
+
+-- Hive
+CREATE TABLE orders (id INT, amount DOUBLE) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
+SELECT COUNT(*), SUM(amount) FROM orders;</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Compare RDBMS and Hadoop.</b></p><p>Schema-on-write vs schema-on-read, vertical vs horizontal scaling, structured vs any data, interactive vs batch.</p></div><div class="qa"><p><b>Q2. Explain HDFS architecture and block replication.</b></p><p>NameNode, DataNodes, Secondary NameNode; 128 MB blocks with replication factor 3 across racks.</p></div><div class="qa"><p><b>Q3. Explain MapReduce with the word count example.</b></p><p>Map emits (word,1); shuffle groups by key; reduce sums counts.</p></div><div class="qa"><p><b>Q4. Explain HBase architecture. What are HLog and HFile?</b></p><p>HMaster, RegionServers, ZooKeeper; HLog is the write-ahead log, HFile is the on-disk store file on HDFS.</p></div><div class="qa"><p><b>Q5. Compare Hive and Spark. What is Sqoop used for?</b></p><p>Hive gives SQL over Hadoop (batch); Spark is in-memory processing; Sqoop transfers data between RDBMS and Hadoop.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>Hadoop = HDFS + MapReduce + YARN.</li><li>HDFS: NameNode (metadata), DataNode (blocks), 128 MB, replication 3.</li><li>MapReduce: map &rarr; shuffle/sort &rarr; reduce (+combiner).</li><li>HBase: HMaster, RegionServer, ZooKeeper, HLog &rarr; MemStore &rarr; HFile.</li><li>Hive = SQL on Hadoop; Spark = in-memory RDD; Sqoop = import/export RDBMS.</li></ul>
+ <div class="pager"><a class="prev" href="mca202-u3.html"><small>&larr; Previous</small>Unit III: Data Modeling</a><a class="next" href="mca202-u5.html"><small>Next &rarr;</small>Unit V: Stream Analytics</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

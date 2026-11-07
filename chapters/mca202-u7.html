@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 202 Unit VII: Clustering and Classification">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -44,13 +56,68 @@
  <span class="tag">MCA 202 · Unit VII</span>
  <h1>Clustering and Classification</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
- <div class="chips"><span class="chip">Overview of clustering</span><span class="chip">K-means: use cases and overview of the method</span><span class="chip">Determining the number of clusters</span><span class="chip">Diagnostics</span><span class="chip">Reasons to choose and cautions</span><span class="chip">Classification: decision trees</span><span class="chip">Overview and general algorithm of a decision tree</span><span class="chip">Decision tree algorithms</span><span class="chip">Evaluating a decision tree</span><span class="chip">Decision trees in R</span><span class="chip">Naïve Bayes: Bayes&#x27; theorem</span><span class="chip">Naïve Bayes classifier</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca202-u6.html"><small>← Previous</small>Unit VI: Introduction to Big Data</a><a class="next" href="mca203.html"><small>Next →</small>MCA 203 · Artificial Intelligence and Machine Learning</a></div>
+ <div class="chips"><span class="chip">Overview of clustering</span><span class="chip">K-means: use cases and overview of the method</span><span class="chip">Determining the number of clusters</span><span class="chip">Diagnostics</span><span class="chip">Reasons to choose and cautions</span><span class="chip">Classification: decision trees</span><span class="chip">Overview and general algorithm of a decision tree</span><span class="chip">Decision tree algorithms</span><span class="chip">Evaluating a decision tree</span><span class="chip">Decision trees in R</span><span class="chip">Na&iuml;ve Bayes: Bayes&#x27; theorem</span><span class="chip">Na&iuml;ve Bayes classifier</span></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit covers one <b>unsupervised</b> method (clustering with <b>k-means</b>) and two <b>supervised</b> classifiers (<b>decision trees</b> and <b>Na&iuml;ve Bayes</b>). Numerical problems on k-means, entropy/information gain and Bayes&rsquo; theorem are common.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Overview of clustering</h3>
+<p>Clustering groups objects so that those in the same cluster are <b>similar</b> and those in different clusters are <b>dissimilar</b>, with no predefined labels (unsupervised). Similarity uses a distance measure, usually <b>Euclidean</b> d = &radic;&Sigma;(x<sub>i</sub>&minus;y<sub>i</sub>)&sup2;; also Manhattan and cosine.</p>
+<h3>2. K-means: use cases and method</h3>
+<p><b>Use cases:</b> customer segmentation, image compression, document grouping, anomaly detection, preprocessing. <b>Algorithm:</b></p>
+<ol><li>Choose k and select k initial centroids.</li><li><b>Assign</b> each point to its nearest centroid.</li><li><b>Update</b> each centroid to the mean of its points.</li><li>Repeat 2&ndash;3 until assignments stop changing (convergence).</li></ol>
+<h3>3. Determining the number of clusters</h3>
+<ul><li><b>Elbow method:</b> plot within-cluster sum of squares (WSS) against k; choose the &ldquo;elbow&rdquo; where improvement flattens.</li><li><b>Silhouette</b> score (&minus;1 to 1; higher is better) and the <b>gap statistic</b>; or domain knowledge/business need.</li></ul>
+<h3>4. Diagnostics</h3>
+<p>Check whether clusters are meaningful: WSS and between-cluster distance, cluster sizes (very small ones may be outliers), silhouette values, and <b>stability</b> across different initial centroids and subsets. Examine centroids and profiles to interpret each cluster; check whether scaling of variables distorts distances.</p>
+<h3>5. Reasons to choose and cautions</h3>
+<p><b>Why choose:</b> simple, fast, scalable, easy to interpret. <b>Cautions:</b> must specify k; sensitive to <b>initial centroids</b> (run several times, e.g. k-means++); sensitive to <b>outliers</b> and to variable scale (standardise); works best for numeric data and roughly spherical, similar-sized clusters; finds local optimum only; categorical data needs k-modes.</p>
+<h3>6. Classification and decision trees</h3>
+<p><b>Classification</b> assigns a class label using a model learned from labelled training data. A <b>decision tree</b> is a flowchart-like tree: internal nodes test an attribute, branches are outcomes, <b>leaves</b> are class labels.</p>
+<h3>7. General algorithm of a decision tree</h3>
+<ol><li>Start with all training data at the root.</li><li>Choose the <b>best attribute</b> to split on (by a purity measure).</li><li>Create a branch for each outcome and partition the data.</li><li>Repeat recursively on each branch.</li><li>Stop when a node is pure, no attributes remain, or a size/depth limit is reached; label the leaf with the majority class.</li></ol>
+<h3>8. Decision tree algorithms</h3>
+<table><tr><th>Algorithm</th><th>Split criterion</th><th>Notes</th></tr>
+<tr><td>ID3</td><td>Information gain</td><td>Categorical attributes only</td></tr>
+<tr><td>C4.5</td><td>Gain ratio</td><td>Handles numeric/missing values, pruning</td></tr>
+<tr><td>CART</td><td>Gini index</td><td>Binary splits; classification and regression</td></tr></table>
+<p><b>Entropy</b> H(S) = &minus;&Sigma; p<sub>i</sub> log<sub>2</sub> p<sub>i</sub>. <b>Information gain</b> = H(S) &minus; &Sigma; (|S<sub>v</sub>|/|S|)H(S<sub>v</sub>). <b>Gini</b> = 1 &minus; &Sigma; p<sub>i</sub>&sup2;.</p>
+<h3>9. Evaluating a decision tree</h3>
+<p>Use a <b>confusion matrix</b> on test data: accuracy = (TP+TN)/total, precision = TP/(TP+FP), recall = TP/(TP+FN), F1. Use <b>train/test split</b> or k-fold cross-validation. Avoid <b>overfitting</b> through <b>pruning</b> (pre-pruning by limits, post-pruning by cutting weak branches).</p>
+<h3>10. Decision trees in R</h3>
+<p>Packages <code>rpart</code> (CART), <code>party</code>/<code>partykit</code>, <code>C50</code>; plot with <code>rpart.plot</code>.</p>
+<h3>11. Na&iuml;ve Bayes: Bayes&rsquo; theorem</h3>
+<p>P(C|X) = P(X|C)&middot;P(C) / P(X): posterior probability of class C given features X.</p>
+<h3>12. Na&iuml;ve Bayes classifier</h3>
+<p>Assumes features are <b>conditionally independent</b> given the class: P(X|C) = P(x<sub>1</sub>|C)&middot;P(x<sub>2</sub>|C)&hellip;P(x<sub>n</sub>|C). Choose the class with the highest P(C)&prod;P(x<sub>i</sub>|C). Fast, works well for text/spam classification and small data; the independence assumption is rarely true. Use <b>Laplace smoothing</b> to avoid zero probabilities.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>K-means (k = 2) on 1-D data: 2, 4, 10, 12, 3, 11. Initial centroids 2 and 10.</b></p>
+<pre><code>Iter 1: C1 = {2, 4, 3}   mean = 3 ;  C2 = {10, 12, 11}  mean = 11
+Iter 2: points keep the same clusters, centroids stay 3 and 11  =&gt; converged.</code></pre>
+<p><b>Entropy:</b> a node with 9 &ldquo;Yes&rdquo; and 5 &ldquo;No&rdquo;: H = &minus;(9/14)log<sub>2</sub>(9/14) &minus; (5/14)log<sub>2</sub>(5/14) &asymp; <b>0.940</b>. A pure node has H = 0; a 50:50 node has H = 1.</p>
+<p><b>Na&iuml;ve Bayes:</b> P(Spam) = 0.4, P(&ldquo;free&rdquo;|Spam) = 0.5, P(&ldquo;free&rdquo;|Ham) = 0.1. Then P(Spam|&ldquo;free&rdquo;) = (0.5&times;0.4) / (0.5&times;0.4 + 0.1&times;0.6) = 0.20/0.26 &asymp; <b>0.77</b>.</p>
+<pre><code># R
+km &lt;- kmeans(iris[, 1:4], centers = 3, nstart = 25)
+wss &lt;- sapply(1:8, function(k) kmeans(iris[,1:4], k, nstart=10)$tot.withinss)
+plot(1:8, wss, type = "b")                       # elbow plot
+
+library(rpart); library(rpart.plot)
+tree &lt;- rpart(Species ~ ., data = iris, method = "class")
+rpart.plot(tree)
+pred &lt;- predict(tree, iris, type = "class")
+table(pred, iris$Species)                        # confusion matrix
+
+library(e1071)
+nb &lt;- naiveBayes(Species ~ ., data = iris)
+predict(nb, iris[1:5, ])</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Explain the k-means algorithm. What are its limitations?</b></p><p>Assign points to the nearest centroid and recompute means until convergence; needs k, sensitive to initial centroids, outliers and scale.</p></div><div class="qa"><p><b>Q2. How do you determine the number of clusters?</b></p><p>Elbow (WSS) method, silhouette, gap statistic, domain knowledge.</p></div><div class="qa"><p><b>Q3. Explain the decision tree algorithm with entropy and information gain.</b></p><p>Choose the attribute with highest information gain to split recursively until nodes are pure.</p></div><div class="qa"><p><b>Q4. Differentiate ID3, C4.5 and CART.</b></p><p>ID3 uses information gain, C4.5 gain ratio with pruning and continuous attributes, CART uses Gini with binary splits.</p></div><div class="qa"><p><b>Q5. How is a decision tree evaluated? What is overfitting?</b></p><p>Confusion matrix, accuracy, precision, recall, cross-validation; overfitting fits noise and is reduced by pruning.</p></div><div class="qa"><p><b>Q6. Explain the Na&iuml;ve Bayes classifier.</b></p><p>Applies Bayes&rsquo; theorem with a conditional independence assumption among features and picks the class with the highest posterior.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>Clustering = unsupervised; k-means: assign &rarr; update means &rarr; repeat.</li><li>Choose k: elbow (WSS), silhouette. Scale data; run multiple starts.</li><li>Decision tree: split by information gain (ID3), gain ratio (C4.5), Gini (CART).</li><li>Entropy 0 = pure; 1 = 50:50 (two classes).</li><li>Evaluate: confusion matrix, accuracy, precision, recall; prune to prevent overfitting.</li><li>Na&iuml;ve Bayes: P(C|X) &prop; P(C)&prod;P(x<sub>i</sub>|C); independence assumption; Laplace smoothing.</li></ul>
+ <div class="pager"><a class="prev" href="mca202-u6.html"><small>&larr; Previous</small>Unit VI: Introduction to Big Data</a><a class="next" href="mca203.html"><small>Next &rarr;</small>MCA 203 · Artificial Intelligence and Machine Learning</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

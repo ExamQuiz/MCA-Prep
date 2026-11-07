@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 202 Unit II: Data Analysis using R">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,57 @@
  <h1>Data Analysis using R</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Univariate analysis: frequency, mean, median, mode</span><span class="chip">Variance, standard deviation, skewness, kurtosis</span><span class="chip">Bivariate analysis: correlation</span><span class="chip">Regression modeling: linear and logistic</span><span class="chip">Multivariate analysis</span><span class="chip">Graphical representation in R: bar plot, histogram, box plot</span><span class="chip">Line plot, scatter plot, lattice plot</span><span class="chip">Regression line</span><span class="chip">Two-way cross tabulation</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca202-u1.html"><small>← Previous</small>Unit I: Introduction to Data Science and Big Data</a><a class="next" href="mca202-u3.html"><small>Next →</small>Unit III: Data Modeling</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit is hands-on statistics in <b>R</b>: describing a single variable, relating two or more variables, fitting <b>linear and logistic regression</b> models, and drawing the standard plots. Expect short R programs and interpretation of outputs in the exam.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Univariate analysis</h3>
+<p>Studies one variable at a time. <b>Frequency</b> counts how often each value occurs. Measures of central tendency: <b>mean</b> (average), <b>median</b> (middle value, robust to outliers) and <b>mode</b> (most frequent; R has no built-in function, use <code>table()</code>).</p>
+<h3>2. Dispersion and shape</h3>
+<ul><li><b>Variance</b> s&sup2; = &Sigma;(x&minus;x&#772;)&sup2; / (n&minus;1); <b>standard deviation</b> = &radic;variance.</li><li><b>Skewness</b> measures asymmetry: positive (long right tail, mean &gt; median), negative (long left tail), zero (symmetric).</li><li><b>Kurtosis</b> measures tail heaviness/peakedness: normal distribution has kurtosis 3 (excess 0); higher means heavy tails (leptokurtic), lower means flat (platykurtic).</li></ul>
+<h3>3. Bivariate analysis: correlation</h3>
+<p><b>Pearson correlation</b> r = cov(x,y) / (s<sub>x</sub> s<sub>y</sub>) lies between &minus;1 and +1; it measures the strength and direction of a <i>linear</i> relationship. Correlation does not imply causation. Spearman&rsquo;s rank correlation is used for ordinal/non-linear monotone relations.</p>
+<h3>4. Regression modeling</h3>
+<ul><li><b>Simple linear regression:</b> y = &beta;<sub>0</sub> + &beta;<sub>1</sub>x + &epsilon;, coefficients fitted by <b>least squares</b>. Assumptions: linearity, independence, constant variance, normal errors. R&sup2; gives the fraction of variance explained.</li><li><b>Multiple regression:</b> several predictors, y = &beta;<sub>0</sub> + &beta;<sub>1</sub>x<sub>1</sub> + &hellip; + &beta;<sub>k</sub>x<sub>k</sub>.</li><li><b>Logistic regression:</b> for a binary outcome; models log-odds: ln(p/(1&minus;p)) = &beta;<sub>0</sub> + &beta;<sub>1</sub>x, giving probability p = 1/(1+e<sup>&minus;z</sup>). Coefficients are interpreted as changes in log-odds (e<sup>&beta;</sup> = odds ratio).</li></ul>
+<h3>5. Multivariate analysis</h3>
+<p>Analyses three or more variables together: multiple regression, MANOVA, principal component analysis, factor analysis, cluster and discriminant analysis. Watch for <b>multicollinearity</b> (highly correlated predictors).</p>
+<h3>6. Graphical representation in R</h3>
+<table><tr><th>Plot</th><th>R function</th><th>Use</th></tr>
+<tr><td>Bar plot</td><td><code>barplot()</code></td><td>Compare categories</td></tr>
+<tr><td>Histogram</td><td><code>hist()</code></td><td>Distribution of a numeric variable</td></tr>
+<tr><td>Box plot</td><td><code>boxplot()</code></td><td>Median, quartiles, outliers</td></tr>
+<tr><td>Line plot</td><td><code>plot(type="l")</code></td><td>Trend over time</td></tr>
+<tr><td>Scatter plot</td><td><code>plot(x, y)</code></td><td>Relationship of two variables</td></tr>
+<tr><td>Lattice plot</td><td><code>xyplot()</code> (lattice package)</td><td>Panels by a conditioning variable</td></tr></table>
+<h3>7. Regression line and cross tabulation</h3>
+<p>The <b>regression line</b> is drawn on a scatter plot with <code>abline(lm(y ~ x))</code>. A <b>two-way cross tabulation</b> (contingency table) counts observations for each combination of two categorical variables: <code>table(a, b)</code>; <code>prop.table()</code> gives proportions and <code>chisq.test()</code> tests association.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<pre><code>marks &lt;- c(45, 67, 89, 56, 67, 72, 90, 67)
+mean(marks); median(marks); var(marks); sd(marks)
+names(sort(-table(marks)))[1]            # mode
+
+hours &lt;- c(2, 4, 6, 8, 10, 12, 14, 16)
+score &lt;- c(40, 48, 55, 62, 70, 74, 83, 90)
+cor(hours, score)                        # correlation
+model &lt;- lm(score ~ hours)               # linear regression
+summary(model)                           # coefficients, R-squared
+plot(hours, score); abline(model)        # scatter + regression line
+
+# Logistic regression: pass (1) / fail (0)
+pass &lt;- c(0,0,0,0,1,0,1,1)
+glm(pass ~ hours, family = binomial)
+
+# Plots and cross tabulation
+hist(marks); boxplot(marks); barplot(table(c("A","B","A","C","A")))
+table(gender, dept)                      # two-way table</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Differentiate between mean, median and mode.</b></p><p>Mean is the arithmetic average, median the middle value (robust), mode the most frequent value.</p></div><div class="qa"><p><b>Q2. What are skewness and kurtosis?</b></p><p>Skewness measures asymmetry of a distribution; kurtosis measures the heaviness of its tails.</p></div><div class="qa"><p><b>Q3. Explain linear and logistic regression.</b></p><p>Linear predicts a continuous value by least squares; logistic predicts the probability of a binary class using the log-odds link.</p></div><div class="qa"><p><b>Q4. What does a correlation coefficient of &minus;0.9 mean?</b></p><p>A strong negative linear relationship: as one variable increases the other tends to decrease.</p></div><div class="qa"><p><b>Q5. Write R code for a histogram, a box plot and a scatter plot with a regression line.</b></p><p><code>hist(x)</code>, <code>boxplot(x)</code>, <code>plot(x,y); abline(lm(y~x))</code>.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>Central tendency: mean, median, mode. Spread: variance, SD.</li><li>Skewness = asymmetry; kurtosis = tails (normal = 3).</li><li>Pearson r in [&minus;1, 1]; correlation &ne; causation.</li><li><code>lm()</code> linear, <code>glm(family=binomial)</code> logistic.</li><li>Plots: barplot, hist, boxplot, plot, xyplot.</li><li><code>table()</code> for cross tabulation.</li></ul>
+ <div class="pager"><a class="prev" href="mca202-u1.html"><small>&larr; Previous</small>Unit I: Introduction to Data Science and Big Data</a><a class="next" href="mca202-u3.html"><small>Next &rarr;</small>Unit III: Data Modeling</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

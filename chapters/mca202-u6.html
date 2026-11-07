@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 202 Unit VI: Introduction to Big Data">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,58 @@
  <h1>Introduction to Big Data</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Evolution of big data</span><span class="chip">Best practices for big data analytics</span><span class="chip">Big data characteristics</span><span class="chip">Validating</span><span class="chip">The promotion of the value of big data</span><span class="chip">Big data use cases</span><span class="chip">Characteristics of big data applications</span><span class="chip">Perception and quantification of value</span><span class="chip">Understanding big data storage</span><span class="chip">A general overview of high-performance architecture</span><span class="chip">HDFS</span><span class="chip">MapReduce and YARN</span><span class="chip">MapReduce programming model</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca202-u5.html"><small>← Previous</small>Unit V: Stream Analytics</a><a class="next" href="mca202-u7.html"><small>Next →</small>Unit VII: Clustering and Classification</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit explains how big data arose, what makes data &ldquo;big&rdquo;, how organisations judge and promote its <b>business value</b>, the best practices to follow, and the architecture (HDFS, MapReduce, YARN) that makes big data processing possible.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Evolution of big data</h3>
+<p>Data processing moved from <b>mainframes and file systems</b> to <b>relational databases</b> (1970s&ndash;80s), <b>data warehouses and BI</b> (1990s), then the <b>web and social media</b> explosion (2000s), when Google published GFS and MapReduce papers leading to <b>Hadoop</b> (2006). Today: cloud, IoT sensors, mobile and real-time analytics. Drivers: cheap storage, commodity clusters, internet-scale data.</p>
+<h3>2. Big data characteristics</h3>
+<table><tr><th>V</th><th>Meaning</th></tr>
+<tr><td>Volume</td><td>Terabytes to petabytes and beyond</td></tr>
+<tr><td>Velocity</td><td>Speed of data creation and required processing</td></tr>
+<tr><td>Variety</td><td>Structured, semi-structured, unstructured</td></tr>
+<tr><td>Veracity</td><td>Accuracy, trustworthiness, noise</td></tr>
+<tr><td>Value</td><td>Business benefit extracted</td></tr></table>
+<h3>3. Best practices for big data analytics</h3>
+<ul><li>Start with a clear <b>business question</b> and a pilot project.</li><li>Define <b>data governance</b>, quality, security and privacy policies.</li><li>Use the right tool: scale-out storage, in-memory and parallel processing.</li><li>Build a skilled, cross-functional team; involve business users.</li><li>Iterate, measure results and integrate with existing BI.</li></ul>
+<h3>4. Validating</h3>
+<p>Before investing, the organisation must <b>validate</b> that big data fits the need: check whether the business problem really needs volume/variety/velocity, validate data <b>quality, source and veracity</b>, and test models on held-out data before acting on results. A small proof-of-concept validates the value claimed.</p>
+<h3>5. The promotion of the value of big data</h3>
+<p>To get management buy-in, link big data to <b>business goals</b>: increase revenue (personalised offers), reduce cost (predictive maintenance), manage risk (fraud detection) and improve customer satisfaction. Communicate success stories and measurable benefits.</p>
+<h3>6. Big data use cases</h3>
+<p>Retail recommendation and market-basket analysis, banking fraud detection, healthcare diagnostics, telecom churn prediction, smart grids and IoT, log and security analytics, social-media sentiment, transportation and route optimisation.</p>
+<h3>7. Characteristics of big data applications</h3>
+<p>Applications that benefit most have <b>data-intensive</b> processing, need for <b>scalable parallelism</b>, diverse data sources, tolerance for approximate results, analytics on historical <i>and</i> streaming data, and need for fast time-to-insight.</p>
+<h3>8. Perception and quantification of value</h3>
+<p>Value is judged by <b>perception</b> (executives&rsquo; belief) and must be <b>quantified</b>: increased revenue, cost savings, productivity, reduced risk; measured by ROI, total cost of ownership (hardware, software, people), time to value and customer metrics. Both tangible and intangible benefits are considered.</p>
+<h3>9. Understanding big data storage</h3>
+<p>Big data is stored on <b>distributed, scale-out</b> systems: distributed file systems (<b>HDFS</b>), NoSQL databases, object stores and cloud storage. Principles: horizontal scaling, replication for fault tolerance, data locality, and cheap commodity disks.</p>
+<h3>10. High-performance architecture overview</h3>
+<p>A <b>cluster</b> of commodity nodes in a <b>shared-nothing</b> design, with a master coordinating many workers, fast network, parallel processing and <b>moving computation to data</b>. Layers: storage, resource management, processing frameworks, analytics tools.</p>
+<h3>11. HDFS</h3>
+<p>Master/slave file system: <b>NameNode</b> stores metadata, <b>DataNodes</b> store 128 MB blocks replicated 3 times; write-once, read-many, streaming access, fault tolerant.</p>
+<h3>12. MapReduce and YARN</h3>
+<p><b>YARN</b> (Yet Another Resource Negotiator, Hadoop 2) separates resource management from processing. <b>ResourceManager</b> allocates cluster resources; <b>NodeManager</b> on each node manages <b>containers</b>; a per-application <b>ApplicationMaster</b> negotiates resources and runs tasks. Besides MapReduce, YARN also runs Spark, Tez, etc., which improves utilisation and scalability over Hadoop 1&rsquo;s JobTracker/TaskTracker.</p>
+<h3>13. MapReduce programming model</h3>
+<p>Input split &rarr; <b>Map</b> (key/value pairs) &rarr; optional <b>Combiner</b> &rarr; <b>Partition</b> &rarr; <b>Shuffle &amp; sort</b> &rarr; <b>Reduce</b> &rarr; output to HDFS. The framework handles parallelism, scheduling, data movement and failures (re-running failed tasks); programmers write only map and reduce.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<pre><code>MapReduce job flow
+Input (HDFS) -&gt; Split -&gt; Map -&gt; [Combiner] -&gt; Partition -&gt; Shuffle/Sort -&gt; Reduce -&gt; Output (HDFS)
+
+Example: max temperature per year
+map:    (offset, "1950,22") -&gt; (1950, 22)
+reduce: (1950, [22, 34, 18]) -&gt; (1950, 34)</code></pre>
+<pre><code>YARN: Client -&gt; ResourceManager -&gt; launches ApplicationMaster (in a container)
+      ApplicationMaster -&gt; asks RM for containers -&gt; NodeManagers run map/reduce tasks</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Explain the characteristics of big data.</b></p><p>Volume, velocity, variety, veracity and value.</p></div><div class="qa"><p><b>Q2. What are best practices for big data analytics?</b></p><p>Business-driven pilots, governance, right tools, skilled team, iteration and measurement.</p></div><div class="qa"><p><b>Q3. How is the value of big data quantified?</b></p><p>Through ROI, cost savings, revenue growth, risk reduction, TCO and time to value.</p></div><div class="qa"><p><b>Q4. Explain YARN architecture.</b></p><p>ResourceManager, NodeManagers with containers, and per-application ApplicationMaster.</p></div><div class="qa"><p><b>Q5. Explain the MapReduce programming model.</b></p><p>Split, map, combine, partition, shuffle/sort, reduce, with framework handling parallelism and faults.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>Big data: 5 Vs &ndash; volume, velocity, variety, veracity, value.</li><li>Hadoop grew out of Google GFS/MapReduce.</li><li>Best practice: business question, governance, pilot, team.</li><li>Value: ROI, cost, revenue, risk.</li><li>Shared-nothing scale-out cluster; computation moves to data.</li><li>YARN: RM, NM, AM, containers. MapReduce: map &rarr; shuffle &rarr; reduce.</li></ul>
+ <div class="pager"><a class="prev" href="mca202-u5.html"><small>&larr; Previous</small>Unit V: Stream Analytics</a><a class="next" href="mca202-u7.html"><small>Next &rarr;</small>Unit VII: Clustering and Classification</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

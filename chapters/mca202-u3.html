@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 202 Unit III: Data Modeling">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,55 @@
  <h1>Data Modeling</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Bayesian modeling</span><span class="chip">Support vector and kernel methods</span><span class="chip">Neuro-fuzzy modeling</span><span class="chip">Principal component analysis</span><span class="chip">Introduction to NoSQL: CAP theorem</span><span class="chip">MongoDB: RDBMS vs MongoDB</span><span class="chip">MongoDB database model, data types and sharding</span><span class="chip">Data modeling in HBase: defining schema</span><span class="chip">CRUD operations</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca202-u2.html"><small>← Previous</small>Unit II: Data Analysis using R</a><a class="next" href="mca202-u4.html"><small>Next →</small>Unit IV: Data Analytical Frameworks</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit covers <b>models</b> used to learn from data (Bayesian, SVM, neuro-fuzzy, PCA) and <b>data models for big data stores</b> (NoSQL, MongoDB, HBase). It links machine-learning ideas with the storage systems used for big data.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Bayesian modeling</h3>
+<p>Based on <b>Bayes&rsquo; theorem</b>: P(&theta;|D) = P(D|&theta;)&middot;P(&theta;) / P(D), i.e. <i>posterior</i> &prop; <i>likelihood</i> &times; <i>prior</i>. Beliefs (prior) are updated with data to give a posterior. Used in spam filtering, medical diagnosis, Bayesian networks and Naive Bayes classifiers. It naturally expresses uncertainty.</p>
+<h3>2. Support vector machines and kernel methods</h3>
+<p>An <b>SVM</b> finds the hyperplane that separates two classes with the <b>maximum margin</b>; the closest points to it are <b>support vectors</b>. A <b>soft margin</b> (parameter C) allows some misclassification. For non-linearly separable data, the <b>kernel trick</b> implicitly maps data to a higher-dimensional space: <i>linear</i>, <i>polynomial</i>, <i>RBF (Gaussian)</i> and <i>sigmoid</i> kernels.</p>
+<h3>3. Neuro-fuzzy modeling</h3>
+<p>Combines <b>neural networks</b> (learning ability) with <b>fuzzy logic</b> (human-like reasoning with IF&ndash;THEN rules and partial truth values between 0 and 1). The best-known system is <b>ANFIS</b> (Adaptive Neuro-Fuzzy Inference System), where a network tunes fuzzy membership functions and rules from data. Used in control systems and forecasting.</p>
+<h3>4. Principal component analysis (PCA)</h3>
+<p>A dimensionality-reduction technique that converts correlated variables into fewer uncorrelated <b>principal components</b> that capture maximum variance.</p>
+<ol><li>Standardise the data.</li><li>Compute the covariance (or correlation) matrix.</li><li>Find <b>eigenvalues and eigenvectors</b>.</li><li>Sort components by eigenvalue (variance explained).</li><li>Keep the top k and project the data onto them.</li></ol>
+<h3>5. Introduction to NoSQL and the CAP theorem</h3>
+<p><b>NoSQL</b> databases are non-relational, schema-flexible and scale horizontally. Types: <b>key-value</b> (Redis), <b>document</b> (MongoDB), <b>column-family</b> (HBase, Cassandra) and <b>graph</b> (Neo4j). <b>CAP theorem:</b> a distributed system can guarantee only two of <b>Consistency</b>, <b>Availability</b> and <b>Partition tolerance</b>. Hence CP systems (HBase, MongoDB) and AP systems (Cassandra). NoSQL often follows <b>BASE</b> (Basically Available, Soft state, Eventual consistency) instead of ACID.</p>
+<h3>6. MongoDB: RDBMS vs MongoDB</h3>
+<table><tr><th>RDBMS</th><th>MongoDB</th></tr>
+<tr><td>Database</td><td>Database</td></tr><tr><td>Table</td><td>Collection</td></tr><tr><td>Row</td><td>Document</td></tr><tr><td>Column</td><td>Field</td></tr>
+<tr><td>Fixed schema, joins</td><td>Dynamic schema, embedded documents</td></tr>
+<tr><td>Primary key</td><td><code>_id</code> (auto-generated ObjectId)</td></tr>
+<tr><td>Vertical scaling mainly</td><td>Horizontal scaling (sharding)</td></tr></table>
+<h3>7. MongoDB database model, data types and sharding</h3>
+<p>Data is stored as <b>BSON</b> (binary JSON) documents inside collections. Data types: String, Integer, Double, Boolean, Array, Object (embedded document), Date, Null, ObjectId, Binary data, Timestamp, Regular expression. <b>Sharding</b> splits a collection across multiple servers using a <b>shard key</b>. Components: <b>shards</b> (hold data), <b>mongos</b> (query router) and <b>config servers</b> (metadata). It gives horizontal scalability; <b>replica sets</b> give availability.</p>
+<h3>8. Data modeling in HBase: defining schema</h3>
+<p>HBase is a column-oriented store on HDFS. A table has <b>row keys</b> (sorted), <b>column families</b> (declared in the schema) with <b>column qualifiers</b> created on the fly, and every cell is <b>versioned by timestamp</b>. Design the <b>row key</b> carefully for the access pattern and to avoid hot-spotting; keep few column families.</p>
+<h3>9. CRUD operations</h3>
+<p>Create, Read, Update, Delete &ndash; the four basic operations, shown in the examples for MongoDB and HBase.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<pre><code>// MongoDB CRUD
+db.students.insertOne({ roll: 1, name: "Asha", marks: [78, 85] })   // Create
+db.students.find({ name: "Asha" })                                  // Read
+db.students.updateOne({ roll: 1 }, { $set: { name: "Asha K" } })    // Update
+db.students.deleteOne({ roll: 1 })                                  // Delete
+sh.shardCollection("college.students", { roll: "hashed" })          // Sharding</code></pre>
+<pre><code># HBase shell CRUD
+create 'student', 'info', 'marks'                 # schema: 2 column families
+put 'student', 'r1', 'info:name', 'Asha'          # Create / Update
+get 'student', 'r1'                               # Read
+scan 'student'
+delete 'student', 'r1', 'info:name'               # Delete
+disable 'student'; drop 'student'</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. State Bayes&rsquo; theorem and explain Bayesian modeling.</b></p><p>P(&theta;|D) = P(D|&theta;)P(&theta;)/P(D); the prior is updated by the likelihood to get the posterior.</p></div><div class="qa"><p><b>Q2. What is the kernel trick in SVM?</b></p><p>Computing inner products in a high-dimensional feature space through a kernel function so non-linear boundaries become linear there.</p></div><div class="qa"><p><b>Q3. Explain the CAP theorem.</b></p><p>A distributed store can provide only two of consistency, availability and partition tolerance.</p></div><div class="qa"><p><b>Q4. Compare RDBMS and MongoDB.</b></p><p>Table/collection, row/document, fixed vs dynamic schema, joins vs embedding, vertical vs horizontal scaling.</p></div><div class="qa"><p><b>Q5. Explain the steps of PCA.</b></p><p>Standardise, covariance matrix, eigen decomposition, choose top components, project.</p></div><div class="qa"><p><b>Q6. Explain HBase data model.</b></p><p>Row key, column families, qualifiers, timestamped versions.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>Posterior &prop; likelihood &times; prior.</li><li>SVM: max margin, support vectors, kernels.</li><li>Neuro-fuzzy = NN + fuzzy logic (ANFIS).</li><li>PCA: eigenvectors of covariance; keep top-k.</li><li>NoSQL types: key-value, document, column, graph; CAP: pick two.</li><li>MongoDB: BSON, <code>_id</code>, shard key, mongos. HBase: row key + column families + timestamp.</li></ul>
+ <div class="pager"><a class="prev" href="mca202-u2.html"><small>&larr; Previous</small>Unit II: Data Analysis using R</a><a class="next" href="mca202-u4.html"><small>Next &rarr;</small>Unit IV: Data Analytical Frameworks</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">
