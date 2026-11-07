@@ -7,6 +7,19 @@
 <meta name="description" content="MCA 201 Unit II: Relational Model, SQL, PL/SQL &amp; Integrity">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.tblwrap{overflow-x:auto}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +58,81 @@
  <h1>Relational Model, SQL, PL/SQL &amp; Integrity</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Domains and relations</span><span class="chip">Kinds of relations</span><span class="chip">Relational database</span><span class="chip">Keys: candidate, primary, alternate, foreign</span><span class="chip">Features of good relational database design</span><span class="chip">Codd&#x27;s rules</span><span class="chip">Relational algebra with extended operations</span><span class="chip">Modification of database</span><span class="chip">Idea of relational calculus</span><span class="chip">Basic structure of SQL</span><span class="chip">Set operations</span><span class="chip">Aggregate functions</span><span class="chip">Null values</span><span class="chip">Nested sub-queries</span><span class="chip">Derived relations</span><span class="chip">Views</span><span class="chip">Join relations</span><span class="chip">DDL in SQL</span><span class="chip">PL/SQL: stored procedures, triggers, cursors</span><span class="chip">Database integrity: integrity, domain, attribute, relation and database rules</span><span class="chip">Assertions</span><span class="chip">Integrity and SQL</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca201-u1.html"><small>← Previous</small>Unit I: Introduction &amp; ER Model</a><a class="next" href="mca201-u3.html"><small>Next →</small>Unit III: Functional Dependencies &amp; Normalization</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit covers the <b>relational model</b> (data as tables), the formal query languages (<b>relational algebra</b> and calculus), and the practical language <b>SQL</b> along with <b>PL/SQL</b> and <b>integrity constraints</b>. It is the most practical unit and directly supports the DBMS Lab (MCA 205).</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Domains, relations and keys</h3>
+<p>A <b>domain</b> is the set of permitted values of an attribute. A <b>relation</b> is a table with <b>tuples</b> (rows) and <b>attributes</b> (columns); <b>degree</b> = number of columns, <b>cardinality</b> = number of rows. Kinds of relations: base (named) relations, views (virtual), snapshots and query results. Keys: candidate, primary, alternate (candidate keys not chosen as primary) and foreign.</p>
+<h3>2. Features of a good relational design and Codd&rsquo;s rules</h3>
+<p>Good design avoids redundancy and update anomalies, preserves information and dependencies. Codd&rsquo;s 12 rules (rule 0 + 12) define a true RDBMS, e.g. information rule (all data in tables), guaranteed access (table + key + column), systematic treatment of nulls, active online catalog, comprehensive data sub-language, view updating, high-level insert/update/delete, physical and logical data independence, integrity independence, distribution independence and the non-subversion rule.</p>
+<h3>3. Relational algebra</h3>
+<table><tr><th>Operation</th><th>Symbol</th><th>Meaning</th></tr>
+<tr><td>Select</td><td>&sigma;</td><td>Rows satisfying a condition</td></tr>
+<tr><td>Project</td><td>&pi;</td><td>Chosen columns (duplicates removed)</td></tr>
+<tr><td>Union / Intersection / Difference</td><td>&cup; &cap; &minus;</td><td>Set operations (relations must be union-compatible)</td></tr>
+<tr><td>Cartesian product</td><td>&times;</td><td>All row combinations</td></tr>
+<tr><td>Rename</td><td>&rho;</td><td>Rename relation/attribute</td></tr>
+<tr><td>Join</td><td>&bowtie;</td><td>Product + selection (theta, equi, natural, outer)</td></tr>
+<tr><td>Division</td><td>&divide;</td><td>Rows related to <i>all</i> rows of another relation</td></tr></table>
+<p><b>Extended operations:</b> generalized projection, aggregate functions (sum, avg, min, max, count), outer joins. <b>Modification</b> of the database: insertion, deletion and updating of tuples. <b>Relational calculus</b> is declarative: <i>tuple relational calculus</i> {t | P(t)} and <i>domain relational calculus</i>.</p>
+<h3>4. SQL: basic structure</h3>
+<pre><code>SELECT [DISTINCT] columns FROM tables
+[WHERE condition] [GROUP BY cols] [HAVING cond] [ORDER BY cols [DESC]];</code></pre>
+<ul><li><b>Set operations:</b> UNION, INTERSECT, EXCEPT/MINUS (UNION removes duplicates; UNION ALL keeps them).</li><li><b>Aggregates:</b> COUNT, SUM, AVG, MIN, MAX. They ignore NULLs (except COUNT(*)).</li><li><b>Null values:</b> any comparison with NULL is unknown; use IS NULL / IS NOT NULL.</li><li><b>Nested sub-queries:</b> IN, NOT IN, EXISTS, ANY, ALL.</li><li><b>Derived relations:</b> a sub-query in the FROM clause, with an alias.</li><li><b>Joins:</b> INNER, LEFT/RIGHT/FULL OUTER, NATURAL, CROSS.</li></ul>
+<h3>5. Views and DDL</h3>
+<p>A <b>view</b> is a virtual table defined by a query: <code>CREATE VIEW v AS SELECT ...</code>. It gives security and simplicity. DDL commands: CREATE TABLE, ALTER TABLE (ADD/MODIFY/DROP column), DROP TABLE, TRUNCATE.</p>
+<h3>6. PL/SQL</h3>
+<p>PL/SQL is Oracle&rsquo;s procedural extension of SQL with blocks: <code>DECLARE &hellip; BEGIN &hellip; EXCEPTION &hellip; END;</code></p>
+<ul><li><b>Stored procedure/function</b> &ndash; named block stored in the database and reused.</li><li><b>Trigger</b> &ndash; code that fires automatically on INSERT/UPDATE/DELETE (BEFORE/AFTER, row/statement level).</li><li><b>Cursor</b> &ndash; pointer to the result set of a query to process rows one by one. <i>Implicit</i> (created by Oracle) and <i>explicit</i> (OPEN, FETCH, CLOSE).</li></ul>
+<h3>7. Database integrity</h3>
+<p>Integrity rules keep data correct: <b>domain</b> constraints (datatype, CHECK), <b>attribute</b> constraints (NOT NULL, DEFAULT), <b>relation</b>/entity integrity (primary key unique and not null), <b>referential</b> integrity (every foreign key value matches a primary key or is null) and <b>database</b>-level rules. An <b>assertion</b> is a condition the whole database must always satisfy: <code>CREATE ASSERTION name CHECK (condition)</code>. In SQL, integrity is declared with PRIMARY KEY, UNIQUE, FOREIGN KEY ... ON DELETE CASCADE, CHECK and NOT NULL.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<pre><code>-- Tables: Salesmen(snum, sname, city, commission), Customers(cnum, cname, city, rating, snum)
+SELECT city, COUNT(*) AS total
+FROM Customers
+GROUP BY city
+HAVING COUNT(*) &gt; 1
+ORDER BY total DESC;
+
+-- Sub-query: customers served by salesmen of London
+SELECT cname FROM Customers
+WHERE snum IN (SELECT snum FROM Salesmen WHERE city = 'London');
+
+-- Join
+SELECT c.cname, s.sname FROM Customers c JOIN Salesmen s ON c.snum = s.snum;</code></pre>
+<pre><code>-- Trigger: log deleted customers
+CREATE OR REPLACE TRIGGER trg_cust_del
+AFTER DELETE ON Customers
+FOR EACH ROW
+BEGIN
+  INSERT INTO cust_log VALUES (:OLD.cnum, SYSDATE);
+END;
+/
+
+-- Explicit cursor
+DECLARE
+  CURSOR c1 IS SELECT cname FROM Customers;
+  v_name Customers.cname%TYPE;
+BEGIN
+  OPEN c1;
+  LOOP
+    FETCH c1 INTO v_name;
+    EXIT WHEN c1%NOTFOUND;
+    DBMS_OUTPUT.PUT_LINE(v_name);
+  END LOOP;
+  CLOSE c1;
+END;
+/</code></pre>
+<p><b>Relational algebra example:</b> &pi;<sub>cname</sub>(&sigma;<sub>rating&gt;100</sub>(Customers)) &ndash; names of customers whose rating exceeds 100.</p>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Explain the basic relational algebra operations.</b></p><p>Select, project, union, difference, Cartesian product and rename are fundamental; intersection, join and division are derived. Give one example of each.</p></div><div class="qa"><p><b>Q2. Differentiate WHERE and HAVING.</b></p><p>WHERE filters rows before grouping and cannot use aggregates; HAVING filters groups after GROUP BY and can use aggregate functions.</p></div><div class="qa"><p><b>Q3. What is a view? State its advantages.</b></p><p>A virtual table defined by a stored query. It simplifies complex queries, restricts access to columns/rows (security) and supports logical data independence.</p></div><div class="qa"><p><b>Q4. What are triggers and cursors in PL/SQL?</b></p><p>A trigger is code fired automatically by a DML event; a cursor is a handle on a query result set used to process rows one at a time (implicit/explicit).</p></div><div class="qa"><p><b>Q5. Explain referential integrity with an example.</b></p><p>A foreign key value must exist as a primary key in the parent table (or be NULL), e.g. Customers.snum must exist in Salesmen.snum; ON DELETE CASCADE removes dependent rows.</p></div><div class="qa"><p><b>Q6. State any five of Codd&rsquo;s rules.</b></p><p>Information rule, guaranteed access, systematic treatment of nulls, physical data independence, view-updating rule.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>Relation: degree = columns, cardinality = rows.</li><li>Algebra: &sigma; rows, &pi; columns, &bowtie; join, &divide; &ldquo;for all&rdquo;.</li><li>SQL order: SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY.</li><li>NULL: use IS NULL, aggregates skip NULLs.</li><li>PL/SQL: procedure, function, trigger, cursor.</li><li>Integrity: domain, entity, referential; assertion = global rule.</li></ul>
+ <div class="pager"><a class="prev" href="mca201-u1.html"><small>&larr; Previous</small>Unit I: Introduction &amp; ER Model</a><a class="next" href="mca201-u3.html"><small>Next &rarr;</small>Unit III: Functional Dependencies &amp; Normalization</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

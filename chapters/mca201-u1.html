@@ -7,6 +7,19 @@
 <meta name="description" content="MCA 201 Unit I: Introduction &amp; ER Model">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.tblwrap{overflow-x:auto}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +58,71 @@
  <h1>Introduction &amp; ER Model</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Advantage of DBMS approach</span><span class="chip">Various views of data</span><span class="chip">Data independence</span><span class="chip">Schema and subschema</span><span class="chip">Primary concepts of data models</span><span class="chip">Database languages</span><span class="chip">Transaction management</span><span class="chip">Database administrator and users</span><span class="chip">Data dictionary</span><span class="chip">Overall system architecture</span><span class="chip">ER model: basic concepts</span><span class="chip">Design issues</span><span class="chip">Mapping constraints</span><span class="chip">Keys</span><span class="chip">ER diagram</span><span class="chip">Weak and strong entity sets</span><span class="chip">Specialization and generalization</span><span class="chip">Aggregation</span><span class="chip">Inheritance</span><span class="chip">Design of ER schema</span><span class="chip">Reduction of ER schema to tables</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca201.html"><small>← Previous</small>MCA 201 · DBMS and Data Mining</a><a class="next" href="mca201-u2.html"><small>Next →</small>Unit II: Relational Model, SQL, PL/SQL &amp; Integrity</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit lays the foundation of the whole subject. It explains <b>why</b> we use a Database Management System (DBMS) instead of plain files, how a DBMS hides complexity from users, and how a real-world problem is modelled on paper using the <b>Entity-Relationship (ER) model</b> before being converted into tables. ER diagrams and ER-to-table conversion are asked almost every year.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Advantages of the DBMS approach</h3>
+<p>A DBMS is software that creates, stores, retrieves and controls access to an organised collection of related data. Compared with a file-processing system it gives:</p>
+<ul><li><b>Reduced redundancy</b> and <b>inconsistency</b> &ndash; one copy of data instead of many.</li><li><b>Data sharing</b> and <b>concurrent access</b> by many users.</li><li><b>Integrity constraints</b> &ndash; rules such as &ldquo;age &gt; 0&rdquo; enforced centrally.</li><li><b>Security</b> &ndash; user-wise authorisation.</li><li><b>Backup and recovery</b> after failures.</li><li><b>Data independence</b> &ndash; programs are not affected by storage changes.</li></ul>
+<h3>2. Views of data (three-level architecture)</h3>
+<table><tr><th>Level</th><th>Describes</th><th>Seen by</th></tr>
+<tr><td>Physical (internal)</td><td>How data is actually stored (files, indexes, blocks)</td><td>DBA, system programmers</td></tr>
+<tr><td>Logical (conceptual)</td><td>What data is stored and the relationships among them</td><td>DBA, designers</td></tr>
+<tr><td>View (external)</td><td>Part of the database relevant to one user group</td><td>End users, application programmers</td></tr></table>
+<h3>3. Data independence</h3>
+<ul><li><b>Physical data independence</b> &ndash; change the internal schema (e.g. add an index) without changing the logical schema.</li><li><b>Logical data independence</b> &ndash; change the logical schema (e.g. add a column) without changing external views or programs. It is harder to achieve.</li></ul>
+<h3>4. Schema and subschema</h3>
+<p>The <b>schema</b> is the overall design (structure) of the database and changes rarely. A <b>subschema</b> is the part of the schema used by one application or user (an external view). The data stored at a given moment is called an <b>instance</b>.</p>
+<h3>5. Data models</h3>
+<p>A data model is a collection of concepts for describing data, relationships, semantics and constraints. Main types: <b>hierarchical</b> (tree), <b>network</b> (graph), <b>relational</b> (tables), <b>ER</b> (conceptual) and <b>object-oriented</b>.</p>
+<h3>6. Database languages</h3>
+<ul><li><b>DDL</b> (Data Definition Language) &ndash; CREATE, ALTER, DROP. Output is stored in the data dictionary.</li><li><b>DML</b> (Data Manipulation Language) &ndash; SELECT, INSERT, UPDATE, DELETE. Can be procedural or declarative (non-procedural, e.g. SQL).</li><li><b>DCL</b> &ndash; GRANT, REVOKE. <b>TCL</b> &ndash; COMMIT, ROLLBACK, SAVEPOINT.</li></ul>
+<h3>7. Transaction management, DBA and users</h3>
+<p>A <b>transaction</b> is a logical unit of work that must be executed completely or not at all (ACID). The <b>Database Administrator (DBA)</b> defines schema, grants access, tunes performance and manages backup/recovery. Users: naive users, application programmers, sophisticated users (analysts) and specialised users.</p>
+<h3>8. Data dictionary and system architecture</h3>
+<p>The <b>data dictionary</b> is a repository of <i>metadata</i> (data about data): table names, column types, constraints, users and privileges. The DBMS has two main parts: the <b>query processor</b> (DDL interpreter, DML compiler, query evaluation engine) and the <b>storage manager</b> (authorisation manager, transaction manager, file manager, buffer manager).</p>
+<h3>9. ER model: basic concepts</h3>
+<ul><li><b>Entity</b> &ndash; a distinguishable real-world object; <b>entity set</b> &ndash; collection of similar entities.</li><li><b>Attribute</b> types: simple/composite, single-valued/multivalued, derived, and null-able.</li><li><b>Relationship</b> &ndash; association among entities; its <b>degree</b> is the number of participating entity sets (unary, binary, ternary).</li></ul>
+<h3>10. Mapping constraints</h3>
+<p><b>Cardinality</b>: one-to-one, one-to-many, many-to-one, many-to-many. <b>Participation</b>: total (every entity must take part) or partial.</p>
+<h3>11. Keys</h3>
+<p><b>Super key</b> &ndash; any set of attributes that uniquely identifies a row. <b>Candidate key</b> &ndash; minimal super key. <b>Primary key</b> &ndash; the chosen candidate key. <b>Foreign key</b> &ndash; attribute referring to the primary key of another table.</p>
+<h3>12. Weak and strong entity sets</h3>
+<p>A <b>strong</b> entity set has its own primary key. A <b>weak</b> entity set has no primary key of its own; it depends on an <b>owner (identifying) entity</b> and is identified by the owner&rsquo;s key plus its own <b>discriminator</b> (partial key). Drawn with a double rectangle; the identifying relationship uses a double diamond.</p>
+<h3>13. Specialization, generalization, aggregation, inheritance</h3>
+<ul><li><b>Specialization</b> &ndash; top-down: split an entity set into sub-groups (Employee &rarr; Manager, Clerk).</li><li><b>Generalization</b> &ndash; bottom-up: combine similar entity sets into a higher-level one.</li><li><b>Inheritance</b> &ndash; lower-level entities inherit attributes and relationships of higher-level ones (&ldquo;ISA&rdquo; relationship).</li><li><b>Aggregation</b> &ndash; treats a relationship as a higher-level entity so it can take part in another relationship.</li></ul>
+<h3>14. Design issues and design of ER schema</h3>
+<p>Common issues: entity vs attribute, entity vs relationship, binary vs n-ary relationships, placement of attributes, and avoiding redundancy. Steps: identify entities &rarr; identify relationships and cardinalities &rarr; add attributes and keys &rarr; refine (weak entities, ISA) &rarr; draw the diagram.</p>
+<h3>15. Reduction of ER schema to tables</h3>
+<ul><li>Strong entity &rarr; one table; columns = simple attributes (composite split into parts).</li><li>Multivalued attribute &rarr; separate table with the entity&rsquo;s key + the attribute.</li><li>Weak entity &rarr; table with owner&rsquo;s primary key + discriminator as the primary key.</li><li>1:N relationship &rarr; add the &ldquo;one&rdquo; side&rsquo;s key as foreign key on the &ldquo;many&rdquo; side.</li><li>M:N relationship &rarr; new table with both keys (+ relationship attributes).</li><li>ISA &rarr; one table per entity set (child holds parent&rsquo;s key) or one table per child.</li></ul>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>Example: Student&ndash;Course (M:N) with a relationship attribute</b></p>
+<pre><code>ER:  STUDENT(roll_no, name, phone*)  --- ENROLLS(grade) ---  COURSE(course_id, title, credits)
+     (phone* = multivalued attribute; ENROLLS is many-to-many)
+
+Tables:
+STUDENT(roll_no PK, name)
+STUDENT_PHONE(roll_no FK, phone)          -- multivalued attribute
+COURSE(course_id PK, title, credits)
+ENROLLS(roll_no FK, course_id FK, grade)  -- PK = (roll_no, course_id)</code></pre>
+<pre><code>CREATE TABLE Enrolls (
+  roll_no   INT,
+  course_id VARCHAR(10),
+  grade     CHAR(2),
+  PRIMARY KEY (roll_no, course_id),
+  FOREIGN KEY (roll_no)   REFERENCES Student(roll_no),
+  FOREIGN KEY (course_id) REFERENCES Course(course_id)
+);</code></pre>
+<div class="note"><b>Exam tip:</b> always label cardinality (1, N, M) on both sides of every diamond and underline primary keys.</div>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. What are the advantages of DBMS over a file system?</b></p><p>Less redundancy and inconsistency, data sharing, integrity and security enforcement, concurrent access, backup/recovery, and data independence.</p></div><div class="qa"><p><b>Q2. Explain the three-level architecture of a database.</b></p><p>Physical level (how stored), logical level (what stored and relationships) and view level (user-specific parts). It provides physical and logical data independence.</p></div><div class="qa"><p><b>Q3. Differentiate between a weak and a strong entity set.</b></p><p>A strong entity set has a primary key; a weak one has only a discriminator and depends on an owner entity for identification (double rectangle in ER diagram).</p></div><div class="qa"><p><b>Q4. Explain specialization, generalization and aggregation with examples.</b></p><p>Specialization splits Person into Student/Teacher; generalization merges Car and Truck into Vehicle; aggregation treats the relationship &lsquo;Works_on&rsquo; as an entity to relate it with &lsquo;Manager&rsquo;.</p></div><div class="qa"><p><b>Q5. How is an ER diagram converted into tables?</b></p><p>Each strong entity becomes a table; multivalued attributes get their own table; 1:N adds a foreign key; M:N creates a new table with both keys; weak entities include the owner&rsquo;s key.</p></div><div class="qa"><p><b>Q6. Define data dictionary and DBA.</b></p><p>The data dictionary stores metadata about the database; the DBA is the person/group responsible for schema definition, security, performance and recovery.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>DBMS = less redundancy, more integrity, security, sharing, independence.</li><li>3 levels: physical &rarr; logical &rarr; view. 2 independences: physical, logical.</li><li>Languages: DDL, DML, DCL, TCL.</li><li>Keys: super &sup; candidate &sup; primary; foreign key links tables.</li><li>Weak entity = double rectangle + discriminator + owner.</li><li>M:N relationship always becomes a separate table.</li></ul>
+ <div class="pager"><a class="prev" href="mca201.html"><small>&larr; Previous</small>MCA 201 · DBMS and Data Mining</a><a class="next" href="mca201-u2.html"><small>Next &rarr;</small>Unit II: Relational Model, SQL, PL/SQL &amp; Integrity</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

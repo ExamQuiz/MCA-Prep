@@ -7,6 +7,19 @@
 <meta name="description" content="MCA 201 Unit III: Functional Dependencies &amp; Normalization">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.tblwrap{overflow-x:auto}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +58,59 @@
  <h1>Functional Dependencies &amp; Normalization</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Basic definitions</span><span class="chip">Trivial and non-trivial dependencies</span><span class="chip">Closure set of dependencies and of attributes</span><span class="chip">Irreducible set of dependencies</span><span class="chip">Introduction to normalization</span><span class="chip">Non-loss decomposition</span><span class="chip">FD diagram</span><span class="chip">First, second and third normal forms</span><span class="chip">Dependency preservation</span><span class="chip">BCNF</span><span class="chip">Multivalued dependencies and fourth normal form</span><span class="chip">Join dependency and fifth normal form</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca201-u2.html"><small>← Previous</small>Unit II: Relational Model, SQL, PL/SQL &amp; Integrity</a><a class="next" href="mca201-u4.html"><small>Next →</small>Unit IV: Transactions, Concurrency, Recovery &amp; Distributed Databases</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>Normalization is the process of organising tables to remove redundancy and the insertion, deletion and update <b>anomalies</b> it causes. This unit teaches <b>functional dependencies (FDs)</b> as the tool, and the <b>normal forms</b> (1NF to 5NF, BCNF) as the goal. Attribute-closure and normal-form numericals are very common in exams.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Functional dependency (FD)</h3>
+<p>X &rarr; Y means: if two tuples agree on X they must agree on Y (X <b>determines</b> Y). Example: roll_no &rarr; name. X is the <i>determinant</i>, Y the <i>dependent</i>.</p>
+<ul><li><b>Trivial FD:</b> Y &sube; X (e.g. {roll_no, name} &rarr; name). <b>Non-trivial:</b> Y &nsube; X.</li><li><b>Armstrong&rsquo;s axioms:</b> Reflexivity (Y &sube; X &rArr; X&rarr;Y), Augmentation (X&rarr;Y &rArr; XZ&rarr;YZ), Transitivity (X&rarr;Y, Y&rarr;Z &rArr; X&rarr;Z). Derived: union, decomposition, pseudo-transitivity.</li></ul>
+<h3>2. Closure of FDs and of attributes</h3>
+<p><b>F<sup>+</sup></b> (closure of a set of FDs) is the set of all FDs implied by F. <b>X<sup>+</sup></b> (closure of attributes) is the set of all attributes determined by X. If X<sup>+</sup> contains all attributes of R, X is a <b>super key</b>; if minimal, a <b>candidate key</b>.</p>
+<h3>3. Irreducible (canonical/minimal) cover</h3>
+<ol><li>Make right sides single attributes.</li><li>Remove <b>extraneous attributes</b> from left sides.</li><li>Remove <b>redundant FDs</b> (those implied by the rest).</li></ol>
+<h3>4. Normalization, decomposition and FD diagram</h3>
+<p>Normalization decomposes a relation into smaller ones. A good decomposition is <b>lossless (non-loss)</b> &ndash; the natural join of the parts gives back the original with no spurious tuples &ndash; and <b>dependency preserving</b>. Test for a binary split R into R1, R2: lossless if (R1 &cap; R2) &rarr; R1 or (R1 &cap; R2) &rarr; R2. An <b>FD diagram</b> draws attributes as nodes with arrows for FDs, making partial and transitive dependencies visible.</p>
+<h3>5. Normal forms</h3>
+<table><tr><th>Form</th><th>Rule</th></tr>
+<tr><td>1NF</td><td>All attribute values are atomic; no repeating groups.</td></tr>
+<tr><td>2NF</td><td>1NF + no <b>partial dependency</b> (no non-key attribute depends on part of a composite key).</td></tr>
+<tr><td>3NF</td><td>2NF + no <b>transitive dependency</b>. For every FD X&rarr;A: X is a super key, or A is a prime attribute.</td></tr>
+<tr><td>BCNF</td><td>For every non-trivial FD X&rarr;Y, X must be a super key.</td></tr>
+<tr><td>4NF</td><td>BCNF + no non-trivial <b>multivalued dependency</b> (X &rarr;&rarr; Y) unless X is a super key.</td></tr>
+<tr><td>5NF (PJNF)</td><td>No non-trivial <b>join dependency</b> unless implied by candidate keys.</td></tr></table>
+<p><b>3NF vs BCNF:</b> 3NF can always be achieved with lossless <i>and</i> dependency-preserving decomposition; BCNF is lossless but may lose some dependencies.</p>
+<h3>6. Multivalued and join dependency</h3>
+<p>A MVD X &rarr;&rarr; Y arises when one X value is associated with a set of Y values independent of the other attributes (e.g. Employee &rarr;&rarr; Skill and Employee &rarr;&rarr; Language in one table). 4NF splits them into (Employee, Skill) and (Employee, Language). A join dependency says the relation equals the join of several projections; 5NF removes it.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>Worked example: attribute closure and key</b></p>
+<pre><code>R(A, B, C, D, E)   F = { A -&gt; B,  BC -&gt; D,  D -&gt; E }
+
+(AC)+ : start {A, C}
+        A -&gt; B     =&gt; {A, B, C}
+        BC -&gt; D    =&gt; {A, B, C, D}
+        D -&gt; E     =&gt; {A, B, C, D, E}  = all attributes
+So AC is a super key; A+ = {A,B} and C+ = {C} are not, hence AC is a candidate key.</code></pre>
+<p><b>Normalizing an order table</b></p>
+<pre><code>ORDER(order_id, item_id, item_name, qty, cust_id, cust_city)
+Key = (order_id, item_id)
+FDs: item_id -&gt; item_name            (partial)   cust_id -&gt; cust_city  (transitive)
+     order_id -&gt; cust_id
+
+2NF/3NF result:
+ITEM(item_id, item_name)
+CUSTOMER(cust_id, cust_city)
+ORDERS(order_id, cust_id)
+ORDER_ITEM(order_id, item_id, qty)</code></pre>
+<div class="note"><b>Memory aid:</b> 2NF removes <i>partial</i> dependencies; 3NF removes <i>transitive</i> ones; BCNF: &ldquo;every determinant is a key&rdquo;.</div>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. What is a functional dependency? Explain trivial and non-trivial FDs.</b></p><p>X&rarr;Y holds if each X value determines exactly one Y value. Trivial if Y is a subset of X; otherwise non-trivial.</p></div><div class="qa"><p><b>Q2. Explain 1NF, 2NF and 3NF with examples.</b></p><p>1NF: atomic values; 2NF: no partial dependency on a composite key; 3NF: no transitive dependency. Use the order-table example above.</p></div><div class="qa"><p><b>Q3. Differentiate between 3NF and BCNF.</b></p><p>BCNF demands every determinant be a super key; 3NF also allows determinants whose dependents are prime attributes. BCNF may not preserve dependencies.</p></div><div class="qa"><p><b>Q4. What is lossless decomposition?</b></p><p>A decomposition whose natural join reproduces the original relation exactly; checked by (R1&cap;R2)&rarr;R1 or R2.</p></div><div class="qa"><p><b>Q5. Find the candidate key of R(A,B,C,D) with F = {A&rarr;B, B&rarr;C, C&rarr;D}.</b></p><p>A+ = {A,B,C,D}, so A is the only candidate key.</p></div><div class="qa"><p><b>Q6. Explain 4NF and 5NF.</b></p><p>4NF removes non-trivial multivalued dependencies; 5NF removes join dependencies not implied by candidate keys.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>X<sup>+</sup> = all attributes &rArr; X is a super key.</li><li>Minimal cover: single RHS, no extraneous LHS, no redundant FD.</li><li>1NF atomic &rarr; 2NF no partial &rarr; 3NF no transitive &rarr; BCNF determinant = key.</li><li>4NF: MVD; 5NF: join dependency.</li><li>Always aim for lossless + dependency-preserving.</li></ul>
+ <div class="pager"><a class="prev" href="mca201-u2.html"><small>&larr; Previous</small>Unit II: Relational Model, SQL, PL/SQL &amp; Integrity</a><a class="next" href="mca201-u4.html"><small>Next &rarr;</small>Unit IV: Transactions, Concurrency, Recovery &amp; Distributed Databases</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

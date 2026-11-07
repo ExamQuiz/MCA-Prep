@@ -7,6 +7,19 @@
 <meta name="description" content="MCA 201 Unit V: Emerging Fields, Storage Structures &amp; Other Models">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.tblwrap{overflow-x:auto}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +58,58 @@
  <h1>Emerging Fields, Storage Structures &amp; Other Models</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Object-oriented databases: basic idea and model</span><span class="chip">Object structure and object class</span><span class="chip">Inheritance and multiple inheritance</span><span class="chip">Object identity</span><span class="chip">Data warehousing: terminology, definitions, characteristics</span><span class="chip">Data mining and its overview</span><span class="chip">Database on WWW</span><span class="chip">Multimedia databases: difference with conventional DBMS</span><span class="chip">Issues, similarity-based retrieval</span><span class="chip">Continuous media data, multimedia data formats, video servers</span><span class="chip">Overview of physical storage media</span><span class="chip">Magnetic disk performance and optimization</span><span class="chip">Basic idea of RAID</span><span class="chip">File organization and organization of records in files</span><span class="chip">Basic concepts of indexing, ordered indices</span><span class="chip">B-tree and B+-tree organization</span><span class="chip">Network and hierarchical models: basic idea</span><span class="chip">Data structure diagrams, DBTG model</span><span class="chip">Tree structure diagram, implementation techniques</span><span class="chip">Comparison of the three models</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca201-u4.html"><small>← Previous</small>Unit IV: Transactions, Concurrency, Recovery &amp; Distributed Databases</a><a class="next" href="mca201-u6.html"><small>Next →</small>Unit VI: Data Mining Fundamentals</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit is a survey of newer database ideas (object-oriented, multimedia, web, warehousing and mining), followed by the <b>physical side</b> of databases: storage media, RAID, file organisation, indexing with B and B+ trees, and the older <b>network and hierarchical models</b>.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Object-oriented databases (OODB)</h3>
+<p>OODBs store data as <b>objects</b> combining state (attributes) and behaviour (methods), suited to CAD, multimedia and engineering data where relational tables are awkward.</p>
+<ul><li><b>Object structure:</b> attributes + methods + messages; an <b>object class</b> groups objects with the same structure and behaviour.</li><li><b>Inheritance:</b> a subclass inherits attributes and methods of its superclass; <b>multiple inheritance</b> inherits from more than one superclass (may cause name conflicts).</li><li><b>Object identity (OID):</b> a unique, system-generated identifier independent of the attribute values; it never changes, and objects with equal values can still be different objects.</li></ul>
+<h3>2. Data warehousing and data mining (overview)</h3>
+<p>A <b>data warehouse</b> is a subject-oriented, integrated, time-variant, non-volatile collection of data supporting management decisions (Inmon). <b>Data mining</b> is discovering interesting, previously unknown patterns from large data sets. Details appear in Units VI and VII.</p>
+<h3>3. Database on the WWW</h3>
+<p>Web pages are linked to databases through <b>CGI, servlets, JSP/PHP, ASP</b> and application servers, so that dynamic pages are generated from query results. Three-tier architecture: browser &rarr; web/application server &rarr; database server. <b>XML</b> is used to exchange data.</p>
+<h3>4. Multimedia databases</h3>
+<p>They store images, audio, video and text. Differences from conventional DBMS: very large objects (BLOBs), special data formats (JPEG, MPEG, MP3), <b>similarity-based retrieval</b> (find images <i>similar</i> to a sample using features such as colour or shape, rather than exact match), and the need for <b>continuous media</b> delivery at a guaranteed rate without jitter. <b>Video servers</b> store compressed video on many disks and stream it to many clients (video-on-demand), needing real-time scheduling and high bandwidth. Issues: storage and compression, indexing, QoS, synchronisation.</p>
+<h3>5. Physical storage media</h3>
+<table><tr><th>Medium</th><th>Notes</th></tr>
+<tr><td>Cache, main memory</td><td>Fastest, volatile, costly</td></tr>
+<tr><td>Flash/SSD</td><td>Non-volatile, fast reads</td></tr>
+<tr><td>Magnetic disk</td><td>Main secondary storage, random access</td></tr>
+<tr><td>Optical disk, tape</td><td>Cheap, slow; used for archival/backup</td></tr></table>
+<h3>6. Magnetic disk performance and optimisation</h3>
+<p><b>Access time = seek time + rotational latency + transfer time.</b> Performance is improved by block-size selection, <b>disk-arm scheduling</b> (elevator algorithm), file organisation, non-volatile write buffers and log disks.</p>
+<h3>7. RAID (Redundant Array of Independent Disks)</h3>
+<ul><li><b>RAID 0</b> &ndash; striping, no redundancy (speed).</li><li><b>RAID 1</b> &ndash; mirroring (reliability).</li><li><b>RAID 3/4/5</b> &ndash; striping with parity; RAID 5 distributes parity across all disks.</li><li><b>RAID 6</b> &ndash; double parity, survives two disk failures.</li></ul>
+<h3>8. File organisation</h3>
+<p>Records may be <b>fixed-length</b> or <b>variable-length</b> (slotted-page structure, byte-string). File organisations: <b>heap</b> (any free space), <b>sequential</b> (sorted by search key), <b>hash</b> (hash function gives block) and <b>clustering</b> (related tables stored together).</p>
+<h3>9. Indexing and ordered indices</h3>
+<p>An index speeds up searching on a <b>search key</b>. <b>Primary (clustering) index</b>: file is sorted on the index key; <b>secondary (non-clustering)</b> index: on a non-sorting attribute. <b>Dense</b> index has an entry for every key; <b>sparse</b> has entries for some blocks only. Multilevel indexing indexes the index.</p>
+<h3>10. B-tree and B+-tree</h3>
+<ul><li>Both are balanced multiway search trees with all leaves at the same level; a node of order n has at most n children and at least &lceil;n/2&rceil;.</li><li><b>B-tree:</b> keys and record pointers appear in both internal and leaf nodes; no key is repeated.</li><li><b>B+-tree:</b> all record pointers are only in <b>leaf nodes</b>, which are linked sequentially; internal nodes hold only keys for routing. Hence faster range queries and higher fan-out. Insertion splits an overflowing node; deletion merges or redistributes an underflowing one. B+-trees are the standard in DBMS.</li></ul>
+<h3>11. Network and hierarchical models</h3>
+<ul><li><b>Hierarchical:</b> data in a tree of parent&ndash;child record types; each child has exactly one parent (1:N). Simple and fast but cannot model M:N directly; shown with a <b>tree-structure diagram</b>.</li><li><b>Network (DBTG/CODASYL):</b> records linked as a graph through <b>sets</b> (owner&ndash;member, 1:N); a record can be a member of several sets, so M:N is possible through a link record. Shown with a <b>data-structure diagram</b>. Navigation is by following pointers (find, get, store, modify, erase).</li><li><b>Implementation:</b> pointers, linked lists, rings and index structures.</li></ul>
+<table><tr><th>Aspect</th><th>Hierarchical</th><th>Network</th><th>Relational</th></tr>
+<tr><td>Structure</td><td>Tree</td><td>Graph</td><td>Tables</td></tr>
+<tr><td>Relationships</td><td>1:N only</td><td>1:N, M:N via link record</td><td>Any, via keys</td></tr>
+<tr><td>Access</td><td>Navigational</td><td>Navigational</td><td>Declarative (SQL)</td></tr>
+<tr><td>Data independence</td><td>Low</td><td>Low</td><td>High</td></tr></table>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<pre><code>-- Simple dense index and B+-tree (order 3) idea
+Leaf nodes (linked):  [5 | 8] -&gt; [10 | 15] -&gt; [20 | 25]
+Internal node:               [10 | 20]
+Search 15: root &rarr; middle child (10 &le; 15 &lt; 20) &rarr; leaf [10|15] &rarr; record pointer.
+Range 8..20: find 8 in first leaf, then follow leaf links to 20.</code></pre>
+<pre><code>CREATE INDEX idx_cust_city ON Customers(city);   -- secondary index in SQL</code></pre>
+<div class="note"><b>B vs B+:</b> B+ keeps data pointers only in leaves and links the leaves, which makes range queries efficient.</div>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. What is object identity? Explain inheritance in OODB.</b></p><p>OID is a unique, immutable object identifier; subclasses inherit attributes and methods of superclasses, with multiple inheritance from several parents.</p></div><div class="qa"><p><b>Q2. How do multimedia databases differ from conventional ones?</b></p><p>Large objects, special formats, similarity-based retrieval and continuous-media delivery with real-time constraints.</p></div><div class="qa"><p><b>Q3. Explain RAID levels.</b></p><p>RAID 0 striping, 1 mirroring, 5 striping with distributed parity, 6 double parity; they trade speed, cost and reliability.</p></div><div class="qa"><p><b>Q4. Differentiate B-tree and B+-tree.</b></p><p>B+ stores all data pointers in linked leaves, internal nodes only guide search; better for range queries and higher fan-out.</p></div><div class="qa"><p><b>Q5. Explain dense and sparse indexes.</b></p><p>Dense: one entry per search-key value; sparse: one entry per block, needs a sorted file.</p></div><div class="qa"><p><b>Q6. Compare hierarchical, network and relational models.</b></p><p>See comparison table in the notes: structure, relationships, access style and data independence.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>OODB: object = state + behaviour; OID; inheritance.</li><li>Multimedia: similarity search, continuous media, video servers.</li><li>Disk access time = seek + rotation + transfer.</li><li>RAID 0 stripe, 1 mirror, 5 parity.</li><li>B+-tree: data in linked leaves; balanced.</li><li>Hierarchical = tree (1:N); Network = graph via sets (DBTG).</li></ul>
+ <div class="pager"><a class="prev" href="mca201-u4.html"><small>&larr; Previous</small>Unit IV: Transactions, Concurrency, Recovery &amp; Distributed Databases</a><a class="next" href="mca201-u6.html"><small>Next &rarr;</small>Unit VI: Data Mining Fundamentals</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

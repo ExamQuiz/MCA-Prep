@@ -7,6 +7,19 @@
 <meta name="description" content="MCA 201 Unit IV: Transactions, Concurrency, Recovery &amp; Distributed Databases">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.tblwrap{overflow-x:auto}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +58,58 @@
  <h1>Transactions, Concurrency, Recovery &amp; Distributed Databases</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Basic concepts</span><span class="chip">ACID properties</span><span class="chip">Transaction states</span><span class="chip">Implementation of atomicity and durability</span><span class="chip">Concurrent executions</span><span class="chip">Basic idea of serializability</span><span class="chip">Basic idea of concurrency control</span><span class="chip">Basic idea of deadlock</span><span class="chip">Failure classification</span><span class="chip">Storage structure types</span><span class="chip">Stable storage implementation</span><span class="chip">Data access</span><span class="chip">Recovery and atomicity: log-based recovery</span><span class="chip">Deferred database modification</span><span class="chip">Immediate database modification</span><span class="chip">Checkpoints</span><span class="chip">Distributed database: basic idea</span><span class="chip">Distributed data storage</span><span class="chip">Data replication</span><span class="chip">Data fragmentation: horizontal, vertical and mixed</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca201-u3.html"><small>← Previous</small>Unit III: Functional Dependencies &amp; Normalization</a><a class="next" href="mca201-u5.html"><small>Next →</small>Unit V: Emerging Fields, Storage Structures &amp; Other Models</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit explains how a DBMS keeps data <b>correct</b> when many users work at once and when systems crash. It covers <b>transactions and ACID</b>, <b>concurrency control</b>, <b>deadlock</b>, <b>log-based recovery</b>, and a short introduction to <b>distributed databases</b>.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Transaction and ACID properties</h3>
+<p>A transaction is a sequence of operations that forms one logical unit of work (e.g. transferring money). Properties:</p>
+<ul><li><b>Atomicity</b> &ndash; all or nothing (ensured by the recovery manager).</li><li><b>Consistency</b> &ndash; moves the database from one valid state to another (programmer/integrity constraints).</li><li><b>Isolation</b> &ndash; concurrent transactions do not interfere (concurrency-control manager).</li><li><b>Durability</b> &ndash; committed changes survive failures (recovery manager).</li></ul>
+<h3>2. Transaction states</h3>
+<p><b>Active</b> &rarr; <b>Partially committed</b> (after last statement) &rarr; <b>Committed</b>; from Active or Partially committed a failure leads to <b>Failed</b> &rarr; <b>Aborted</b> (rolled back; may restart or kill the transaction).</p>
+<h3>3. Atomicity and durability implementation</h3>
+<p>Using the <b>shadow-copy</b> scheme (a db-pointer switches to the new copy on commit) or, more commonly, the <b>log</b> (write-ahead logging).</p>
+<h3>4. Concurrent executions and serializability</h3>
+<p>Concurrency improves throughput and response time but can cause <b>lost update</b>, <b>dirty read</b>, <b>unrepeatable read</b> and <b>phantom</b> problems. A schedule is <b>serializable</b> if it is equivalent to some serial schedule. <b>Conflict serializability</b> is tested with a <b>precedence graph</b>: the schedule is conflict serializable iff the graph has no cycle. Conflicts occur when two transactions access the same item and at least one writes.</p>
+<h3>5. Concurrency control</h3>
+<ul><li><b>Lock-based:</b> shared (S) lock for reading, exclusive (X) lock for writing. <b>Two-phase locking (2PL)</b> has a growing phase (acquire locks) and a shrinking phase (release only); it guarantees serializability.</li><li><b>Timestamp-based:</b> older transaction gets priority using read/write timestamps.</li><li><b>Optimistic (validation)</b> and <b>multiversion</b> methods are also used.</li></ul>
+<h3>6. Deadlock</h3>
+<p>Deadlock occurs when each transaction in a set waits for a lock held by another in the set. Four conditions: mutual exclusion, hold and wait, no pre-emption, circular wait. <b>Prevention:</b> wait-die and wound-wait schemes, lock-all-at-once. <b>Detection:</b> cycle in the <b>wait-for graph</b>, then abort a <b>victim</b>. <b>Recovery:</b> rollback of the victim.</p>
+<h3>7. Failure classification, storage types and stable storage</h3>
+<p>Failures: <b>transaction</b> failure (logical error, system error), <b>system crash</b> (power loss, memory lost) and <b>disk failure</b>. Storage: <b>volatile</b> (RAM), <b>non-volatile</b> (disk, tape) and <b>stable</b> storage (information is never lost; simulated by keeping multiple copies on separate disks with careful write protocols). Data access happens by transferring blocks between disk and main-memory buffers (<code>input(B)</code>, <code>output(B)</code>, <code>read(X)</code>, <code>write(X)</code>).</p>
+<h3>8. Log-based recovery</h3>
+<p>The <b>log</b> is a sequence of records: &lt;T start&gt;, &lt;T, X, old, new&gt;, &lt;T commit&gt;, &lt;T abort&gt;. The write-ahead rule: the log record must reach stable storage <i>before</i> the data it describes.</p>
+<table><tr><th>Scheme</th><th>Writes to DB</th><th>Recovery</th></tr>
+<tr><td>Deferred modification</td><td>Only after the transaction commits</td><td>Only <b>REDO</b> committed transactions; uncommitted ones are ignored (no old value needed)</td></tr>
+<tr><td>Immediate modification</td><td>Can happen before commit</td><td><b>UNDO</b> uncommitted, <b>REDO</b> committed transactions</td></tr></table>
+<h3>9. Checkpoints</h3>
+<p>Periodically the system writes all log records and modified buffers to disk and adds a &lt;checkpoint&gt; record. Recovery then needs to examine only transactions that were active at or started after the last checkpoint, saving time.</p>
+<h3>10. Distributed databases</h3>
+<p>A distributed database stores data on multiple sites connected by a network, appearing as one database to users. Advantages: local autonomy, availability, performance, modular growth; drawbacks: complexity, cost, harder concurrency control and recovery.</p>
+<ul><li><b>Replication:</b> copies of a relation at several sites (better availability and read speed, costly updates). <b>Full</b> or <b>partial</b> replication.</li><li><b>Fragmentation:</b> <i>Horizontal</i> (subset of rows, by selection), <i>Vertical</i> (subset of columns, each fragment keeps the primary key) and <i>Mixed</i> (both). Fragments must be lossless: rebuilt by union (horizontal) or join (vertical).</li></ul>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<pre><code>-- Bank transfer as one transaction
+BEGIN TRANSACTION;
+  UPDATE account SET balance = balance - 500 WHERE acc_no = 101;
+  UPDATE account SET balance = balance + 500 WHERE acc_no = 202;
+COMMIT;      -- or ROLLBACK on error</code></pre>
+<p><b>Precedence graph example</b></p>
+<pre><code>Schedule: R1(A) W1(A) R2(A) W2(A) R1(B) W1(B)
+Conflicts: W1(A)-&gt;R2(A), W1(A)-&gt;W2(A)  gives T1 -&gt; T2
+           R2(A)-&gt;?  none on B by T2  (T2 does not touch B)
+Graph T1 -&gt; T2 has no cycle =&gt; conflict serializable (equivalent to T1 then T2).</code></pre>
+<pre><code>Horizontal fragmentation of EMP(eid, name, city, salary):
+  EMP_DELHI  = SELECT * FROM EMP WHERE city = 'Delhi'
+  EMP_BHOPAL = SELECT * FROM EMP WHERE city = 'Bhopal'
+Vertical:   EMP1(eid, name, city)   EMP2(eid, salary)</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Explain ACID properties with an example.</b></p><p>Atomicity, Consistency, Isolation, Durability, illustrated by a fund transfer where both debit and credit happen or neither does.</p></div><div class="qa"><p><b>Q2. Draw and explain the transaction state diagram.</b></p><p>Active, partially committed, committed, failed, aborted, with transitions as described in the notes.</p></div><div class="qa"><p><b>Q3. What is serializability? How is it tested?</b></p><p>Equivalence to a serial schedule; conflict serializability is tested by a cycle-free precedence graph.</p></div><div class="qa"><p><b>Q4. What is deadlock? How can it be prevented or detected?</b></p><p>Circular wait among transactions; prevention by wait-die/wound-wait, detection by cycle in the wait-for graph.</p></div><div class="qa"><p><b>Q5. Compare deferred and immediate database modification.</b></p><p>Deferred writes after commit (redo only); immediate may write before commit (undo and redo needed).</p></div><div class="qa"><p><b>Q6. Explain horizontal and vertical fragmentation.</b></p><p>Horizontal splits rows by condition; vertical splits columns with key repeated; reconstruct by union and join respectively.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>ACID = Atomicity, Consistency, Isolation, Durability.</li><li>States: Active &rarr; Partially committed &rarr; Committed / Failed &rarr; Aborted.</li><li>Serializable &hArr; precedence graph has no cycle.</li><li>2PL = growing + shrinking phase.</li><li>Deadlock = cycle in wait-for graph; victim rollback.</li><li>Deferred = REDO; Immediate = UNDO + REDO; checkpoint limits recovery work.</li><li>Fragmentation: horizontal, vertical, mixed; replication = copies.</li></ul>
+ <div class="pager"><a class="prev" href="mca201-u3.html"><small>&larr; Previous</small>Unit III: Functional Dependencies &amp; Normalization</a><a class="next" href="mca201-u5.html"><small>Next &rarr;</small>Unit V: Emerging Fields, Storage Structures &amp; Other Models</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

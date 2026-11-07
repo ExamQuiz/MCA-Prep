@@ -7,6 +7,19 @@
 <meta name="description" content="MCA 201 Unit VII: Data Warehouse &amp; OLAP Technology for Data Mining">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.tblwrap{overflow-x:auto}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +58,56 @@
  <h1>Data Warehouse &amp; OLAP Technology for Data Mining</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Differences between operational database systems and data warehouses</span><span class="chip">A multidimensional data model</span><span class="chip">Data warehouse architecture</span><span class="chip">Data warehouse implementation</span><span class="chip">Data cube technology</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca201-u6.html"><small>← Previous</small>Unit VI: Data Mining Fundamentals</a><a class="next" href="mca202.html"><small>Next →</small>MCA 202 · Big Data and Big Data Analysis</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>A <b>data warehouse</b> collects data from many operational systems into one place for analysis and decision making, and <b>OLAP</b> (Online Analytical Processing) lets analysts view that data from many dimensions. This unit explains the multidimensional model, architecture, implementation and the data cube.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Operational database (OLTP) vs data warehouse (OLAP)</h3>
+<div class="tblwrap"><table><tr><th>Feature</th><th>Operational DB (OLTP)</th><th>Data warehouse (OLAP)</th></tr>
+<tr><td>Purpose</td><td>Day-to-day transactions</td><td>Analysis and decision support</td></tr>
+<tr><td>Data</td><td>Current, detailed</td><td>Historical, summarised, integrated</td></tr>
+<tr><td>Orientation</td><td>Application/process</td><td>Subject (sales, customer)</td></tr>
+<tr><td>Operations</td><td>Short read/write transactions</td><td>Complex read-mostly queries</td></tr>
+<tr><td>Users</td><td>Clerks, DBAs</td><td>Managers, analysts</td></tr>
+<tr><td>Size</td><td>MBs&ndash;GBs</td><td>GBs&ndash;TBs</td></tr>
+<tr><td>Design</td><td>ER, normalised</td><td>Star/snowflake, denormalised</td></tr></table></div>
+<p>Characteristics of a warehouse: <b>subject-oriented, integrated, time-variant, non-volatile</b>.</p>
+<h3>2. Multidimensional data model</h3>
+<p>Data is viewed as a <b>data cube</b> with <b>dimensions</b> (descriptive perspectives: time, product, location) and <b>facts/measures</b> (numeric values: sales amount, units sold). Schemas:</p>
+<ul><li><b>Star schema:</b> one central <b>fact table</b> linked to denormalised dimension tables.</li><li><b>Snowflake schema:</b> dimension tables normalised into sub-tables; saves space, needs more joins.</li><li><b>Fact constellation (galaxy):</b> several fact tables sharing dimension tables.</li></ul>
+<p>Each dimension has a <b>concept hierarchy</b> (e.g. day &rarr; month &rarr; quarter &rarr; year; street &rarr; city &rarr; state &rarr; country).</p>
+<h3>3. OLAP operations</h3>
+<ul><li><b>Roll-up</b> (drill-up) &ndash; climb a hierarchy or reduce dimensions (city &rarr; country).</li><li><b>Drill-down</b> &ndash; opposite; more detail (year &rarr; quarter).</li><li><b>Slice</b> &ndash; select on one dimension, giving a sub-cube. <b>Dice</b> &ndash; select on two or more dimensions.</li><li><b>Pivot</b> (rotate) &ndash; reorient the cube axes.</li></ul>
+<h3>4. Data warehouse architecture</h3>
+<p>Three tiers: <b>bottom tier</b> &ndash; warehouse database server fed from operational DBs and external sources through <b>ETL</b> (Extract, Transform, Load) with a metadata repository and data marts; <b>middle tier</b> &ndash; OLAP server; <b>top tier</b> &ndash; front-end tools (query, reports, analysis, data mining). Models: <b>enterprise warehouse</b>, <b>data mart</b> (department subset) and <b>virtual warehouse</b> (views over operational DBs).</p>
+<h3>5. OLAP server types</h3>
+<p><b>ROLAP</b> (relational, scalable), <b>MOLAP</b> (array-based, fast but limited size) and <b>HOLAP</b> (hybrid).</p>
+<h3>6. Data warehouse implementation</h3>
+<p>Efficient implementation needs: <b>materialisation</b> of selected cuboids (choose which views to precompute), <b>indexing</b> (bitmap index, join index) for fast access, efficient processing of OLAP queries, and warehouse <b>maintenance</b> (refresh) plus metadata management.</p>
+<h3>7. Data cube technology</h3>
+<p>For n dimensions a data cube is a lattice of <b>2<sup>n</sup> cuboids</b> (with hierarchies, even more). The <b>base cuboid</b> holds the lowest level of detail; the <b>apex cuboid</b> holds the grand total. The SQL operator <code>CUBE</code> (and <code>GROUP BY ROLLUP</code>) computes all group-bys. Because full materialisation is costly, partial materialisation and efficient computation methods (multiway array aggregation, iceberg cubes) are used.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<pre><code>-- Star schema
+SALES_FACT(time_key, item_key, branch_key, location_key, units_sold, dollars_sold)
+TIME_DIM(time_key, day, month, quarter, year)
+ITEM_DIM(item_key, item_name, brand, type)
+LOCATION_DIM(location_key, street, city, state, country)
+
+-- Roll-up using SQL
+SELECT l.country, t.year, SUM(f.dollars_sold)
+FROM sales_fact f
+JOIN location_dim l ON f.location_key = l.location_key
+JOIN time_dim t     ON f.time_key = t.time_key
+GROUP BY CUBE (l.country, t.year);</code></pre>
+<p><b>Cuboids for dimensions (time, item, location):</b> 2<sup>3</sup> = 8 &ndash; (time,item,location), (time,item), (time,location), (item,location), (time), (item), (location), and the apex ().</p>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Differentiate operational databases and data warehouses.</b></p><p>See the table: OLTP is current, detailed and transactional; the warehouse is historical, integrated and for analysis.</p></div><div class="qa"><p><b>Q2. Explain star and snowflake schemas.</b></p><p>Star has one fact table with denormalised dimensions; snowflake normalises the dimensions into sub-tables.</p></div><div class="qa"><p><b>Q3. Explain OLAP operations with examples.</b></p><p>Roll-up, drill-down, slice, dice and pivot on a sales cube.</p></div><div class="qa"><p><b>Q4. Describe the three-tier data warehouse architecture.</b></p><p>Warehouse server with ETL, OLAP server (ROLAP/MOLAP/HOLAP), and front-end tools.</p></div><div class="qa"><p><b>Q5. What is a data cube? How many cuboids exist for n dimensions?</b></p><p>A multidimensional view of facts by dimensions; 2<sup>n</sup> cuboids ignoring hierarchies.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>Warehouse = subject-oriented, integrated, time-variant, non-volatile.</li><li>OLTP = transactions; OLAP = analysis.</li><li>Schemas: star, snowflake, fact constellation.</li><li>OLAP ops: roll-up, drill-down, slice, dice, pivot.</li><li>Architecture: ETL &rarr; warehouse &rarr; OLAP server &rarr; front-end.</li><li>n dimensions &rarr; 2<sup>n</sup> cuboids; base cuboid and apex cuboid.</li></ul>
+ <div class="pager"><a class="prev" href="mca201-u6.html"><small>&larr; Previous</small>Unit VI: Data Mining Fundamentals</a><a class="next" href="mca202.html"><small>Next &rarr;</small>MCA 202 · Big Data and Big Data Analysis</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

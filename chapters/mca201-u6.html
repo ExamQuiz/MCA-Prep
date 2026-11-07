@@ -7,6 +7,19 @@
 <meta name="description" content="MCA 201 Unit VI: Data Mining Fundamentals">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.tblwrap{overflow-x:auto}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +58,46 @@
  <h1>Data Mining Fundamentals</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Motivation and importance</span><span class="chip">Data types for data mining: relational databases, data warehouses, transactional databases</span><span class="chip">Advanced database systems and applications</span><span class="chip">Data mining functionalities</span><span class="chip">Concept/class description</span><span class="chip">Association analysis</span><span class="chip">Classification and prediction</span><span class="chip">Cluster analysis</span><span class="chip">Outlier analysis</span><span class="chip">Evolution analysis</span><span class="chip">Classification of data mining systems</span><span class="chip">Major issues in data mining</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca201-u5.html"><small>← Previous</small>Unit V: Emerging Fields, Storage Structures &amp; Other Models</a><a class="next" href="mca201-u7.html"><small>Next →</small>Unit VII: Data Warehouse &amp; OLAP Technology for Data Mining</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p><b>Data mining</b> (also called Knowledge Discovery in Databases, KDD) extracts useful patterns from huge amounts of data. This unit explains why it is needed, the kinds of data it works on, what tasks (functionalities) it performs, and the issues it faces.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Motivation and importance</h3>
+<p>Data grows explosively (&ldquo;data rich but information poor&rdquo;). Data mining turns data into knowledge for business (market-basket analysis, customer retention), science, fraud detection, medicine and web analysis. <b>KDD steps:</b> data cleaning &rarr; integration &rarr; selection &rarr; transformation &rarr; <b>mining</b> &rarr; pattern evaluation &rarr; knowledge presentation.</p>
+<h3>2. Data types for mining</h3>
+<ul><li><b>Relational databases</b> &ndash; tables queried with SQL.</li><li><b>Data warehouses</b> &ndash; multidimensional, historical, summarised data.</li><li><b>Transactional databases</b> &ndash; each record is a transaction with a set of items (e.g. a shopping basket).</li><li><b>Advanced systems:</b> object-relational, spatial, temporal/time-series, text, multimedia, stream and WWW data.</li></ul>
+<h3>3. Data mining functionalities</h3>
+<table><tr><th>Task</th><th>What it does</th></tr>
+<tr><td>Concept/class description</td><td><b>Characterization</b> (summary of a target class) and <b>discrimination</b> (comparing classes)</td></tr>
+<tr><td>Association analysis</td><td>Finds items that occur together, as rules X &rArr; Y with <b>support</b> and <b>confidence</b></td></tr>
+<tr><td>Classification &amp; prediction</td><td>Builds a model from labelled data (decision tree, Bayes, neural network) to assign classes or predict numeric values</td></tr>
+<tr><td>Cluster analysis</td><td>Groups similar objects without predefined labels (unsupervised)</td></tr>
+<tr><td>Outlier analysis</td><td>Finds objects that differ from the rest (fraud detection)</td></tr>
+<tr><td>Evolution analysis</td><td>Models trends and regularities of objects whose behaviour changes over time</td></tr></table>
+<h3>4. Association rule measures</h3>
+<p>support(X &rArr; Y) = P(X &cup; Y) = (transactions containing X and Y) / (all transactions). confidence(X &rArr; Y) = support(X &cup; Y) / support(X). A rule is <b>strong</b> if it meets both minimum thresholds. The <b>Apriori</b> algorithm finds frequent itemsets by using the property that every subset of a frequent itemset is frequent.</p>
+<h3>5. Classification of data mining systems</h3>
+<p>By <b>kind of database</b> (relational, transactional, spatial, etc.), by <b>kind of knowledge</b> (association, classification, clustering), by <b>techniques used</b> (statistics, machine learning, neural networks, visualization) and by <b>application</b> (finance, telecom, web).</p>
+<h3>6. Major issues in data mining</h3>
+<ul><li><b>Methodology:</b> mining different kinds of knowledge, interactive mining at multiple levels, handling noisy/incomplete data, evaluating pattern interestingness.</li><li><b>Performance:</b> efficiency and scalability, parallel, distributed and incremental algorithms.</li><li><b>Data diversity:</b> relational and complex data types, heterogeneous sources.</li><li><b>Social:</b> privacy, security and misuse of discovered knowledge.</li></ul>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>Support and confidence example</b> (5 transactions)</p>
+<pre><code>T1: {bread, milk}          T4: {bread, milk, butter}
+T2: {bread, butter}        T5: {milk, butter}
+T3: {bread, milk, eggs}
+
+Rule: bread =&gt; milk
+support    = 3/5 = 60%     (T1, T3, T4)
+confidence = 3/4 = 75%     (bread appears in 4 transactions)</code></pre>
+<p><b>Classification vs clustering:</b> classification uses <i>labelled</i> training data (supervised, e.g. approve/reject loan); clustering finds groups in <i>unlabelled</i> data (unsupervised, e.g. customer segments).</p>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. What is data mining? Explain the KDD process.</b></p><p>Extraction of interesting patterns from large data; steps: cleaning, integration, selection, transformation, mining, evaluation, presentation.</p></div><div class="qa"><p><b>Q2. Explain data mining functionalities.</b></p><p>Characterization/discrimination, association, classification and prediction, clustering, outlier and evolution analysis, with an example of each.</p></div><div class="qa"><p><b>Q3. Define support and confidence.</b></p><p>Support is the fraction of transactions containing X&cup;Y; confidence is the fraction of transactions with X that also contain Y.</p></div><div class="qa"><p><b>Q4. Differentiate classification and clustering.</b></p><p>Classification is supervised with predefined classes; clustering is unsupervised and discovers the groups.</p></div><div class="qa"><p><b>Q5. What are the major issues in data mining?</b></p><p>Methodology, performance/scalability, diverse data types, and privacy/security concerns.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>KDD: clean &rarr; integrate &rarr; select &rarr; transform &rarr; mine &rarr; evaluate &rarr; present.</li><li>Data: relational, warehouse, transactional (+ spatial, text, web).</li><li>Tasks: description, association, classification, clustering, outlier, evolution.</li><li>support = P(X&cup;Y); confidence = support(X&cup;Y)/support(X).</li><li>Issues: scalability, noisy data, privacy.</li></ul>
+ <div class="pager"><a class="prev" href="mca201-u5.html"><small>&larr; Previous</small>Unit V: Emerging Fields, Storage Structures &amp; Other Models</a><a class="next" href="mca201-u7.html"><small>Next &rarr;</small>Unit VII: Data Warehouse &amp; OLAP Technology for Data Mining</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">
