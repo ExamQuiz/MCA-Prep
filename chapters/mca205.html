@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MCA 205 (P) DBMS Lab | MCA Year 2 Notes</title>
+<meta name="description" content="MCA 205 (P) DBMS Lab — MCA Year 2">
+<meta name="theme-color" content="#4f46e5">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="site-header">
+ <div class="container">
+  <div class="topbar">
+   <a class="brand" href="../index.html"><span class="logo">📘</span><span class="title-text">MCA Year 2 Notes<small>M.P. Bhoj (Open) University</small></span></a>
+   <div style="display:flex;align-items:center;gap:10px">
+    <div class="clock" aria-label="Current date and time"><b id="clock-time">--:--:--</b><span id="clock-date">Loading…</span></div>
+    <button class="icon-btn" id="theme-btn" aria-label="Toggle dark mode" title="Toggle dark mode">🌓</button>
+    <button class="icon-btn menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false">☰</button>
+   </div>
+  </div>
+  <div class="navrow" id="navrow">
+   <nav class="nav" aria-label="Main">
+    <a href="../index.html">Home</a>
+    <a class="active" href="../toc.html">Table of Index</a>
+    <a href="../about.html">About</a>
+    <a href="../author.html">About Author</a>
+   </nav>
+  </div>
+ </div>
+</header>
+<main>
+<div class="container"><div class="book">
+<aside class="sidebar">
+ <button class="btn btn-primary sb-toggle" id="sb-toggle" type="button" style="width:100%;margin-bottom:10px;border:0;cursor:pointer">☰ Chapters in this subject</button>
+ <div class="card sidebar-card" id="sb-card">
+  <h4>Labs &amp; Project</h4>
+  <a class="current" href="mca205.html">MCA 205 (P) · DBMS Lab</a><a class="" href="mca206.html">MCA 206 (P) · Advanced Web Technology Lab</a><a class="" href="mca207.html">MCA 207 · Project</a>
+  <a href="../toc.html" style="margin-top:8px;border-top:1px solid var(--line);padding-top:12px">📚 Full table of index</a>
+ </div>
+</aside>
+<article class="page prose">
+ <div class="crumbs"><a href="../index.html">Home</a> › <a href="../toc.html">Index</a> › MCA 205 (P)</div>
+ <span class="tag">MCA 205 (P)</span>
+ <h1>🧪 DBMS Lab</h1>
+ <div class="chips"><span class="chip">Max / Min marks: 100 / 50</span><span class="chip">Practical</span></div>
+ <p style="color:var(--muted)">SQL practicals on the Salesmen, Customers and Orders tables (45 queries).</p>
+ <p>Tables used: <b>Salesmen</b> (SNUM, SNAME, CITY, COMMISSION), <b>Customers</b> (CNUM, CNAME, CITY, RATING, SNUM) and <b>Orders</b> (ONUM, AMOUNT, ODATE, CNUM, SNUM).</p>
+ <h2 class="sec" style="margin-top:22px;font-size:1.15rem">Suggested practical list — 45 SQL queries</h2>
+ <ol style="padding-left:22px"><li>Produce the order no, amount and date of all orders.</li><li>All information about all customers with salesman number 1001.</li><li>Display city, sname, snum and commission (in that order).</li><li>Rating followed by the name of each customer in Surat.</li><li>snum of all salesmen with orders, without duplicates.</li><li>All orders for more than Rs. 1000.</li><li>Names and cities of salesmen in London with commission above 10%.</li><li>Customers whose names begin with &#x27;C&#x27;.</li><li>Customers whose names begin with a letter from &#x27;A&#x27; to &#x27;G&#x27;.</li><li>Orders with zero or NULL amount.</li><li>Largest orders of salesman 1002 and 1007.</li><li>Count all orders of October 3, 1997.</li><li>Total amount ordered.</li><li>Average amount ordered.</li><li>Count the salesmen currently having orders.</li><li>All salesmen with their % of commission.</li><li>Assuming 12% commission: order number, salesman no and commission for each order.</li><li>Highest rating in each city, as: For the city (city), the highest rating is: (rating).</li><li>All customers in descending order of rating.</li><li>Total of orders for each day, in descending order.</li><li>Names of all customers with their salesman&#x27;s name.</li><li>Customers and salesmen who share the same city.</li><li>All orders with the names of their customer and salesman.</li><li>Orders by customers not located in the same city as their salesman.</li><li>Customers serviced by salespeople with commission above 12%.</li><li>Salesman commission on each order by a customer with rating above 100.</li><li>All pairs of customers having the same rating, without duplication.</li><li>Orders greater than the average of October 4, 1997.</li><li>Average commission of salesmen in London.</li><li>Orders attributed to salesmen in &#x27;London&#x27; using both subquery and join.</li><li>Commission of all salesmen serving customers in &#x27;London&#x27;.</li><li>Customers whose cnum is 1000 above the snum of Sejal.</li><li>Count customers with rating above the average of &#x27;Surat&#x27;.</li><li>Salesmen with customers located in their cities using ANY and IN.</li><li>Salesmen for whom there are customers that follow them in alphabetical order.</li><li>Customers with rating greater than any customer in &#x27;Rome&#x27;.</li><li>Orders with amount greater than at least one of the orders from 6th October, 1997.</li><li>Orders with amounts smaller than any amount for a customer in &#x27;London&#x27;.</li><li>Customers with a greater rating than every customer in &#x27;Rome&#x27;.</li><li>UNION of two queries: names, cities, ratings of all customers; rating &gt;= 200 shows &#x27;HIGH RATING&#x27;, otherwise &#x27;LOW RATING&#x27;.</li><li>Name and number of each salesman and customer with more than one current order, alphabetical by name.</li><li>UNION of three queries: salesmen in Surat (snum), customers in Surat (cnum), orders of 3rd Oct (onum) — duplicates retained between the last two only.</li><li>Remove all orders from customer Chirag.</li><li>Set the ratings of all customers of Piyush to 400.</li><li>Increase the rating of all customers in Rome by 100.</li></ol>
+ <div class="placeholder"><h3>Solutions &amp; notes (placeholder)</h3><p>Add solved programs, queries, outputs and viva questions here.</p></div>
+ <div class="pager"><a class="prev" href="mca204-u5.html"><small>← Previous</small>Unit V: jQuery</a><a class="next" href="mca206.html"><small>Next →</small>MCA 206 (P) · Advanced Web Technology Lab</a></div>
+</article></div></div>
+</main>
+<footer class="site-footer">
+ <div class="container">
+  <div class="counter">👁️ Total visits: <b id="gc-count">…</b></div>
+  <div>© 2026 MCA Year 2 Notes · Unofficial study material, not affiliated with M.P. Bhoj (Open) University.</div>
+  <div style="margin-top:4px">Always cross-check with the official syllabus issued by the university.</div>
+ </div>
+</footer>
+<script src="../assets/config.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
