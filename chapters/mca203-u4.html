@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 203 Unit IV: Natural Language Processing, Game Playing and Planning">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,53 @@
  <h1>Natural Language Processing, Game Playing and Planning</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Parsing techniques</span><span class="chip">Context free grammar</span><span class="chip">Recursive transition nets (RTN)</span><span class="chip">Augmented transition nets (ATN)</span><span class="chip">Case and logic grammars</span><span class="chip">Semantic analysis</span><span class="chip">Game playing: minimax search procedure</span><span class="chip">Alpha-beta cutoffs, additional refinements</span><span class="chip">Planning: overview, the blocks world domain</span><span class="chip">Components of planning systems</span><span class="chip">Goal stack planning</span><span class="chip">Non-linear planning</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca203-u3.html"><small>← Previous</small>Unit III: Knowledge Representation</a><a class="next" href="mca203-u5.html"><small>Next →</small>Unit V: Probabilistic Reasoning, Expert Systems and Learning</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit covers three application areas of AI: understanding <b>natural language</b> (grammars, parsers, semantics), <b>game playing</b> with minimax and alpha-beta pruning, and <b>planning</b> sequences of actions (goal-stack and non-linear planning, with the blocks world as the standard domain).</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Parsing techniques</h3>
+<p><b>Parsing</b> analyses a sentence according to a grammar and produces a <b>parse tree</b>. Natural language processing (NLP) stages: <b>morphological/lexical</b> analysis, <b>syntactic</b> analysis (parsing), <b>semantic</b> analysis, <b>discourse integration</b> and <b>pragmatic</b> analysis. Techniques: <b>top-down</b> (start from S and expand rules to match the words), <b>bottom-up</b> (start from words and reduce to S), <b>chart parsing</b> (stores partial results to avoid recomputation) and deterministic/non-deterministic parsers. Problems: <b>ambiguity</b> (lexical, syntactic, semantic) and backtracking.</p>
+<h3>2. Context-free grammar (CFG)</h3>
+<p>Rewrite rules with a single non-terminal on the left: S &rarr; NP VP; NP &rarr; Det N; VP &rarr; V NP. Defined by terminals, non-terminals, start symbol and productions. Simple and efficient, but cannot easily handle agreement (number, gender), long-distance dependencies or meaning.</p>
+<h3>3. Recursive transition networks (RTN)</h3>
+<p>A grammar drawn as a <b>network of states and arcs</b>; arcs are labelled by <b>word categories</b> or by <b>names of other networks</b>, which can be called recursively (so RTN equals CFG in power). A sentence is accepted if a path reaches the final state.</p>
+<h3>4. Augmented transition networks (ATN)</h3>
+<p>An RTN extended with <b>registers</b> (store features such as number, tense, subject), <b>tests</b> on arcs (e.g. subject&ndash;verb agreement) and <b>actions</b> that set registers. ATNs can handle agreement and build deep-structure representations; more powerful than RTN.</p>
+<h3>5. Case and logic grammars</h3>
+<ul><li><b>Case grammar</b> (Fillmore): analyses a sentence as a verb with <b>case roles</b> &ndash; agent, object, instrument, location, source, goal, beneficiary &ndash; emphasising meaning over word order. &ldquo;Ram opened the door with a key&rdquo;: Agent = Ram, Object = door, Instrument = key.</li><li><b>Logic grammars:</b> grammars written as logic clauses, e.g. <b>Definite Clause Grammars (DCG)</b> in Prolog, where the Prolog interpreter itself acts as a parser: <code>sentence --&gt; np, vp.</code></li></ul>
+<h3>6. Semantic analysis</h3>
+<p>Assigns <b>meaning</b> to the parsed sentence: lexical semantics (word senses, disambiguation), <b>compositional semantics</b> (meaning of the whole from the parts), use of <b>semantic grammars</b> and <b>case frames</b>, and mapping to a knowledge representation such as logical forms or conceptual dependency. Semantic and syntactic analysis can be interleaved to prune ambiguous parses.</p>
+<h3>7. Game playing: minimax</h3>
+<p>For two-player, zero-sum, perfect-information games (chess, tic-tac-toe). The game tree alternates <b>MAX</b> (our move; picks the highest value) and <b>MIN</b> (opponent; picks the lowest) levels. Leaves get a static evaluation; values are backed up level by level. For tic-tac-toe a simple evaluation: (lines open for X) &minus; (lines open for O). Limited by depth because the tree grows as b<sup>d</sup>.</p>
+<h3>8. Alpha-beta cutoffs and refinements</h3>
+<p><b>Alpha-beta pruning</b> returns the same value as minimax but prunes branches that cannot influence the decision. <b>&alpha;</b> = best value found so far for MAX (lower bound); <b>&beta;</b> = best value for MIN (upper bound). Prune when &alpha; &ge; &beta;. In the best case, with good move ordering, the number of nodes searched is about <b>O(b<sup>d/2</sup>)</b>, allowing the search to go twice as deep. <b>Refinements:</b> <b>waiting for quiescence</b> (don&rsquo;t stop evaluating in unstable positions), <b>secondary search</b>, <b>iterative deepening</b>, <b>move ordering</b>, <b>book moves</b>, and alternatives like the <b>killer heuristic</b>.</p>
+<h3>9. Planning: overview and the blocks world</h3>
+<p><b>Planning</b> = finding a sequence of operators that transforms the initial state into the goal state (unlike plain search, it uses structured actions and sub-goals). <b>Blocks world:</b> blocks on a table moved by a one-handed robot arm. Predicates: <b>ON(A,B)</b>, <b>ONTABLE(A)</b>, <b>CLEAR(A)</b>, <b>HOLDING(A)</b>, <b>ARMEMPTY</b>. Operators (each with precondition, add list, delete list): <b>STACK(A,B)</b>, <b>UNSTACK(A,B)</b>, <b>PICKUP(A)</b>, <b>PUTDOWN(A)</b>.</p>
+<h3>10. Components of a planning system</h3>
+<p>(1) <b>Choose the best rule</b> to apply (using differences between current and goal states); (2) <b>apply the rule</b> to compute the new state (the frame problem: what does not change); (3) <b>detect a solution</b>; (4) <b>detect dead ends</b>; (5) <b>repair almost-correct solutions</b>.</p>
+<h3>11. Goal stack planning</h3>
+<p>Maintain a <b>stack</b> of goals, operators and compound-goal lists plus the current state. Algorithm: pop the top; if it is a <b>compound goal</b>, push its sub-goals (and the compound goal itself, to re-check); if a <b>single unsatisfied goal</b>, push an operator that achieves it and then that operator&rsquo;s preconditions; if an <b>operator</b>, apply it and update the state and plan; if an already true goal, discard. Weakness: it solves sub-goals in a fixed order and can produce inefficient plans or fail on <b>interacting goals</b> (Sussman anomaly).</p>
+<h3>12. Non-linear planning</h3>
+<p>Plans are <b>partially ordered</b> sets of actions rather than a strict sequence; ordering decisions are delayed until necessary (<b>least commitment</b>). Uses <b>constraint posting</b>: add ordering and variable-binding constraints, and detect/resolve <b>threats</b> (an action that undoes another&rsquo;s effect) by reordering. Handles the Sussman anomaly; examples: NOAH, TWEAK.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>Alpha-beta example.</b> MAX root, three MIN children with leaf values [3, 5], [2, 9], [0, 1]:</p>
+<pre><code>MIN-1 sees 3, 5  -&gt; value 3 ;  MAX: &alpha; = 3
+MIN-2 sees 2 (&le; &alpha; = 3) -&gt; cutoff, leaf 9 is pruned ;  value &le; 2
+MIN-3 sees 0 (&le; &alpha; = 3) -&gt; cutoff, leaf 1 is pruned
+Root value = max(3, 2, 0) = 3   (same as minimax, fewer nodes examined)</code></pre>
+<p><b>Parse of &ldquo;the boy eats an apple&rdquo;</b> with S &rarr; NP VP, NP &rarr; Det N, VP &rarr; V NP:</p>
+<pre><code>S
+ +-- NP (Det the, N boy)
+ +-- VP (V eats, NP (Det an, N apple))</code></pre>
+<p><b>Blocks world operator:</b> STACK(A,B) &ndash; precondition: CLEAR(B) &and; HOLDING(A); delete: CLEAR(B), HOLDING(A); add: ON(A,B), CLEAR(A), ARMEMPTY.</p>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Explain top-down and bottom-up parsing with an example.</b></p><p>Top-down expands S to match words; bottom-up reduces words to S; show a parse tree for a simple sentence.</p></div><div class="qa"><p><b>Q2. Differentiate RTN and ATN.</b></p><p>ATN adds registers, tests and actions to RTN, handling agreement and building structures.</p></div><div class="qa"><p><b>Q3. Explain the minimax procedure and alpha-beta pruning.</b></p><p>MAX/MIN backing up of values; pruning when &alpha; &ge; &beta; gives the same result with far fewer nodes.</p></div><div class="qa"><p><b>Q4. What is case grammar?</b></p><p>Verb-centred analysis with case roles like agent, object and instrument.</p></div><div class="qa"><p><b>Q5. Explain the components of a planning system.</b></p><p>Choosing rules, applying them, detecting solutions and dead ends, and repairing near-solutions.</p></div><div class="qa"><p><b>Q6. Explain goal stack planning in the blocks world. What is non-linear planning?</b></p><p>Goals and operators on a stack; non-linear planning uses partial order and constraint posting to avoid goal interaction.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>NLP: lexical &rarr; syntactic &rarr; semantic &rarr; discourse &rarr; pragmatic.</li><li>CFG &rarr; RTN (networks) &rarr; ATN (+registers, tests, actions).</li><li>Case grammar: agent, object, instrument; DCG in Prolog.</li><li>Minimax: MAX high, MIN low; alpha-beta prunes when &alpha; &ge; &beta;.</li><li>Blocks world: ON, ONTABLE, CLEAR, HOLDING, ARMEMPTY; STACK/UNSTACK/PICKUP/PUTDOWN.</li><li>Goal stack = fixed order; non-linear = partial order, constraint posting.</li></ul>
+ <div class="pager"><a class="prev" href="mca203-u3.html"><small>&larr; Previous</small>Unit III: Knowledge Representation</a><a class="next" href="mca203-u5.html"><small>Next &rarr;</small>Unit V: Probabilistic Reasoning, Expert Systems and Learning</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

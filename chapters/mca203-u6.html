@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 203 Unit VI: Machine Learning Foundations">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,66 @@
  <h1>Machine Learning Foundations</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Introduction to machine learning, scope and limitations</span><span class="chip">Regression</span><span class="chip">Probability, statistics and linear algebra for ML</span><span class="chip">Convex optimization</span><span class="chip">Data visualization</span><span class="chip">Hypothesis function and testing</span><span class="chip">Data distributions</span><span class="chip">Data pre-processing</span><span class="chip">Data augmentation</span><span class="chip">Normalizing data sets</span><span class="chip">Machine learning models</span><span class="chip">Supervised and unsupervised learning</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca203-u5.html"><small>← Previous</small>Unit V: Probabilistic Reasoning, Expert Systems and Learning</a><a class="next" href="mca203-u7.html"><small>Next →</small>Unit VII: Neural Networks and Deep Learning Basics</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit builds the foundation for modern <b>machine learning (ML)</b>: what ML is and its limits, the mathematics behind it, regression, optimisation, preparing and normalising data, and the main families of models. It prepares you for neural networks in Unit VII.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Introduction to ML, scope and limitations</h3>
+<p>Tom Mitchell: a program <b>learns</b> from experience E with respect to task T and performance measure P if its performance at T, measured by P, improves with E. ML finds patterns in data instead of following hand-coded rules. <b>Scope:</b> spam filtering, recommendation, speech and image recognition, fraud detection, medical diagnosis, self-driving cars, language translation. <b>Limitations:</b> needs large quality data; bias in data gives biased models; <b>overfitting</b>; poor interpretability (black box); correlation is not causation; high compute cost; poor generalisation outside training distribution.</p>
+<h3>2. Regression</h3>
+<p>Predicts a <b>continuous</b> value. <b>Linear regression:</b> h(x) = &theta;<sub>0</sub> + &theta;<sub>1</sub>x<sub>1</sub> + &hellip; fitted by minimising the <b>mean squared error</b> J(&theta;) = (1/2m)&Sigma;(h(x<sup>(i)</sup>) &minus; y<sup>(i)</sup>)&sup2; using the <b>normal equation</b> &theta; = (X<sup>T</sup>X)<sup>&minus;1</sup>X<sup>T</sup>y or gradient descent. <b>Polynomial regression</b> adds powers of x for curves; <b>regularised</b> versions (Ridge/L2, Lasso/L1) reduce overfitting; <b>logistic regression</b> is used for classification. Metrics: MSE, RMSE, MAE, R&sup2;.</p>
+<h3>3. Probability, statistics and linear algebra for ML</h3>
+<ul><li><b>Probability:</b> random variables, conditional probability, Bayes&rsquo; rule, expectation, variance, Gaussian distribution.</li><li><b>Statistics:</b> mean, variance, covariance, correlation, sampling, confidence intervals, hypothesis tests.</li><li><b>Linear algebra:</b> vectors, matrices, dot product, matrix multiplication, transpose, inverse, <b>eigenvalues/eigenvectors</b> (used in PCA), norms.</li><li><b>Calculus:</b> derivatives, partial derivatives and gradient &nabla;J, chain rule.</li></ul>
+<h3>4. Convex optimisation</h3>
+<p>Training = minimising a <b>cost function</b>. A function is <b>convex</b> if the line segment between any two points on its graph lies above it &ndash; any <b>local minimum is the global minimum</b> (e.g. MSE for linear regression). <b>Gradient descent:</b> &theta; := &theta; &minus; &alpha;&nabla;J(&theta;), where &alpha; is the <b>learning rate</b> (too small &rarr; slow; too large &rarr; diverges). Non-convex problems (neural nets) have many local minima/saddles.</p>
+<h3>5. Data visualisation</h3>
+<p>Histograms and box plots (distribution, outliers), scatter plots (relationships), heat maps/correlation matrices (feature relations), line charts (trends), pair plots and learning curves. It guides feature selection and detects problems before modeling.</p>
+<h3>6. Hypothesis function and testing</h3>
+<p>In ML, the <b>hypothesis function</b> h<sub>&theta;</sub>(x) is the model&rsquo;s mapping from input to predicted output; learning picks the best &theta; from the <b>hypothesis space</b>. In statistics, <b>hypothesis testing</b> checks a claim: <b>null hypothesis H<sub>0</sub></b> (no effect) vs <b>alternative H<sub>1</sub></b>; compute a test statistic (t, z, &chi;&sup2;) and the <b>p-value</b>; reject H<sub>0</sub> if p &lt; significance level &alpha; (usually 0.05). <b>Type I error</b> = rejecting a true H<sub>0</sub>; <b>Type II</b> = accepting a false H<sub>0</sub>.</p>
+<h3>7. Data distributions</h3>
+<p><b>Normal (Gaussian)</b> bell curve (mean &mu;, SD &sigma;; 68-95-99.7 rule), <b>uniform</b>, <b>binomial</b> (successes in n trials), <b>Poisson</b> (event counts), <b>exponential</b>, and skewed distributions. Knowing the distribution guides model choice and transformation (e.g. log for right-skewed data).</p>
+<h3>8. Data pre-processing</h3>
+<p>Raw data is cleaned before modeling: handle <b>missing values</b> (delete, mean/median imputation), remove <b>duplicates</b> and noise, treat <b>outliers</b>, <b>encode categorical variables</b> (label, one-hot), <b>feature scaling</b>, feature selection/extraction (PCA), and <b>split</b> into training, validation and test sets (e.g. 70/15/15).</p>
+<h3>9. Data augmentation</h3>
+<p>Artificially enlarging the training set with modified copies to reduce overfitting: for images &ndash; flip, rotate, crop, scale, brightness/noise; for text &ndash; synonym replacement, back-translation; for tabular/imbalanced data &ndash; oversampling and <b>SMOTE</b>.</p>
+<h3>10. Normalising data sets</h3>
+<table><tr><th>Method</th><th>Formula</th><th>Result</th></tr>
+<tr><td>Min-max</td><td>x&prime; = (x &minus; min)/(max &minus; min)</td><td>Range [0, 1]</td></tr>
+<tr><td>Z-score (standardisation)</td><td>x&prime; = (x &minus; &mu;)/&sigma;</td><td>Mean 0, SD 1</td></tr>
+<tr><td>Decimal scaling</td><td>x&prime; = x / 10<sup>j</sup></td><td>|x&prime;| &lt; 1</td></tr></table>
+<p>Needed for distance-based and gradient-based methods (kNN, SVM, neural nets) so that large-scale features do not dominate.</p>
+<h3>11. Machine learning models</h3>
+<p>Linear/logistic regression, decision trees and random forests, k-nearest neighbours, Na&iuml;ve Bayes, SVM, k-means and hierarchical clustering, PCA, neural networks and ensembles (bagging, boosting). Concepts: <b>bias&ndash;variance trade-off</b> (high bias = underfitting; high variance = overfitting), <b>cross-validation</b> and evaluation metrics (accuracy, precision, recall, F1).</p>
+<h3>12. Supervised and unsupervised learning</h3>
+<table><tr><th></th><th>Supervised</th><th>Unsupervised</th></tr>
+<tr><td>Data</td><td>Labelled (input + output)</td><td>Unlabelled</td></tr>
+<tr><td>Goal</td><td>Predict labels/values</td><td>Discover structure</td></tr>
+<tr><td>Tasks</td><td>Classification, regression</td><td>Clustering, dimensionality reduction, association</td></tr>
+<tr><td>Examples</td><td>Spam detection, price prediction</td><td>Customer segmentation</td></tr></table>
+<p>Also: <b>semi-supervised</b> (few labels) and <b>reinforcement learning</b> (agent learns from rewards).</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>Normalisation example</b> &ndash; data 10, 20, 30, 40, 50 (&mu; = 30, &sigma; &asymp; 15.8):</p>
+<pre><code>Min-max for x = 20:   (20 &minus; 10)/(50 &minus; 10) = 0.25
+Z-score for x = 20:   (20 &minus; 30)/15.8     = &minus;0.63</code></pre>
+<p><b>Gradient descent step</b> for J(&theta;) = &theta;&sup2;, &theta; = 4, &alpha; = 0.1: gradient = 2&theta; = 8, so &theta; &larr; 4 &minus; 0.1&times;8 = 3.2 (moving towards the minimum at 0).</p>
+<pre><code># Python (scikit-learn): preprocessing + linear regression
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=1)
+sc = StandardScaler().fit(X_tr)                 # fit on training data only
+model = LinearRegression().fit(sc.transform(X_tr), y_tr)
+print(mean_squared_error(y_te, model.predict(sc.transform(X_te))))</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Define machine learning. State its scope and limitations.</b></p><p>Improving performance P at task T with experience E; applications are wide, limitations include data dependence, bias and overfitting.</p></div><div class="qa"><p><b>Q2. Explain linear regression and gradient descent.</b></p><p>Fit a line by minimising MSE; update parameters by subtracting the learning rate times the gradient.</p></div><div class="qa"><p><b>Q3. What is convex optimisation? Why is it useful?</b></p><p>Convex cost functions have a single global minimum so gradient descent is guaranteed to find it.</p></div><div class="qa"><p><b>Q4. Explain data pre-processing and normalisation techniques.</b></p><p>Cleaning, imputing, encoding, splitting; min-max and z-score scaling with formulas.</p></div><div class="qa"><p><b>Q5. Differentiate supervised and unsupervised learning.</b></p><p>Labelled data predicting outputs vs unlabelled data finding structure.</p></div><div class="qa"><p><b>Q6. What is data augmentation? Give examples.</b></p><p>Creating modified copies of data such as flipped/rotated images or SMOTE to reduce overfitting.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>ML: learn from experience E for task T measured by P.</li><li>Linear regression: minimise MSE; &theta; := &theta; &minus; &alpha;&nabla;J.</li><li>Convex &rArr; local min = global min.</li><li>p-value &lt; 0.05 &rArr; reject H<sub>0</sub>.</li><li>Preprocess: missing values, outliers, encoding, scaling, split.</li><li>Min-max: [0,1]; z-score: mean 0, SD 1.</li><li>Supervised = labelled; unsupervised = unlabelled.</li></ul>
+ <div class="pager"><a class="prev" href="mca203-u5.html"><small>&larr; Previous</small>Unit V: Probabilistic Reasoning, Expert Systems and Learning</a><a class="next" href="mca203-u7.html"><small>Next &rarr;</small>Unit VII: Neural Networks and Deep Learning Basics</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 203 Unit V: Probabilistic Reasoning, Expert Systems and Learning">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,52 @@
  <h1>Probabilistic Reasoning, Expert Systems and Learning</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Probability theory</span><span class="chip">Bayes theorem and Bayesian networks</span><span class="chip">Certainty factor</span><span class="chip">Introduction to expert systems and applications</span><span class="chip">Various expert system shells</span><span class="chip">Vidwan framework</span><span class="chip">Knowledge acquisition</span><span class="chip">Case studies: MYCIN</span><span class="chip">Learning: rote learning</span><span class="chip">Learning by induction</span><span class="chip">Explanation-based learning</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca203-u4.html"><small>← Previous</small>Unit IV: Natural Language Processing, Game Playing and Planning</a><a class="next" href="mca203-u6.html"><small>Next →</small>Unit VI: Machine Learning Foundations</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>Real-world knowledge is often <b>uncertain</b>. This unit covers probability, Bayesian networks and certainty factors, then <b>expert systems</b> (architecture, shells, Vidwan, knowledge acquisition, MYCIN) and three basic styles of <b>machine learning</b>: rote, inductive and explanation-based.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Probability theory</h3>
+<p>Probability P(A) lies in [0,1]. Rules: P(A&or;B) = P(A) + P(B) &minus; P(A&and;B); <b>conditional probability</b> P(A|B) = P(A&and;B)/P(B); <b>independence</b>: P(A&and;B) = P(A)P(B); <b>total probability</b> P(B) = &Sigma;P(B|A<sub>i</sub>)P(A<sub>i</sub>). Probabilities express the degree of belief under uncertainty.</p>
+<h3>2. Bayes&rsquo; theorem and Bayesian networks</h3>
+<p><b>Bayes&rsquo; theorem:</b> P(H|E) = P(E|H)&middot;P(H) / P(E) &ndash; updates the <b>prior</b> belief in hypothesis H after evidence E. A <b>Bayesian (belief) network</b> is a directed acyclic graph where nodes are random variables, arcs show direct influence, and each node has a <b>conditional probability table (CPT)</b>. The joint distribution factorises: P(x<sub>1</sub>,&hellip;,x<sub>n</sub>) = &prod; P(x<sub>i</sub> | parents(x<sub>i</sub>)). It allows reasoning (inference) under uncertainty with far fewer numbers than a full joint table. Limitation: needs many probabilities and independence assumptions.</p>
+<h3>3. Certainty factor (CF)</h3>
+<p>Used in <b>MYCIN</b> to handle uncertainty without full probabilities. CF = MB &minus; MD (measure of belief minus measure of disbelief), in the range <b>&minus;1</b> (certainly false) to <b>+1</b> (certainly true), 0 = unknown. Rules:</p>
+<ul><li><b>Rule + premise:</b> CF(conclusion) = CF(rule) &times; CF(premise) (use premise only if CF &gt; 0.2 in MYCIN).</li><li><b>AND</b> of premises = minimum CF; <b>OR</b> = maximum CF.</li><li><b>Combining two rules for the same conclusion:</b> both positive: CF<sub>1</sub> + CF<sub>2</sub>(1 &minus; CF<sub>1</sub>); both negative: CF<sub>1</sub> + CF<sub>2</sub>(1 + CF<sub>1</sub>); mixed: (CF<sub>1</sub> + CF<sub>2</sub>) / (1 &minus; min(|CF<sub>1</sub>|, |CF<sub>2</sub>|)).</li></ul>
+<h3>4. Expert systems and applications</h3>
+<p>An <b>expert system</b> is a program that captures the knowledge of a human expert in a narrow domain and reasons like one. <b>Components:</b></p>
+<ul><li><b>Knowledge base</b> &ndash; facts and rules (usually IF&ndash;THEN).</li><li><b>Inference engine</b> &ndash; forward or backward chaining, conflict resolution.</li><li><b>Working memory</b> &ndash; current facts of the case.</li><li><b>User interface</b> and <b>explanation facility</b> (answers &ldquo;why&rdquo; and &ldquo;how&rdquo;).</li><li><b>Knowledge acquisition</b> module.</li></ul>
+<p>Applications: medical diagnosis (MYCIN), chemical structure analysis (DENDRAL), mineral exploration (PROSPECTOR), computer configuration (XCON/R1), fault diagnosis, financial advice. Advantages: consistency, availability, preservation of expertise, explanations; limits: narrow domain, no common sense, difficult knowledge acquisition.</p>
+<h3>5. Expert system shells</h3>
+<p>A <b>shell</b> is an expert system with the domain knowledge removed: inference engine, user interface and knowledge-base editor are ready, so only the rules need to be added. Examples: <b>EMYCIN</b> (from MYCIN), <b>CLIPS</b>, <b>JESS</b>, <b>Exsys</b>, <b>Vidwan</b>.</p>
+<h3>6. Vidwan framework</h3>
+<p><b>Vidwan</b> is an expert system shell developed in India at <b>NCST (National Centre for Software Technology), Mumbai</b>. It is rule-based, uses <b>backward chaining</b> with <b>certainty factors</b>, provides a rule editor, user-friendly interface and explanation of reasoning, and has been used for diagnostic and advisory applications. (Check your prescribed book for the exact feature list.)</p>
+<h3>7. Knowledge acquisition</h3>
+<p>The process of extracting knowledge from experts and encoding it in the knowledge base by a <b>knowledge engineer</b>. Techniques: interviews, questionnaires, <b>protocol analysis</b> (think-aloud), observation, case studies and automated learning. It is the <b>knowledge acquisition bottleneck</b> of expert systems &ndash; slow, costly, and experts often cannot articulate their knowledge. Steps: identification, conceptualisation, formalisation, implementation, testing.</p>
+<h3>8. Case study: MYCIN</h3>
+<p>Developed at Stanford (1970s) to diagnose <b>bacterial blood infections</b> and recommend antibiotic therapy. About <b>450+ rules</b>, uses <b>backward chaining</b> from possible diagnoses, <b>certainty factors</b> for uncertainty, and an <b>explanation facility</b>. It performed at the level of specialists in evaluations but was never used clinically; its engine became EMYCIN.</p>
+<h3>9. Learning: rote learning</h3>
+<p>The system simply <b>stores</b> computed results or examples for later reuse (memorisation, caching), e.g. Samuel&rsquo;s checkers program storing board evaluations. Trade-off: storage vs computation; needs fast retrieval.</p>
+<h3>10. Learning by induction</h3>
+<p>Generalising from <b>specific examples</b> to a general rule or concept: <b>concept learning</b> from positive and negative examples (e.g. <b>version spaces</b>, candidate elimination), <b>decision-tree induction</b> (ID3). Conclusions are plausible, not guaranteed, and depend on the <b>inductive bias</b>.</p>
+<h3>11. Explanation-based learning (EBL)</h3>
+<p>Learns from <b>one example</b> plus a <b>domain theory</b>: (1) explain why the example is an instance of the goal concept using the theory; (2) <b>generalise</b> the explanation by replacing constants with variables; (3) store the resulting general rule (operational criterion). Speeds up later problem solving and focuses learning on relevant features.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>Bayes&rsquo; theorem example.</b> A disease affects 1% of people; the test is positive for 90% of sick people and also for 5% of healthy people. P(Disease | Positive)?</p>
+<pre><code>P(+) = 0.9&times;0.01 + 0.05&times;0.99 = 0.009 + 0.0495 = 0.0585
+P(D|+) = 0.009 / 0.0585 = 0.154  (about 15%) &ndash; low because the disease is rare.</code></pre>
+<p><b>Certainty factor example.</b> Rule 1 gives CF = 0.6, Rule 2 gives CF = 0.5 for the same conclusion, both positive: CF = 0.6 + 0.5&times;(1 &minus; 0.6) = <b>0.8</b>. A rule with CF 0.8 and premise CF 0.5: 0.8 &times; 0.5 = <b>0.4</b>.</p>
+<pre><code>;; Expert-system rule (MYCIN style)
+IF   the stain of the organism is gram-negative AND
+     the morphology is rod AND the patient is a compromised host
+THEN there is suggestive evidence (0.6) that the organism is pseudomonas</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. State Bayes&rsquo; theorem and solve a simple numerical.</b></p><p>P(H|E) = P(E|H)P(H)/P(E); use the disease-test example (15.4%).</p></div><div class="qa"><p><b>Q2. What is a Bayesian network?</b></p><p>A DAG of variables with CPTs; the joint probability is the product of P(x|parents).</p></div><div class="qa"><p><b>Q3. Explain certainty factors and how CFs are combined.</b></p><p>CF from &minus;1 to +1; rule&times;premise; and CF1 + CF2(1&minus;CF1) for two positive rules.</p></div><div class="qa"><p><b>Q4. Explain the architecture of an expert system.</b></p><p>Knowledge base, inference engine, working memory, user interface, explanation facility, knowledge acquisition.</p></div><div class="qa"><p><b>Q5. Write a note on MYCIN.</b></p><p>Bacterial infection diagnosis and therapy; backward chaining, ~450 rules, certainty factors, explanations.</p></div><div class="qa"><p><b>Q6. Explain rote learning, inductive learning and explanation-based learning.</b></p><p>Memorisation; generalising from examples; generalising an explanation of one example using a domain theory.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>Bayes: P(H|E) = P(E|H)P(H)/P(E).</li><li>Bayesian net: DAG + CPTs; joint = &prod;P(x|parents).</li><li>CF in [&minus;1, 1]; combine: CF1 + CF2(1&minus;CF1).</li><li>Expert system = KB + inference engine + explanation + UI; shell = ES without domain knowledge.</li><li>Vidwan (NCST), EMYCIN, CLIPS are shells.</li><li>MYCIN: bacterial infections, backward chaining, CFs.</li><li>Learning: rote (store), induction (generalise examples), EBL (explain + generalise).</li></ul>
+ <div class="pager"><a class="prev" href="mca203-u4.html"><small>&larr; Previous</small>Unit IV: Natural Language Processing, Game Playing and Planning</a><a class="next" href="mca203-u6.html"><small>Next &rarr;</small>Unit VI: Machine Learning Foundations</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

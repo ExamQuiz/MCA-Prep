@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 203 Unit III: Knowledge Representation">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,51 @@
  <h1>Knowledge Representation</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">First order predicate calculus</span><span class="chip">Skolemization</span><span class="chip">Resolution principle and unification</span><span class="chip">Inference mechanisms</span><span class="chip">Horn&#x27;s clauses</span><span class="chip">Semantic networks</span><span class="chip">Frame systems and value inheritance</span><span class="chip">Scripts</span><span class="chip">Conceptual dependency</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca203-u2.html"><small>← Previous</small>Unit II: Problem Solving, Search and Control Strategies</a><a class="next" href="mca203-u4.html"><small>Next →</small>Unit IV: Natural Language Processing, Game Playing and Planning</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit shows <b>how knowledge is represented</b> so a program can reason with it: <b>logic</b> (predicate calculus, resolution, Horn clauses) and <b>structured representations</b> (semantic networks, frames, scripts, conceptual dependency). Resolution problems and conversion to clause form are common numerical-type questions.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. First-order predicate calculus (FOPL)</h3>
+<p>FOPL extends propositional logic with <b>constants</b> (ram), <b>variables</b> (x), <b>functions</b> (father(x)), <b>predicates</b> (man(x), loves(x,y)), connectives (&and; &or; &not; &rarr; &harr;) and <b>quantifiers</b>: universal &forall; (&ldquo;for all&rdquo;) and existential &exist; (&ldquo;there exists&rdquo;). Examples: &ldquo;All men are mortal&rdquo; = &forall;x man(x) &rarr; mortal(x); &ldquo;Someone loves Ram&rdquo; = &exist;x loves(x, Ram). A <b>well-formed formula (wff)</b> follows these rules.</p>
+<h3>2. Conversion to clause form and Skolemization</h3>
+<ol><li>Eliminate &rarr; (replace P &rarr; Q by &not;P &or; Q).</li><li>Move &not; inwards (De Morgan, &not;&forall; = &exist;&not;).</li><li>Standardise variable names apart.</li><li><b>Skolemize</b>: remove each existential quantifier.</li><li>Move &forall; to the front (prenex) and drop them.</li><li>Convert to conjunction of disjunctions (CNF) and split into separate clauses.</li></ol>
+<p><b>Skolemization:</b> replace an existentially quantified variable by a <b>Skolem constant</b> (if no &forall; precedes it) or a <b>Skolem function</b> of the preceding universal variables. E.g. &forall;x &exist;y loves(x,y) becomes loves(x, f(x)); &exist;y teacher(y) becomes teacher(c). It preserves satisfiability (not equivalence).</p>
+<h3>3. Resolution principle and unification</h3>
+<p><b>Resolution</b> takes two clauses containing complementary literals and produces a <b>resolvent</b>: from (A &or; B) and (&not;B &or; C) infer (A &or; C). It is used by <b>refutation</b>: to prove goal G, add &not;G to the clauses and derive the <b>empty clause</b> (contradiction). <b>Unification</b> finds a <b>substitution</b> that makes two literals identical, e.g. P(x, f(y)) and P(a, f(b)) unify with {x/a, y/b}. The <b>most general unifier (MGU)</b> is the least restrictive one. An <b>occurs check</b> prevents x being unified with f(x).</p>
+<h3>4. Inference mechanisms</h3>
+<p><b>Modus ponens</b> (P, P&rarr;Q &there4; Q), modus tollens, universal instantiation, <b>forward chaining</b>, <b>backward chaining</b> and <b>resolution refutation</b>. Properties: <b>soundness</b> (only valid conclusions) and <b>completeness</b> (all valid conclusions can be derived).</p>
+<h3>5. Horn clauses</h3>
+<p>A <b>Horn clause</b> has <b>at most one positive literal</b>: a rule (&not;A &or; &not;B &or; C, i.e. A &and; B &rarr; C), a fact (C) or a goal/query (&not;A &or; &not;B). Inference with Horn clauses is efficient (linear for propositional) and is the basis of <b>Prolog</b> (<code>c :- a, b.</code>).</p>
+<h3>6. Semantic networks</h3>
+<p>A graph: <b>nodes</b> are objects/concepts and labelled <b>arcs</b> are relations (<b>is-a</b>, <b>instance-of</b>, <b>has-part</b>, colour&hellip;). Supports <b>property inheritance</b> (Tweety is-a Bird, Bird can fly &rArr; Tweety can fly) and quick association; weak in representing quantifiers, negation and procedural knowledge, and has no standard semantics.</p>
+<h3>7. Frame systems and value inheritance</h3>
+<p>A <b>frame</b> represents a stereotyped object as a record of <b>slots</b> with <b>facets</b>: value, <b>default</b>, range, and attached procedures (<b>if-needed</b>, <b>if-added</b>). Frames form a hierarchy (class &rarr; subclass &rarr; instance); a slot value not found locally is <b>inherited</b> from a parent frame (default inheritance, with overriding). Used in expert systems and object-oriented design.</p>
+<h3>8. Scripts</h3>
+<p>A <b>script</b> (Schank) is a structured sequence of events for a stereotyped situation, e.g. the <b>restaurant script</b>. Components: <b>entry conditions</b>, <b>props</b>, <b>roles</b>, <b>track</b>, <b>scenes</b> (entering, ordering, eating, exiting) and <b>results</b>. Helps in story understanding and filling in missing events.</p>
+<h3>9. Conceptual dependency (CD)</h3>
+<p>Schank&rsquo;s language-independent representation of meaning using <b>primitive acts</b>: <b>ATRANS</b> (transfer of possession), <b>PTRANS</b> (physical transfer), <b>MTRANS</b> (mental transfer), <b>MBUILD</b> (build thoughts), <b>PROPEL</b>, <b>MOVE</b>, <b>GRASP</b>, <b>INGEST</b>, <b>EXPEL</b>, <b>SPEAK</b>, <b>ATTEND</b>. Sentences with the same meaning get the same CD form: &ldquo;Ram gave Sita a book&rdquo; = Ram ATRANS book from Ram to Sita.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>Resolution refutation</b> &ndash; prove mortal(Socrates):</p>
+<pre><code>Facts:   1. &forall;x man(x) &rarr; mortal(x)         clause: &not;man(x) &or; mortal(x)
+         2. man(Socrates)                        clause: man(Socrates)
+Negated goal: 3. &not;mortal(Socrates)
+
+Resolve (1) and (3) with {x/Socrates}:   &not;man(Socrates)
+Resolve (4) with (2):                    empty clause (contradiction)
+=&gt; mortal(Socrates) is proved.</code></pre>
+<p><b>Skolemization example:</b> &forall;x [ student(x) &rarr; &exist;y (book(y) &and; reads(x,y)) ] &rArr; &not;student(x) &or; book(f(x)) and &not;student(x) &or; reads(x, f(x)).</p>
+<pre><code>;; Frame (LISP-style)
+(frame bird (is-a animal) (can-fly yes) (covering feathers))
+(frame penguin (is-a bird) (can-fly no))        ; overrides inherited default
+(frame tweety (instance-of bird))               ; inherits can-fly = yes</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Explain Skolemization with an example.</b></p><p>Existential quantifiers are removed by Skolem constants/functions, e.g. &forall;x&exist;y loves(x,y) becomes loves(x,f(x)).</p></div><div class="qa"><p><b>Q2. Explain the resolution principle and unification with an example.</b></p><p>Complementary literals are resolved to produce a resolvent; unification finds the MGU; prove by deriving the empty clause.</p></div><div class="qa"><p><b>Q3. What are Horn clauses? Why are they important?</b></p><p>Clauses with at most one positive literal; efficient inference and the basis of Prolog.</p></div><div class="qa"><p><b>Q4. Differentiate semantic networks and frames.</b></p><p>Semantic networks use graph nodes and arcs; frames group slots, defaults and procedures into structured objects, both supporting inheritance.</p></div><div class="qa"><p><b>Q5. Explain scripts with the restaurant example.</b></p><p>Entry conditions, props, roles and ordered scenes: entering, ordering, eating, paying, leaving.</p></div><div class="qa"><p><b>Q6. Explain conceptual dependency with primitive acts.</b></p><p>Meaning is stored as primitives like ATRANS, PTRANS, MTRANS, enabling language independence.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>FOPL: constants, variables, predicates, functions, &forall;, &exist;.</li><li>Clause form: remove &rarr;, push &not;, Skolemize, drop &forall;, CNF.</li><li>Resolution refutation: negate the goal, derive empty clause; MGU from unification.</li><li>Horn clause: &le; 1 positive literal (Prolog).</li><li>Semantic net: nodes + is-a arcs; frame: slots + defaults + inheritance.</li><li>Script: stereotyped event sequence; CD: ATRANS, PTRANS, MTRANS&hellip;</li></ul>
+ <div class="pager"><a class="prev" href="mca203-u2.html"><small>&larr; Previous</small>Unit II: Problem Solving, Search and Control Strategies</a><a class="next" href="mca203-u4.html"><small>Next &rarr;</small>Unit IV: Natural Language Processing, Game Playing and Planning</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

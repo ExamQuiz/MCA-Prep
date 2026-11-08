@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 203 Unit VII: Neural Networks and Deep Learning Basics">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,80 @@
  <h1>Neural Networks and Deep Learning Basics</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Linearity vs non-linearity</span><span class="chip">Activation functions: sigmoid, ReLU, etc.</span><span class="chip">Weights and bias</span><span class="chip">Loss function</span><span class="chip">Gradient descent</span><span class="chip">Multilayer network</span><span class="chip">Back propagation</span><span class="chip">Weight initialization</span><span class="chip">Training and testing</span><span class="chip">Unstable gradient problem</span><span class="chip">Auto encoders</span><span class="chip">Batch normalization</span><span class="chip">Dropout</span><span class="chip">L1 and L2 regularization</span><span class="chip">Momentum</span><span class="chip">Tuning hyper parameters</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca203-u6.html"><small>← Previous</small>Unit VI: Machine Learning Foundations</a><a class="next" href="mca204.html"><small>Next →</small>MCA 204 · Advanced Web Technology</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit explains how <b>artificial neural networks</b> are built and trained: neurons, activation functions, loss, gradient descent and <b>backpropagation</b>, followed by the practical tools of deep learning &ndash; initialisation, regularisation (dropout, L1/L2), batch normalisation, momentum, autoencoders and hyper-parameter tuning.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Linearity vs non-linearity</h3>
+<p>A neuron computes a weighted sum z = w&middot;x + b. If every layer is purely linear, any stack of layers collapses into <b>one linear function</b>, so the network can only learn linear decision boundaries (it cannot solve <b>XOR</b>). A <b>non-linear activation</b> between layers lets the network approximate complex functions (universal approximation).</p>
+<h3>2. Activation functions</h3>
+<table><tr><th>Function</th><th>Formula</th><th>Range</th><th>Notes</th></tr>
+<tr><td>Sigmoid</td><td>1/(1+e<sup>&minus;z</sup>)</td><td>(0, 1)</td><td>Probability output; saturates &rarr; vanishing gradient</td></tr>
+<tr><td>Tanh</td><td>(e<sup>z</sup>&minus;e<sup>&minus;z</sup>)/(e<sup>z</sup>+e<sup>&minus;z</sup>)</td><td>(&minus;1, 1)</td><td>Zero-centred</td></tr>
+<tr><td>ReLU</td><td>max(0, z)</td><td>[0, &infin;)</td><td>Fast, default for hidden layers; &ldquo;dying ReLU&rdquo;</td></tr>
+<tr><td>Leaky ReLU</td><td>max(0.01z, z)</td><td>(&minus;&infin;, &infin;)</td><td>Avoids dead neurons</td></tr>
+<tr><td>Softmax</td><td>e<sup>z<sub>i</sub></sup>/&Sigma;e<sup>z<sub>j</sub></sup></td><td>(0, 1), sums to 1</td><td>Multi-class output layer</td></tr></table>
+<p>Sigmoid derivative: &sigma;&prime;(z) = &sigma;(z)(1 &minus; &sigma;(z)).</p>
+<h3>3. Weights and bias</h3>
+<p><b>Weights</b> set the strength of each input connection; <b>bias</b> shifts the activation threshold (like the intercept), letting the neuron fire even when all inputs are zero. These are the <b>parameters</b> learned during training. Output: a = f(w&middot;x + b).</p>
+<h3>4. Loss function</h3>
+<p>Measures the difference between prediction and target. <b>Regression:</b> mean squared error L = (1/n)&Sigma;(y &minus; &ycirc;)&sup2;. <b>Binary classification:</b> binary cross-entropy L = &minus;[y log &ycirc; + (1&minus;y) log(1&minus;&ycirc;)]. <b>Multi-class:</b> categorical cross-entropy &minus;&Sigma;y<sub>i</sub> log &ycirc;<sub>i</sub>. Training minimises the loss.</p>
+<h3>5. Gradient descent</h3>
+<p>Update rule w := w &minus; &eta;&middot;&part;L/&part;w (&eta; = learning rate). Variants: <b>batch</b> (all data per step: stable, slow), <b>stochastic (SGD)</b> (one sample: fast, noisy) and <b>mini-batch</b> (e.g. 32&ndash;256 samples: standard).</p>
+<h3>6. Multilayer network</h3>
+<p>A <b>multilayer perceptron</b> has an <b>input layer</b>, one or more <b>hidden layers</b> and an <b>output layer</b>, fully connected. <b>Forward pass:</b> a<sup>[l]</sup> = f(W<sup>[l]</sup>a<sup>[l&minus;1]</sup> + b<sup>[l]</sup>). More layers = &ldquo;deep&rdquo; learning, learning hierarchical features.</p>
+<h3>7. Back propagation</h3>
+<p>Efficiently computes gradients of the loss with respect to every weight using the <b>chain rule</b>, from output to input. Steps: (1) <b>forward pass</b> to compute outputs and loss; (2) compute the output-layer error &delta; = &part;L/&part;z; (3) <b>propagate</b> the error backward: &delta;<sup>[l]</sup> = (W<sup>[l+1]T</sup>&delta;<sup>[l+1]</sup>) &odot; f&prime;(z<sup>[l]</sup>); (4) gradients &part;L/&part;W<sup>[l]</sup> = &delta;<sup>[l]</sup>a<sup>[l&minus;1]T</sup>; (5) update weights by gradient descent; repeat for many <b>epochs</b>.</p>
+<h3>8. Weight initialisation</h3>
+<p>All-zero weights make neurons identical (symmetry), so they learn the same thing. Use small <b>random</b> values scaled to layer size: <b>Xavier/Glorot</b> (variance 2/(n<sub>in</sub>+n<sub>out</sub>), for sigmoid/tanh) and <b>He</b> initialisation (variance 2/n<sub>in</sub>, for ReLU). Good initialisation speeds convergence and limits vanishing/exploding gradients. Biases are usually started at 0.</p>
+<h3>9. Training and testing</h3>
+<p>Split data into <b>training</b> (learn weights), <b>validation</b> (tune hyper-parameters, early stopping) and <b>test</b> (final unbiased estimate) sets. One <b>epoch</b> = one pass over the training data. <b>Overfitting:</b> low training error but high test error; <b>underfitting:</b> both high. Monitor the learning curves; <b>early stopping</b> halts when validation loss rises.</p>
+<h3>10. Unstable gradient problem</h3>
+<p>In deep networks, gradients are products of many terms: they can <b>vanish</b> (&rarr; 0, early layers stop learning; typical with sigmoid/tanh) or <b>explode</b> (&rarr; &infin;, unstable updates). Remedies: ReLU-type activations, proper initialisation (Xavier/He), <b>batch normalisation</b>, <b>gradient clipping</b>, residual connections, and LSTM/GRU for sequences.</p>
+<h3>11. Autoencoders</h3>
+<p>Unsupervised networks trained to <b>reconstruct their input</b>: an <b>encoder</b> compresses x into a low-dimensional <b>code</b> (bottleneck) and a <b>decoder</b> reconstructs x&prime;; loss = reconstruction error. Types: undercomplete, <b>sparse</b>, <b>denoising</b>, <b>variational</b> (VAE). Uses: dimensionality reduction, feature learning, denoising, anomaly detection.</p>
+<h3>12. Batch normalisation</h3>
+<p>Normalises each layer&rsquo;s inputs over the mini-batch to zero mean and unit variance, then applies learnable scale &gamma; and shift &beta;: x&#770; = (x &minus; &mu;<sub>B</sub>)/&radic;(&sigma;<sub>B</sub>&sup2; + &epsilon;). Benefits: faster and more stable training, allows higher learning rates, less sensitivity to initialisation, mild regularisation.</p>
+<h3>13. Dropout</h3>
+<p>During training, randomly <b>switch off</b> each neuron with probability p (e.g. 0.5), preventing co-adaptation; it behaves like averaging many thinned networks. At test time all neurons are used with outputs scaled (or &ldquo;inverted dropout&rdquo; scales during training). Reduces overfitting.</p>
+<h3>14. L1 and L2 regularisation</h3>
+<p>Add a penalty on weights to the loss: <b>L2 (weight decay):</b> L + &lambda;&Sigma;w&sup2; shrinks weights smoothly; <b>L1:</b> L + &lambda;&Sigma;|w| drives many weights to exactly zero (<b>sparsity</b>, feature selection). &lambda; controls the strength.</p>
+<h3>15. Momentum</h3>
+<p>Accumulates a velocity of past gradients: v := &beta;v &minus; &eta;&nabla;L; w := w + v (&beta; &asymp; 0.9). It speeds movement along consistent directions, damps oscillations in ravines and helps escape shallow minima. Related optimisers: <b>Nesterov momentum</b>, <b>RMSProp</b>, <b>Adam</b> (momentum + adaptive learning rates).</p>
+<h3>16. Tuning hyper-parameters</h3>
+<p>Hyper-parameters are set <i>before</i> training: <b>learning rate</b> (most important), batch size, number of epochs, number of layers and units, activation, optimiser, dropout rate, &lambda;. Methods: <b>grid search</b>, <b>random search</b> (often better), <b>Bayesian optimisation</b>, and manual tuning guided by the <b>validation</b> performance (never the test set).</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>Forward pass of one neuron:</b> inputs x = (1, 2), weights w = (0.5, &minus;0.3), bias b = 0.1:</p>
+<pre><code>z = 0.5&times;1 + (&minus;0.3)&times;2 + 0.1 = 0.5 &minus; 0.6 + 0.1 = 0
+a = sigmoid(0) = 0.5
+
+Backprop for this neuron with target y = 1, MSE loss L = &frac12;(y &minus; a)&sup2;:
+dL/da = a &minus; y = &minus;0.5 ;  da/dz = a(1&minus;a) = 0.25 ;  dL/dz = &minus;0.125
+dL/dw1 = &minus;0.125&times;1 = &minus;0.125 ,  dL/dw2 = &minus;0.125&times;2 = &minus;0.25
+With &eta; = 0.1:  w1 = 0.5 + 0.0125 = 0.5125 ,  w2 = &minus;0.3 + 0.025 = &minus;0.275</code></pre>
+<pre><code># Keras: multilayer network with dropout, L2 and Adam
+import tensorflow as tf
+from tensorflow.keras import layers, regularizers
+
+model = tf.keras.Sequential([
+    layers.Dense(64, activation="relu", kernel_initializer="he_normal",
+                 kernel_regularizer=regularizers.l2(0.001), input_shape=(20,)),
+    layers.BatchNormalization(),
+    layers.Dropout(0.3),
+    layers.Dense(32, activation="relu"),
+    layers.Dense(1, activation="sigmoid")])
+model.compile(optimizer=tf.keras.optimizers.Adam(1e-3),
+              loss="binary_crossentropy", metrics=["accuracy"])
+model.fit(X_train, y_train, epochs=50, batch_size=32, validation_split=0.2,
+          callbacks=[tf.keras.callbacks.EarlyStopping(patience=5)])</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Why do we need non-linear activation functions? Explain sigmoid and ReLU.</b></p><p>Without them the network is just linear; sigmoid squashes to (0,1) but saturates, ReLU = max(0,z) is fast and common.</p></div><div class="qa"><p><b>Q2. Explain the backpropagation algorithm.</b></p><p>Forward pass, compute loss, propagate errors backward via the chain rule, update weights by gradient descent.</p></div><div class="qa"><p><b>Q3. What is the unstable gradient problem? How can it be reduced?</b></p><p>Vanishing or exploding gradients in deep nets; use ReLU, He/Xavier init, batch norm, gradient clipping.</p></div><div class="qa"><p><b>Q4. Explain dropout and L1/L2 regularisation.</b></p><p>Dropout randomly disables neurons; L2 shrinks weights, L1 yields sparse weights; both reduce overfitting.</p></div><div class="qa"><p><b>Q5. Explain gradient descent variants and momentum.</b></p><p>Batch, SGD and mini-batch; momentum adds a velocity term to speed convergence and reduce oscillation.</p></div><div class="qa"><p><b>Q6. What is an autoencoder? What is batch normalisation?</b></p><p>Encoder&ndash;decoder network trained to reconstruct input; batch norm standardises layer inputs per mini-batch.</p></div><div class="qa"><p><b>Q7. Which hyper-parameters are tuned and how?</b></p><p>Learning rate, batch size, layers, units, dropout, &lambda;; by grid/random search using a validation set.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>Neuron: a = f(w&middot;x + b); non-linearity is essential (XOR).</li><li>Sigmoid (0,1), tanh (&minus;1,1), ReLU max(0,z), softmax for multi-class.</li><li>Loss: MSE (regression), cross-entropy (classification).</li><li>w := w &minus; &eta;&part;L/&part;w; mini-batch is standard.</li><li>Backprop = chain rule backwards; init: Xavier (tanh), He (ReLU).</li><li>Vanishing/exploding gradients &rarr; ReLU, batch norm, clipping.</li><li>Regularise: dropout, L1 (sparse), L2 (weight decay), early stopping.</li><li>Momentum, Adam; tune learning rate on validation data.</li></ul>
+ <div class="pager"><a class="prev" href="mca203-u6.html"><small>&larr; Previous</small>Unit VI: Machine Learning Foundations</a><a class="next" href="mca204.html"><small>Next &rarr;</small>MCA 204 · Advanced Web Technology</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

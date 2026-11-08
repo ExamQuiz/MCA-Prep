@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 203 Unit I: General Issues and Overview of AI; Introduction to LISP">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,69 @@
  <h1>General Issues and Overview of AI; Introduction to LISP</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">The AI problems</span><span class="chip">What is an AI technique</span><span class="chip">Characteristics of AI applications</span><span class="chip">LISP: syntax and numeric functions</span><span class="chip">Basic list manipulation functions</span><span class="chip">Predicates and conditionals</span><span class="chip">Input/output and local variables</span><span class="chip">Iteration and recursion</span><span class="chip">Property lists and arrays</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca203.html"><small>← Previous</small>MCA 203 · Artificial Intelligence and Machine Learning</a><a class="next" href="mca203-u2.html"><small>Next →</small>Unit II: Problem Solving, Search and Control Strategies</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit answers &ldquo;what is Artificial Intelligence?&rdquo; &ndash; the kinds of problems AI tackles, what makes a technique an <i>AI technique</i> and what AI applications look like &ndash; and then introduces <b>LISP</b>, the classic language of symbolic AI. LISP programs on lists, conditionals, recursion and property lists are typical exam questions.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. The AI problems</h3>
+<p><b>Artificial Intelligence</b> is the study of how to make computers do things at which, at the moment, people are better (Rich &amp; Knight). Four views: acting humanly (<b>Turing test</b>), thinking humanly, thinking rationally and acting rationally. Typical problem areas:</p>
+<ul><li><b>Mundane tasks:</b> perception (vision, speech), natural language understanding, commonsense reasoning, robot navigation.</li><li><b>Formal tasks:</b> games (chess), mathematics, theorem proving, logic.</li><li><b>Expert tasks:</b> medical diagnosis, engineering design, financial analysis, scientific discovery.</li></ul>
+<p>Surprisingly, mundane tasks are often harder than formal ones because they need huge amounts of knowledge.</p>
+<h3>2. What is an AI technique?</h3>
+<p>Intelligence requires <b>knowledge</b>, but knowledge is voluminous, hard to characterise accurately, constantly changing, and differs from data by being organised so that it is usable. An <b>AI technique</b> is a method that exploits knowledge and is represented so that: it captures <b>generalisations</b>, can be understood by the people who provide it, can easily be modified to correct errors and reflect changes, and can be used in many situations even if not totally accurate. Core techniques: <b>search</b> (systematic exploration), <b>use of knowledge</b> (heuristics, rules) and <b>abstraction</b> (separating important features).</p>
+<h3>3. Characteristics of AI applications</h3>
+<p>Symbolic (non-numeric) processing, <b>heuristic</b> rather than algorithmic search, reasoning with incomplete or uncertain information, knowledge-intensive operation with a separate knowledge base, ability to learn and to explain, and interactive, natural interfaces.</p>
+<h3>4. LISP: syntax and numeric functions</h3>
+<p>LISP (LISt Processing) uses <b>atoms</b> (symbols, numbers) and <b>lists</b> in fully parenthesised <b>prefix</b> notation: <code>(operator arg1 arg2 &hellip;)</code>. Programs and data have the same form (S-expressions), so programs can manipulate programs. Numeric functions: <code>+ - * /</code>, <code>mod</code>, <code>rem</code>, <code>sqrt</code>, <code>expt</code>, <code>max</code>, <code>min</code>, <code>abs</code>, <code>round</code>, <code>truncate</code>. Example: <code>(+ 2 (* 3 4))</code> &rarr; 14. <code>quote</code> (or <code>'</code>) prevents evaluation.</p>
+<h3>5. Basic list manipulation functions</h3>
+<table><tr><th>Function</th><th>Result for L = (a b c)</th></tr>
+<tr><td><code>(car L)</code></td><td>a (first element)</td></tr>
+<tr><td><code>(cdr L)</code></td><td>(b c) (rest)</td></tr>
+<tr><td><code>(cons 'x L)</code></td><td>(x a b c)</td></tr>
+<tr><td><code>(list 'x 'y)</code></td><td>(x y)</td></tr>
+<tr><td><code>(append L '(d e))</code></td><td>(a b c d e)</td></tr>
+<tr><td><code>(reverse L)</code></td><td>(c b a)</td></tr>
+<tr><td><code>(length L)</code>, <code>(nth 1 L)</code>, <code>(last L)</code></td><td>3, b, (c)</td></tr>
+<tr><td><code>(cadr L)</code></td><td>b (car of cdr)</td></tr></table>
+<h3>6. Predicates and conditionals</h3>
+<p>Predicates return T (true) or NIL (false): <code>atom</code>, <code>listp</code>, <code>numberp</code>, <code>symbolp</code>, <code>null</code>, <code>equal</code>, <code>eq</code>, <code>member</code>, <code>zerop</code>, <code>evenp</code>, <code>oddp</code>, and comparisons <code>&gt; &lt; = &gt;= &lt;=</code>. Conditionals: <code>if</code>, <code>cond</code> (multi-way), <code>when</code>, <code>unless</code>, and logical <code>and</code>, <code>or</code>, <code>not</code>.</p>
+<h3>7. Input/output and local variables</h3>
+<p>Output: <code>print</code>, <code>princ</code>, <code>format</code>, <code>terpri</code> (new line). Input: <code>read</code>. Global assignment: <code>setq</code>, <code>defvar</code>. <b>Local variables:</b> <code>let</code> (parallel binding) and <code>let*</code> (sequential binding); function parameters are local too. Functions are defined with <code>defun</code>.</p>
+<h3>8. Iteration and recursion</h3>
+<p>Iteration: <code>do</code>, <code>dotimes</code>, <code>dolist</code>, <code>loop</code>. <b>Recursion</b> is the natural LISP style: a <i>base case</i> plus a recursive step on <code>(cdr list)</code>.</p>
+<h3>9. Property lists and arrays</h3>
+<p>Every symbol has a <b>property list</b> of indicator&ndash;value pairs, used as a simple database: <code>(setf (get 'ram 'age) 25)</code>, <code>(get 'ram 'age)</code> &rarr; 25, <code>(symbol-plist 'ram)</code>, <code>(remprop 'ram 'age)</code>. <b>Arrays:</b> <code>(setq a (make-array 5))</code>, <code>(setf (aref a 0) 10)</code>, <code>(aref a 0)</code>; multi-dimensional: <code>(make-array '(3 3))</code>.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<pre><code>;; Factorial (recursion)
+(defun fact (n)
+  (if (&lt;= n 1) 1 (* n (fact (- n 1)))))
+(fact 5)            ; =&gt; 120
+
+;; Fibonacci
+(defun fib (n)
+  (cond ((= n 0) 0) ((= n 1) 1)
+        (t (+ (fib (- n 1)) (fib (- n 2))))))
+
+;; Sum of a list
+(defun sum-list (l)
+  (if (null l) 0 (+ (car l) (sum-list (cdr l)))))
+(sum-list '(1 2 3 4))   ; =&gt; 10
+
+;; Iteration
+(dotimes (i 3) (print i))                      ; 0 1 2
+(let ((total 0)) (dolist (x '(1 2 3)) (setq total (+ total x))) total)   ; 6
+
+;; Own member function
+(defun my-member (x l)
+  (cond ((null l) nil) ((equal x (car l)) l) (t (my-member x (cdr l)))))</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. What is AI? Explain the AI problems.</b></p><p>Making computers perform tasks people do better; mundane (vision, language), formal (games, logic) and expert tasks (diagnosis).</p></div><div class="qa"><p><b>Q2. What is an AI technique? Why is knowledge important?</b></p><p>A method that exploits knowledge organised so it generalises, is understandable, modifiable and widely usable; knowledge is voluminous and changing.</p></div><div class="qa"><p><b>Q3. Differentiate <code>car</code>, <code>cdr</code> and <code>cons</code> with examples.</b></p><p>car returns the first element, cdr the rest, cons adds a new first element to a list.</p></div><div class="qa"><p><b>Q4. Write a LISP function to find the factorial of a number.</b></p><p>See the <code>fact</code> function above using base case and recursion.</p></div><div class="qa"><p><b>Q5. Explain property lists in LISP with an example.</b></p><p>Symbol-attached indicator/value pairs set with <code>(setf (get ...))</code> and read with <code>get</code>.</p></div><div class="qa"><p><b>Q6. Differentiate <code>let</code> and <code>let*</code>.</b></p><p>let binds variables in parallel; let* binds sequentially so later bindings can use earlier ones.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>AI problems: mundane, formal, expert tasks. Turing test.</li><li>AI technique = search + knowledge + abstraction.</li><li>LISP: atoms and lists, prefix notation, code = data.</li><li>car/cdr/cons/list/append/reverse; predicates return T/NIL.</li><li>cond for multi-way, let/let* for locals, defun for functions.</li><li>Recursion: base case + cdr; plist via get/setf; arrays via make-array/aref.</li></ul>
+ <div class="pager"><a class="prev" href="mca203.html"><small>&larr; Previous</small>MCA 203 · Artificial Intelligence and Machine Learning</a><a class="next" href="mca203-u2.html"><small>Next &rarr;</small>Unit II: Problem Solving, Search and Control Strategies</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

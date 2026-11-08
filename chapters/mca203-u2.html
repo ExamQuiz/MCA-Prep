@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 203 Unit II: Problem Solving, Search and Control Strategies">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,60 @@
  <h1>Problem Solving, Search and Control Strategies</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">General problem solving</span><span class="chip">Production systems</span><span class="chip">Control strategies: forward and backward chaining</span><span class="chip">Exhaustive searches: depth first, breadth first</span><span class="chip">Heuristic search: hill climbing</span><span class="chip">Branch and bound technique</span><span class="chip">Best first search and A* algorithm</span><span class="chip">AND/OR graphs</span><span class="chip">Problem reduction and AO* algorithm</span><span class="chip">Constraint satisfaction problems</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca203-u1.html"><small>← Previous</small>Unit I: General Issues and Overview of AI; Introduction to LISP</a><a class="next" href="mca203-u3.html"><small>Next →</small>Unit III: Knowledge Representation</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>Most AI problem solving is <b>search</b> through a space of possible states. This unit explains how to formulate a problem, the production-system architecture, blind (exhaustive) and heuristic search methods, search of AND/OR graphs, and constraint satisfaction. A* and AO* are the most-asked algorithms.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. General problem solving</h3>
+<p>Define the <b>state space</b>: set of states, <b>initial state</b>, <b>operators/rules</b> that move between states, and <b>goal test</b>. Solving = finding a path from the initial to a goal state. Example: water-jug (4 L and 3 L jugs), 8-puzzle, missionaries and cannibals, travelling salesman. Search can be judged by <b>completeness, optimality, time and space complexity</b>.</p>
+<h3>2. Production systems</h3>
+<p>A production system has (i) a set of <b>production rules</b> (condition &rarr; action), (ii) a <b>global database / working memory</b> and (iii) a <b>control strategy</b> that picks the rule to apply (and resolves conflicts). Types: <b>monotonic</b> (applying a rule never prevents another from applying later), <b>partially commutative</b> (order of rules doesn&rsquo;t matter for reaching the same result) and <b>commutative</b> (both). Commutative systems need no backtracking.</p>
+<h3>3. Control strategies: forward and backward chaining</h3>
+<ul><li><b>Forward chaining (data-driven):</b> start from facts, apply rules to derive new facts until the goal is found.</li><li><b>Backward chaining (goal-driven):</b> start from the goal, find rules whose conclusion matches it, and make their conditions sub-goals.</li></ul>
+<p>A good control strategy must <b>cause motion</b> (not be stuck) and be <b>systematic</b> (not repeat states).</p>
+<h3>4. Exhaustive (blind) searches</h3>
+<table><tr><th></th><th>Breadth-first (BFS)</th><th>Depth-first (DFS)</th></tr>
+<tr><td>Data structure</td><td>Queue (FIFO)</td><td>Stack / recursion (LIFO)</td></tr>
+<tr><td>Expands</td><td>Level by level</td><td>Deepest node first, then backtrack</td></tr>
+<tr><td>Complete?</td><td>Yes (finite branching)</td><td>No in infinite/deep spaces</td></tr>
+<tr><td>Optimal?</td><td>Yes for equal step cost</td><td>No</td></tr>
+<tr><td>Space</td><td>O(b<sup>d</sup>) &ndash; large</td><td>O(bm) &ndash; small</td></tr></table>
+<p>(b = branching factor, d = depth of shallowest goal, m = maximum depth.)</p>
+<h3>5. Heuristic search and hill climbing</h3>
+<p>A <b>heuristic function</b> h(n) estimates the cost from n to a goal. <b>Hill climbing</b> moves to the best neighbouring state and stops when none is better; it keeps no history. Problems: <b>local maxima</b>, <b>plateau</b> and <b>ridge</b>. Variants: simple hill climbing, <b>steepest-ascent</b> and <b>stochastic</b>; remedies: random restarts, backtracking, simulated annealing.</p>
+<h3>6. Branch and bound</h3>
+<p>Explores paths in order of cost so far, always extending the <b>cheapest partial path</b>; a path whose cost exceeds the best complete solution found is <b>pruned (bounded)</b>. Guarantees an optimal solution; with an <i>underestimate</i> of remaining cost it becomes A*-like.</p>
+<h3>7. Best-first search and the A* algorithm</h3>
+<p><b>Best-first search</b> uses an <b>OPEN</b> list (nodes to expand) and a <b>CLOSED</b> list (expanded) and always expands the node with the best evaluation value (greedy best-first uses f = h). <b>A*</b> uses <b>f(n) = g(n) + h(n)</b>: g = actual cost from the start, h = estimated cost to the goal. If h is <b>admissible</b> (never overestimates) A* is complete and optimal; if also <b>consistent</b>, no node is expanded twice. Algorithm: put start on OPEN &rarr; pick the node with the lowest f &rarr; if goal, stop &rarr; else expand it, compute f for successors, update OPEN/CLOSED (keep the cheaper path if a node is reached again) &rarr; repeat.</p>
+<h3>8. AND/OR graphs</h3>
+<p>Represent problems that can be <b>decomposed</b>: an OR arc gives alternatives (solve any one), an AND arc requires <b>all</b> sub-problems to be solved. A solution is a <b>sub-graph</b>, not a single path.</p>
+<h3>9. Problem reduction and AO*</h3>
+<p><b>Problem reduction</b> repeatedly splits a problem into easier sub-problems. <b>AO*</b> searches an AND/OR graph: (1) start with the initial node; (2) expand a node on the current best partial solution graph; (3) <b>revise the cost</b> f(n) of its ancestors, where the cost through an AND arc = sum of the successors&rsquo; costs + arc costs and through OR = minimum; (4) mark nodes <b>solved</b> when all (AND) or one (OR) successors are solved; repeat until the start is solved or its cost exceeds a threshold.</p>
+<h3>10. Constraint satisfaction problems (CSP)</h3>
+<p>Defined by <b>variables</b>, <b>domains</b> and <b>constraints</b>. Examples: map colouring, cryptarithmetic (SEND + MORE = MONEY), N-queens, scheduling. Solving: <b>backtracking</b> assigns variables one at a time and backs up on violation; improvements: <b>forward checking</b>, <b>arc consistency</b>, variable ordering (most constrained first) and value ordering. Cryptarithmetic uses constraint propagation: generate possible values, then guess and propagate.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>A* example</b> &ndash; start S, goal G; edge costs and h values:</p>
+<pre><code>Edges:  S-A 1,  S-B 4,  A-B 2,  A-G 12,  B-G 5       h: S=7, A=6, B=2, G=0
+
+OPEN={S(f=0+7=7)}          expand S
+ A: g=1,  f=1+6=7          B: g=4, f=4+2=6
+OPEN={B(6), A(7)}          expand B (lowest f)
+ G via B: g=9, f=9+0=9     
+OPEN={A(7), G(9)}          expand A
+ B via A: g=3, f=3+2=5 (better than 6, update)   G via A: g=13 (worse)
+OPEN={B(5), G(9)}          expand B again
+ G via B: g=3+5=8, f=8    (better than 9, update)
+OPEN={G(8)}                G is goal =&gt; path S &rarr; A &rarr; B &rarr; G, cost 8</code></pre>
+<p><b>Water-jug (4 L, 3 L)</b> goal: 2 L in the 4 L jug. Rule examples: fill 4 L; fill 3 L; pour 3 L into 4 L. One solution: (0,0) &rarr; (0,3) &rarr; (3,0) &rarr; (3,3) &rarr; (4,2) &rarr; (0,2) &rarr; (2,0).</p>
+<p><b>Map colouring CSP:</b> variables = regions, domain = {R, G, B}, constraint = neighbours differ.</p>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Explain production systems and their characteristics.</b></p><p>Rules, working memory and control strategy; monotonic, partially commutative and commutative systems.</p></div><div class="qa"><p><b>Q2. Compare BFS and DFS.</b></p><p>BFS: queue, complete, optimal for unit costs, high memory; DFS: stack, low memory, not complete or optimal.</p></div><div class="qa"><p><b>Q3. Explain the A* algorithm. What is an admissible heuristic?</b></p><p>Expands the node with the lowest f = g + h; admissible h never overestimates and guarantees optimality.</p></div><div class="qa"><p><b>Q4. What are the problems of hill climbing?</b></p><p>Local maxima, plateau and ridge; solved by restarts, backtracking or simulated annealing.</p></div><div class="qa"><p><b>Q5. Explain AND/OR graphs and the AO* algorithm.</b></p><p>Problems split into sub-problems; AO* expands the best partial solution graph and revises ancestor costs, with AND costs summed.</p></div><div class="qa"><p><b>Q6. What is a constraint satisfaction problem? Solve a cryptarithmetic example.</b></p><p>Variables, domains and constraints; use propagation plus backtracking (e.g. SEND+MORE=MONEY gives M=1).</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>State space = states + operators + initial + goal.</li><li>Forward chaining = data-driven; backward = goal-driven.</li><li>BFS (queue, optimal), DFS (stack, small memory).</li><li>Hill climbing: local max, plateau, ridge.</li><li>A*: f = g + h, h admissible &rArr; optimal.</li><li>AO*: AND = sum of costs, OR = min; solution is a subgraph.</li><li>CSP: variables, domains, constraints; backtracking + propagation.</li></ul>
+ <div class="pager"><a class="prev" href="mca203-u1.html"><small>&larr; Previous</small>Unit I: General Issues and Overview of AI; Introduction to LISP</a><a class="next" href="mca203-u3.html"><small>Next &rarr;</small>Unit III: Knowledge Representation</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">
