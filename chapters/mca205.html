@@ -4,9 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MCA 205 (P) DBMS Lab | MCA Year 2 Notes</title>
-<meta name="description" content="MCA 205 (P) DBMS Lab — MCA Year 2">
+<meta name="description" content="MCA 205 (P) DBMS Lab: 45 solved SQL queries with sample data, outputs and viva questions">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose pre.out{border-left:4px solid var(--brand2)}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem;display:block;overflow-x:auto}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0;background:var(--card)}
+.qa p{margin:6px 0;max-width:none}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -44,11 +57,601 @@
  <span class="tag">MCA 205 (P)</span>
  <h1>🧪 DBMS Lab</h1>
  <div class="chips"><span class="chip">Max / Min marks: 100 / 50</span><span class="chip">Practical</span></div>
- <p style="color:var(--muted)">SQL practicals on the Salesmen, Customers and Orders tables (45 queries).</p>
- <p>Tables used: <b>Salesmen</b> (SNUM, SNAME, CITY, COMMISSION), <b>Customers</b> (CNUM, CNAME, CITY, RATING, SNUM) and <b>Orders</b> (ONUM, AMOUNT, ODATE, CNUM, SNUM).</p>
- <h2 class="sec" style="margin-top:22px;font-size:1.15rem">Suggested practical list — 45 SQL queries</h2>
- <ol style="padding-left:22px"><li>Produce the order no, amount and date of all orders.</li><li>All information about all customers with salesman number 1001.</li><li>Display city, sname, snum and commission (in that order).</li><li>Rating followed by the name of each customer in Surat.</li><li>snum of all salesmen with orders, without duplicates.</li><li>All orders for more than Rs. 1000.</li><li>Names and cities of salesmen in London with commission above 10%.</li><li>Customers whose names begin with &#x27;C&#x27;.</li><li>Customers whose names begin with a letter from &#x27;A&#x27; to &#x27;G&#x27;.</li><li>Orders with zero or NULL amount.</li><li>Largest orders of salesman 1002 and 1007.</li><li>Count all orders of October 3, 1997.</li><li>Total amount ordered.</li><li>Average amount ordered.</li><li>Count the salesmen currently having orders.</li><li>All salesmen with their % of commission.</li><li>Assuming 12% commission: order number, salesman no and commission for each order.</li><li>Highest rating in each city, as: For the city (city), the highest rating is: (rating).</li><li>All customers in descending order of rating.</li><li>Total of orders for each day, in descending order.</li><li>Names of all customers with their salesman&#x27;s name.</li><li>Customers and salesmen who share the same city.</li><li>All orders with the names of their customer and salesman.</li><li>Orders by customers not located in the same city as their salesman.</li><li>Customers serviced by salespeople with commission above 12%.</li><li>Salesman commission on each order by a customer with rating above 100.</li><li>All pairs of customers having the same rating, without duplication.</li><li>Orders greater than the average of October 4, 1997.</li><li>Average commission of salesmen in London.</li><li>Orders attributed to salesmen in &#x27;London&#x27; using both subquery and join.</li><li>Commission of all salesmen serving customers in &#x27;London&#x27;.</li><li>Customers whose cnum is 1000 above the snum of Sejal.</li><li>Count customers with rating above the average of &#x27;Surat&#x27;.</li><li>Salesmen with customers located in their cities using ANY and IN.</li><li>Salesmen for whom there are customers that follow them in alphabetical order.</li><li>Customers with rating greater than any customer in &#x27;Rome&#x27;.</li><li>Orders with amount greater than at least one of the orders from 6th October, 1997.</li><li>Orders with amounts smaller than any amount for a customer in &#x27;London&#x27;.</li><li>Customers with a greater rating than every customer in &#x27;Rome&#x27;.</li><li>UNION of two queries: names, cities, ratings of all customers; rating &gt;= 200 shows &#x27;HIGH RATING&#x27;, otherwise &#x27;LOW RATING&#x27;.</li><li>Name and number of each salesman and customer with more than one current order, alphabetical by name.</li><li>UNION of three queries: salesmen in Surat (snum), customers in Surat (cnum), orders of 3rd Oct (onum) — duplicates retained between the last two only.</li><li>Remove all orders from customer Chirag.</li><li>Set the ratings of all customers of Piyush to 400.</li><li>Increase the rating of all customers in Rome by 100.</li></ol>
- <div class="placeholder"><h3>Solutions &amp; notes (placeholder)</h3><p>Add solved programs, queries, outputs and viva questions here.</p></div>
+ <p style="color:var(--muted)">SQL practicals on the Salesmen, Customers and Orders tables (45 queries), with solutions, outputs and viva questions.</p>
+
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This lab practises the SQL covered in MCA 201 (Unit II). All 45 queries use three related tables: <b>Salesmen</b> (SNUM, SNAME, CITY, COMMISSION), <b>Customers</b> (CNUM, CNAME, CITY, RATING, SNUM) and <b>Orders</b> (ONUM, AMOUNT, ODATE, CNUM, SNUM). Each question below has the SQL solution and the output produced by the sample data given in this page. The SQL is written to run on <b>Oracle</b> (the usual lab software) and also on <b>MySQL</b>; differences are noted.</p>
+ <div class="note"><b>How to use:</b> (1) create the tables, (2) insert the sample data, (3) type each query yourself before looking at the answer, (4) compare your output with the one shown. Your own marks may use different data, so understand the logic rather than memorising the output.</div>
+
+ <h2 class="sec" style="margin-top:26px">1. Lab setup</h2>
+ <ul>
+  <li><b>Oracle:</b> open SQL*Plus or SQL Developer, log in, paste the scripts below. Use <code>SET LINESIZE 150</code> and <code>SET PAGESIZE 50</code> for neat output.</li>
+  <li><b>MySQL:</b> open MySQL Workbench or the command line, run <code>CREATE DATABASE lab; USE lab;</code> then the scripts.</li>
+  <li><b>No software?</b> Use an online SQL editor such as SQLite/DB Fiddle for practice (some syntax like ANY/ALL is not supported in SQLite).</li>
+ </ul>
+ <h3>Create the tables</h3>
+ <pre><code>CREATE TABLE Salesmen (
+  snum       INT PRIMARY KEY,
+  sname      VARCHAR(20) NOT NULL,
+  city       VARCHAR(20),
+  commission DECIMAL(4,2)
+);
+
+CREATE TABLE Customers (
+  cnum   INT PRIMARY KEY,
+  cname  VARCHAR(20) NOT NULL,
+  city   VARCHAR(20),
+  rating INT,
+  snum   INT,
+  FOREIGN KEY (snum) REFERENCES Salesmen(snum)
+);
+
+CREATE TABLE Orders (
+  onum   INT PRIMARY KEY,
+  amount DECIMAL(10,2),
+  odate  DATE,
+  cnum   INT,
+  snum   INT,
+  FOREIGN KEY (cnum) REFERENCES Customers(cnum),
+  FOREIGN KEY (snum) REFERENCES Salesmen(snum)
+);</code></pre>
+ <h3>Insert the sample data</h3>
+ <pre><code>INSERT INTO Salesmen  VALUES (1001, &#x27;Peel&#x27;, &#x27;London&#x27;, 0.12);
+INSERT INTO Salesmen  VALUES (1002, &#x27;Serres&#x27;, &#x27;Surat&#x27;, 0.13);
+INSERT INTO Salesmen  VALUES (1003, &#x27;Axelrod&#x27;, &#x27;New York&#x27;, 0.1);
+INSERT INTO Salesmen  VALUES (1004, &#x27;Motika&#x27;, &#x27;London&#x27;, 0.11);
+INSERT INTO Salesmen  VALUES (1005, &#x27;Sejal&#x27;, &#x27;Surat&#x27;, 0.14);
+INSERT INTO Salesmen  VALUES (1006, &#x27;Piyush&#x27;, &#x27;Rome&#x27;, 0.09);
+INSERT INTO Salesmen  VALUES (1007, &#x27;Rafkin&#x27;, &#x27;Rome&#x27;, 0.15);
+
+INSERT INTO Customers VALUES (2001, &#x27;Hoffman&#x27;, &#x27;London&#x27;, 100, 1001);
+INSERT INTO Customers VALUES (2002, &#x27;Giovanni&#x27;, &#x27;Rome&#x27;, 200, 1003);
+INSERT INTO Customers VALUES (2003, &#x27;Liu&#x27;, &#x27;Surat&#x27;, 200, 1002);
+INSERT INTO Customers VALUES (2004, &#x27;Grass&#x27;, &#x27;Surat&#x27;, 300, 1002);
+INSERT INTO Customers VALUES (2005, &#x27;Banks&#x27;, &#x27;Rome&#x27;, 100, 1006);
+INSERT INTO Customers VALUES (2006, &#x27;Clemens&#x27;, &#x27;London&#x27;, 100, 1001);
+INSERT INTO Customers VALUES (2007, &#x27;Pereira&#x27;, &#x27;Rome&#x27;, 100, 1004);
+INSERT INTO Customers VALUES (2008, &#x27;Cisneros&#x27;, &#x27;Rome&#x27;, 250, 1007);
+INSERT INTO Customers VALUES (2009, &#x27;Chirag&#x27;, &#x27;Surat&#x27;, 200, 1005);
+
+INSERT INTO Orders    VALUES (3001, 767.19, DATE &#x27;1997-10-03&#x27;, 2001, 1001);
+INSERT INTO Orders    VALUES (3002, 1900.1, DATE &#x27;1997-10-03&#x27;, 2007, 1004);
+INSERT INTO Orders    VALUES (3003, 5160.45, DATE &#x27;1997-10-03&#x27;, 2003, 1002);
+INSERT INTO Orders    VALUES (3004, 1098.16, DATE &#x27;1997-10-03&#x27;, 2008, 1007);
+INSERT INTO Orders    VALUES (3005, 1713.23, DATE &#x27;1997-10-04&#x27;, 2002, 1003);
+INSERT INTO Orders    VALUES (3006, 75.75, DATE &#x27;1997-10-04&#x27;, 2004, 1002);
+INSERT INTO Orders    VALUES (3007, 2500.0, DATE &#x27;1997-10-04&#x27;, 2009, 1005);
+INSERT INTO Orders    VALUES (3008, 4723.0, DATE &#x27;1997-10-05&#x27;, 2006, 1001);
+INSERT INTO Orders    VALUES (3009, 1309.95, DATE &#x27;1997-10-06&#x27;, 2004, 1002);
+INSERT INTO Orders    VALUES (3010, 9891.88, DATE &#x27;1997-10-06&#x27;, 2006, 1001);
+INSERT INTO Orders    VALUES (3011, 0, DATE &#x27;1997-10-06&#x27;, 2009, 1005);
+INSERT INTO Orders    VALUES (3012, NULL, DATE &#x27;1997-10-07&#x27;, 2005, 1006);
+
+COMMIT;</code></pre>
+ <h3>The data in the tables</h3>
+ <p><b>Salesmen</b></p><pre class="out"><code>SNUM  SNAME    CITY      COMMISSION
+----  -------  --------  ----------
+1001  Peel     London    0.12      
+1002  Serres   Surat     0.13      
+1003  Axelrod  New York  0.1       
+1004  Motika   London    0.11      
+1005  Sejal    Surat     0.14      
+1006  Piyush   Rome      0.09      
+1007  Rafkin   Rome      0.15      
+(7 rows)</code></pre>
+ <p><b>Customers</b></p><pre class="out"><code>CNUM  CNAME     CITY    RATING  SNUM
+----  --------  ------  ------  ----
+2001  Hoffman   London  100     1001
+2002  Giovanni  Rome    200     1003
+2003  Liu       Surat   200     1002
+2004  Grass     Surat   300     1002
+2005  Banks     Rome    100     1006
+2006  Clemens   London  100     1001
+2007  Pereira   Rome    100     1004
+2008  Cisneros  Rome    250     1007
+2009  Chirag    Surat   200     1005
+(9 rows)</code></pre>
+ <p><b>Orders</b></p><pre class="out"><code>ONUM  AMOUNT   ODATE       CNUM  SNUM
+----  -------  ----------  ----  ----
+3001  767.19   1997-10-03  2001  1001
+3002  1900.1   1997-10-03  2007  1004
+3003  5160.45  1997-10-03  2003  1002
+3004  1098.16  1997-10-03  2008  1007
+3005  1713.23  1997-10-04  2002  1003
+3006  75.75    1997-10-04  2004  1002
+3007  2500     1997-10-04  2009  1005
+3008  4723     1997-10-05  2006  1001
+3009  1309.95  1997-10-06  2004  1002
+3010  9891.88  1997-10-06  2006  1001
+3011  0        1997-10-06  2009  1005
+3012  NULL     1997-10-07  2005  1006
+(12 rows)</code></pre>
+ <p>Useful commands: <code>SELECT * FROM Salesmen;</code> to view a table, <code>DESC Salesmen;</code> for its structure, <code>DROP TABLE Orders; DROP TABLE Customers; DROP TABLE Salesmen;</code> to start again (drop in this order because of the foreign keys).</p>
+
+ <h2 class="sec" style="margin-top:26px">2. Query map</h2>
+ <table><tr><th>Concept</th><th>Queries</th></tr>
+<tr><td>Projection, selection, DISTINCT, LIKE, BETWEEN, NULL</td><td>1&ndash;10</td></tr>
+<tr><td>Aggregate functions, GROUP BY, ORDER BY, expressions</td><td>11&ndash;20</td></tr>
+<tr><td>Joins (equi, multi-table, self)</td><td>21&ndash;27</td></tr>
+<tr><td>Sub-queries (scalar, IN, correlated)</td><td>28&ndash;33</td></tr>
+<tr><td>ANY, ALL, IN</td><td>34&ndash;39</td></tr>
+<tr><td>UNION / UNION ALL</td><td>40&ndash;42</td></tr>
+<tr><td>DELETE and UPDATE</td><td>43&ndash;45</td></tr></table>
+
+ <h2 class="sec" style="margin-top:26px">3. Solved queries (1&ndash;45)</h2>
+ <h3>A. Simple queries: SELECT, WHERE, LIKE, NULL</h3><div class="qa"><p><b>Q1. Produce the order no, amount and date of all orders.</b></p><pre><code>SELECT onum, amount, odate
+FROM Orders;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ONUM  AMOUNT   ODATE     
+----  -------  ----------
+3001  767.19   1997-10-03
+3002  1900.1   1997-10-03
+3003  5160.45  1997-10-03
+3004  1098.16  1997-10-03
+3005  1713.23  1997-10-04
+3006  75.75    1997-10-04
+3007  2500     1997-10-04
+3008  4723     1997-10-05
+3009  1309.95  1997-10-06
+3010  9891.88  1997-10-06
+3011  0        1997-10-06
+3012  NULL     1997-10-07
+(12 rows)</code></pre></div><div class="qa"><p><b>Q2. All information about all customers with salesman number 1001.</b></p><pre><code>SELECT *
+FROM Customers
+WHERE snum = 1001;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CNUM  CNAME    CITY    RATING  SNUM
+----  -------  ------  ------  ----
+2001  Hoffman  London  100     1001
+2006  Clemens  London  100     1001
+(2 rows)</code></pre></div><div class="qa"><p><b>Q3. Display city, sname, snum and commission (in that order).</b></p><pre><code>SELECT city, sname, snum, commission
+FROM Salesmen;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CITY      SNAME    SNUM  COMMISSION
+--------  -------  ----  ----------
+London    Peel     1001  0.12      
+Surat     Serres   1002  0.13      
+New York  Axelrod  1003  0.1       
+London    Motika   1004  0.11      
+Surat     Sejal    1005  0.14      
+Rome      Piyush   1006  0.09      
+Rome      Rafkin   1007  0.15      
+(7 rows)</code></pre><p><i>The order of columns in the SELECT list decides the order of the output.</i></p></div><div class="qa"><p><b>Q4. Rating followed by the name of each customer in Surat.</b></p><pre><code>SELECT rating, cname
+FROM Customers
+WHERE city = 'Surat';</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>RATING  CNAME 
+------  ------
+200     Liu   
+300     Grass 
+200     Chirag
+(3 rows)</code></pre></div><div class="qa"><p><b>Q5. snum of all salesmen with orders, without duplicates.</b></p><pre><code>SELECT DISTINCT snum
+FROM Orders;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>SNUM
+----
+1001
+1004
+1002
+1007
+1003
+1005
+1006
+(7 rows)</code></pre><p><i>DISTINCT removes duplicate rows.</i></p></div><div class="qa"><p><b>Q6. All orders for more than Rs. 1000.</b></p><pre><code>SELECT *
+FROM Orders
+WHERE amount &gt; 1000;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ONUM  AMOUNT   ODATE       CNUM  SNUM
+----  -------  ----------  ----  ----
+3002  1900.1   1997-10-03  2007  1004
+3003  5160.45  1997-10-03  2003  1002
+3004  1098.16  1997-10-03  2008  1007
+3005  1713.23  1997-10-04  2002  1003
+3007  2500     1997-10-04  2009  1005
+3008  4723     1997-10-05  2006  1001
+3009  1309.95  1997-10-06  2004  1002
+3010  9891.88  1997-10-06  2006  1001
+(8 rows)</code></pre></div><div class="qa"><p><b>Q7. Names and cities of salesmen in London with commission above 10%.</b></p><pre><code>SELECT sname, city
+FROM Salesmen
+WHERE city = 'London' AND commission &gt; 0.10;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>SNAME   CITY  
+------  ------
+Peel    London
+Motika  London
+(2 rows)</code></pre><p><i>Commission is stored as a fraction (0.12 = 12%).</i></p></div><div class="qa"><p><b>Q8. Customers whose names begin with 'C'.</b></p><pre><code>SELECT *
+FROM Customers
+WHERE cname LIKE 'C%';</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CNUM  CNAME     CITY    RATING  SNUM
+----  --------  ------  ------  ----
+2006  Clemens   London  100     1001
+2008  Cisneros  Rome    250     1007
+2009  Chirag    Surat   200     1005
+(3 rows)</code></pre><p><i>% matches any number of characters, _ matches exactly one.</i></p></div><div class="qa"><p><b>Q9. Customers whose names begin with a letter from 'A' to 'G'.</b></p><pre><code>SELECT *
+FROM Customers
+WHERE SUBSTR(cname, 1, 1) BETWEEN 'A' AND 'G';</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CNUM  CNAME     CITY    RATING  SNUM
+----  --------  ------  ------  ----
+2002  Giovanni  Rome    200     1003
+2004  Grass     Surat   300     1002
+2005  Banks     Rome    100     1006
+2006  Clemens   London  100     1001
+2008  Cisneros  Rome    250     1007
+2009  Chirag    Surat   200     1005
+(6 rows)</code></pre><p><i>Another way: WHERE cname &gt;= 'A' AND cname &lt; 'H'. (In MySQL use SUBSTRING or LEFT(cname,1).)</i></p></div><div class="qa"><p><b>Q10. Orders with zero or NULL amount.</b></p><pre><code>SELECT *
+FROM Orders
+WHERE amount = 0 OR amount IS NULL;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ONUM  AMOUNT  ODATE       CNUM  SNUM
+----  ------  ----------  ----  ----
+3011  0       1997-10-06  2009  1005
+3012  NULL    1997-10-07  2005  1006
+(2 rows)</code></pre><p><i>Never write amount = NULL; NULL is tested only with IS NULL / IS NOT NULL.</i></p></div><h3>B. Aggregate functions, GROUP BY and ORDER BY</h3><div class="qa"><p><b>Q11. Largest orders of salesman 1002 and 1007.</b></p><pre><code>SELECT snum, MAX(amount) AS largest_order
+FROM Orders
+WHERE snum IN (1002, 1007)
+GROUP BY snum;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>SNUM  LARGEST_ORDER
+----  -------------
+1002  5160.45      
+1007  1098.16      
+(2 rows)</code></pre></div><div class="qa"><p><b>Q12. Count all orders of October 3, 1997.</b></p><pre><code>SELECT COUNT(*) AS orders_on_3_oct
+FROM Orders
+WHERE odate = DATE '1997-10-03';</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ORDERS_ON_3_OCT
+---------------
+4              
+(1 row)</code></pre><p><i>Oracle: TO_DATE('03-OCT-1997','DD-MON-YYYY'). MySQL: '1997-10-03'.</i></p></div><div class="qa"><p><b>Q13. Total amount ordered.</b></p><pre><code>SELECT SUM(amount) AS total_amount
+FROM Orders;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>TOTAL_AMOUNT
+------------
+29139.71    
+(1 row)</code></pre><p><i>Aggregate functions ignore NULL values.</i></p></div><div class="qa"><p><b>Q14. Average amount ordered.</b></p><pre><code>SELECT AVG(amount) AS average_amount
+FROM Orders;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>AVERAGE_AMOUNT
+--------------
+2649.0645     
+(1 row)</code></pre></div><div class="qa"><p><b>Q15. Count the salesmen currently having orders.</b></p><pre><code>SELECT COUNT(DISTINCT snum) AS salesmen_with_orders
+FROM Orders;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>SALESMEN_WITH_ORDERS
+--------------------
+7                   
+(1 row)</code></pre></div><div class="qa"><p><b>Q16. All salesmen with their % of commission.</b></p><pre><code>SELECT sname, commission * 100 || '%' AS commission_pct
+FROM Salesmen;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>SNAME    COMMISSION_PCT
+-------  --------------
+Peel     12            
+Serres   13            
+Axelrod  10            
+Motika   11            
+Sejal    14            
+Piyush   9             
+Rafkin   15            
+(7 rows)</code></pre><p><i>Oracle/PostgreSQL concatenate with ||. In MySQL use CONCAT(commission * 100, '%').</i></p></div><div class="qa"><p><b>Q17. Assuming 12% commission: order number, salesman no and commission for each order.</b></p><pre><code>SELECT onum, snum, amount * 0.12 AS commission
+FROM Orders;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ONUM  SNUM  COMMISSION
+----  ----  ----------
+3001  1001  92.0628   
+3002  1004  228.012   
+3003  1002  619.254   
+3004  1007  131.7792  
+3005  1003  205.5876  
+3006  1002  9.09      
+3007  1005  300       
+3008  1001  566.76    
+3009  1002  157.194   
+3010  1001  1187.0256 
+3011  1005  0         
+3012  1006  NULL      
+(12 rows)</code></pre></div><div class="qa"><p><b>Q18. Highest rating in each city, as: For the city (city), the highest rating is: (rating).</b></p><pre><code>SELECT 'For the city (' || city || '), the highest rating is: ' || MAX(rating) AS result
+FROM Customers
+GROUP BY city;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>RESULT                                           
+-------------------------------------------------
+For the city (London), the highest rating is: 100
+For the city (Rome), the highest rating is: 250  
+For the city (Surat), the highest rating is: 300 
+(3 rows)</code></pre><p><i>MySQL: CONCAT('For the city (', city, '), the highest rating is: ', MAX(rating)).</i></p></div><div class="qa"><p><b>Q19. All customers in descending order of rating.</b></p><pre><code>SELECT *
+FROM Customers
+ORDER BY rating DESC;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CNUM  CNAME     CITY    RATING  SNUM
+----  --------  ------  ------  ----
+2004  Grass     Surat   300     1002
+2008  Cisneros  Rome    250     1007
+2002  Giovanni  Rome    200     1003
+2003  Liu       Surat   200     1002
+2009  Chirag    Surat   200     1005
+2001  Hoffman   London  100     1001
+2005  Banks     Rome    100     1006
+2006  Clemens   London  100     1001
+2007  Pereira   Rome    100     1004
+(9 rows)</code></pre></div><div class="qa"><p><b>Q20. Total of orders for each day, in descending order.</b></p><pre><code>SELECT odate, SUM(amount) AS day_total
+FROM Orders
+GROUP BY odate
+ORDER BY day_total DESC;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ODATE       DAY_TOTAL
+----------  ---------
+1997-10-06  11201.83 
+1997-10-03  8925.9   
+1997-10-05  4723     
+1997-10-04  4288.98  
+1997-10-07  NULL     
+(5 rows)</code></pre><p><i>Oracle cannot always sort by a column alias in GROUP BY queries; use ORDER BY SUM(amount) DESC if needed.</i></p></div><h3>C. Joins</h3><div class="qa"><p><b>Q21. Names of all customers with their salesman's name.</b></p><pre><code>SELECT c.cname, s.sname
+FROM Customers c JOIN Salesmen s ON c.snum = s.snum;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CNAME     SNAME  
+--------  -------
+Hoffman   Peel   
+Giovanni  Axelrod
+Liu       Serres 
+Grass     Serres 
+Banks     Piyush 
+Clemens   Peel   
+Pereira   Motika 
+Cisneros  Rafkin 
+Chirag    Sejal  
+(9 rows)</code></pre></div><div class="qa"><p><b>Q22. Customers and salesmen who share the same city.</b></p><pre><code>SELECT c.cname, s.sname, c.city
+FROM Customers c, Salesmen s
+WHERE c.city = s.city;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CNAME     SNAME   CITY  
+--------  ------  ------
+Hoffman   Motika  London
+Hoffman   Peel    London
+Giovanni  Piyush  Rome  
+Giovanni  Rafkin  Rome  
+Liu       Sejal   Surat 
+Liu       Serres  Surat 
+Grass     Sejal   Surat 
+Grass     Serres  Surat 
+Banks     Piyush  Rome  
+Banks     Rafkin  Rome  
+Clemens   Motika  London
+Clemens   Peel    London
+Pereira   Piyush  Rome  
+Pereira   Rafkin  Rome  
+Cisneros  Piyush  Rome  
+Cisneros  Rafkin  Rome  
+Chirag    Sejal   Surat 
+Chirag    Serres  Surat 
+(18 rows)</code></pre></div><div class="qa"><p><b>Q23. All orders with the names of their customer and salesman.</b></p><pre><code>SELECT o.onum, o.amount, c.cname, s.sname
+FROM Orders o, Customers c, Salesmen s
+WHERE o.cnum = c.cnum AND o.snum = s.snum;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ONUM  AMOUNT   CNAME     SNAME  
+----  -------  --------  -------
+3001  767.19   Hoffman   Peel   
+3002  1900.1   Pereira   Motika 
+3003  5160.45  Liu       Serres 
+3004  1098.16  Cisneros  Rafkin 
+3005  1713.23  Giovanni  Axelrod
+3006  75.75    Grass     Serres 
+3007  2500     Chirag    Sejal  
+3008  4723     Clemens   Peel   
+3009  1309.95  Grass     Serres 
+3010  9891.88  Clemens   Peel   
+3011  0        Chirag    Sejal  
+3012  NULL     Banks     Piyush 
+(12 rows)</code></pre></div><div class="qa"><p><b>Q24. Orders by customers not located in the same city as their salesman.</b></p><pre><code>SELECT o.onum, c.cname, c.city AS cust_city, s.sname, s.city AS sales_city
+FROM Orders o, Customers c, Salesmen s
+WHERE o.cnum = c.cnum AND c.snum = s.snum AND c.city &lt;&gt; s.city;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ONUM  CNAME     CUST_CITY  SNAME    SALES_CITY
+----  --------  ---------  -------  ----------
+3002  Pereira   Rome       Motika   London    
+3005  Giovanni  Rome       Axelrod  New York  
+(2 rows)</code></pre></div><div class="qa"><p><b>Q25. Customers serviced by salespeople with commission above 12%.</b></p><pre><code>SELECT DISTINCT c.cname, s.sname, s.commission
+FROM Customers c JOIN Salesmen s ON c.snum = s.snum
+WHERE s.commission &gt; 0.12;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CNAME     SNAME   COMMISSION
+--------  ------  ----------
+Liu       Serres  0.13      
+Grass     Serres  0.13      
+Cisneros  Rafkin  0.15      
+Chirag    Sejal   0.14      
+(4 rows)</code></pre></div><div class="qa"><p><b>Q26. Salesman commission on each order by a customer with rating above 100.</b></p><pre><code>SELECT o.onum, s.sname, o.amount * s.commission AS salesman_commission
+FROM Orders o, Customers c, Salesmen s
+WHERE o.cnum = c.cnum AND o.snum = s.snum AND c.rating &gt; 100;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ONUM  SNAME    SALESMAN_COMMISSION
+----  -------  -------------------
+3003  Serres   670.8585           
+3004  Rafkin   164.724            
+3005  Axelrod  171.323            
+3006  Serres   9.8475             
+3007  Sejal    350                
+3009  Serres   170.2935           
+3011  Sejal    0                  
+(7 rows)</code></pre></div><div class="qa"><p><b>Q27. All pairs of customers having the same rating, without duplication.</b></p><pre><code>SELECT a.cname AS customer1, b.cname AS customer2, a.rating
+FROM Customers a, Customers b
+WHERE a.rating = b.rating AND a.cnum &lt; b.cnum;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CUSTOMER1  CUSTOMER2  RATING
+---------  ---------  ------
+Hoffman    Banks      100   
+Hoffman    Clemens    100   
+Hoffman    Pereira    100   
+Giovanni   Liu        200   
+Giovanni   Chirag     200   
+Liu        Chirag     200   
+Banks      Clemens    100   
+Banks      Pereira    100   
+Clemens    Pereira    100   
+(9 rows)</code></pre><p><i>Self join: the condition a.cnum &lt; b.cnum removes pairs with themselves and mirrored duplicates.</i></p></div><h3>D. Sub-queries</h3><div class="qa"><p><b>Q28. Orders greater than the average of October 4, 1997.</b></p><pre><code>SELECT *
+FROM Orders
+WHERE amount &gt; (SELECT AVG(amount)
+                FROM Orders
+                WHERE odate = DATE '1997-10-04');</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ONUM  AMOUNT   ODATE       CNUM  SNUM
+----  -------  ----------  ----  ----
+3002  1900.1   1997-10-03  2007  1004
+3003  5160.45  1997-10-03  2003  1002
+3005  1713.23  1997-10-04  2002  1003
+3007  2500     1997-10-04  2009  1005
+3008  4723     1997-10-05  2006  1001
+3010  9891.88  1997-10-06  2006  1001
+(6 rows)</code></pre></div><div class="qa"><p><b>Q29. Average commission of salesmen in London.</b></p><pre><code>SELECT AVG(commission) AS avg_commission
+FROM Salesmen
+WHERE city = 'London';</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>AVG_COMMISSION
+--------------
+0.115         
+(1 row)</code></pre></div><div class="qa"><p><b>Q30. Orders attributed to salesmen in 'London' using both subquery and join.</b></p><pre><code>-- Using a sub-query
+SELECT *
+FROM Orders
+WHERE snum IN (SELECT snum FROM Salesmen WHERE city = 'London');</code></pre><pre><code>-- Using a join
+SELECT o.*
+FROM Orders o JOIN Salesmen s ON o.snum = s.snum
+WHERE s.city = 'London';</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ONUM  AMOUNT   ODATE       CNUM  SNUM
+----  -------  ----------  ----  ----
+3001  767.19   1997-10-03  2001  1001
+3002  1900.1   1997-10-03  2007  1004
+3008  4723     1997-10-05  2006  1001
+3010  9891.88  1997-10-06  2006  1001
+(4 rows)</code></pre><p><i>Both forms return the same rows.</i></p></div><div class="qa"><p><b>Q31. Commission of all salesmen serving customers in 'London'.</b></p><pre><code>SELECT sname, commission
+FROM Salesmen
+WHERE snum IN (SELECT snum FROM Customers WHERE city = 'London');</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>SNAME  COMMISSION
+-----  ----------
+Peel   0.12      
+(1 row)</code></pre></div><div class="qa"><p><b>Q32. Customers whose cnum is 1000 above the snum of Sejal.</b></p><pre><code>SELECT *
+FROM Customers
+WHERE cnum = (SELECT snum FROM Salesmen WHERE sname = 'Sejal') + 1000;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CNUM  CNAME  CITY  RATING  SNUM
+----  -----  ----  ------  ----
+2005  Banks  Rome  100     1006
+(1 row)</code></pre><p><i>Sejal's snum is 1005, so the customer with cnum 2005 is returned.</i></p></div><div class="qa"><p><b>Q33. Count customers with rating above the average of 'Surat'.</b></p><pre><code>SELECT COUNT(*) AS customers_above_avg
+FROM Customers
+WHERE rating &gt; (SELECT AVG(rating) FROM Customers WHERE city = 'Surat');</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CUSTOMERS_ABOVE_AVG
+-------------------
+2                  
+(1 row)</code></pre></div><h3>E. ANY, ALL and IN</h3><div class="qa"><p><b>Q34. Salesmen with customers located in their cities, using ANY and IN.</b></p><pre><code>-- Using ANY
+SELECT *
+FROM Salesmen s
+WHERE s.city = ANY (SELECT c.city FROM Customers c WHERE c.snum = s.snum);</code></pre><pre><code>-- Using IN
+SELECT *
+FROM Salesmen s
+WHERE s.city IN (SELECT c.city FROM Customers c WHERE c.snum = s.snum);</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>SNUM  SNAME   CITY    COMMISSION
+----  ------  ------  ----------
+1001  Peel    London  0.12      
+1002  Serres  Surat   0.13      
+1005  Sejal   Surat   0.14      
+1006  Piyush  Rome    0.09      
+1007  Rafkin  Rome    0.15      
+(5 rows)</code></pre><p><i>= ANY is equivalent to IN. This is a correlated sub-query (it uses s.snum from the outer query).</i></p></div><div class="qa"><p><b>Q35. Salesmen for whom there are customers that follow them in alphabetical order.</b></p><pre><code>SELECT *
+FROM Salesmen
+WHERE sname &lt; ANY (SELECT cname FROM Customers);</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>SNUM  SNAME    CITY      COMMISSION
+----  -------  --------  ----------
+1001  Peel     London    0.12      
+1003  Axelrod  New York  0.1       
+1004  Motika   London    0.11      
+(3 rows)</code></pre><p><i>&lt; ANY is true if the name is smaller than at least one customer name, i.e. smaller than the maximum.</i></p></div><div class="qa"><p><b>Q36. Customers with rating greater than any customer in 'Rome'.</b></p><pre><code>SELECT *
+FROM Customers
+WHERE rating &gt; ANY (SELECT rating FROM Customers WHERE city = 'Rome');</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CNUM  CNAME     CITY   RATING  SNUM
+----  --------  -----  ------  ----
+2002  Giovanni  Rome   200     1003
+2003  Liu       Surat  200     1002
+2004  Grass     Surat  300     1002
+2008  Cisneros  Rome   250     1007
+2009  Chirag    Surat  200     1005
+(5 rows)</code></pre><p><i>&gt; ANY means greater than at least one value, i.e. greater than the minimum rating in Rome (100).</i></p></div><div class="qa"><p><b>Q37. Orders with amount greater than at least one of the orders from 6th October, 1997.</b></p><pre><code>SELECT *
+FROM Orders
+WHERE amount &gt; ANY (SELECT amount FROM Orders WHERE odate = DATE '1997-10-06');</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ONUM  AMOUNT   ODATE       CNUM  SNUM
+----  -------  ----------  ----  ----
+3001  767.19   1997-10-03  2001  1001
+3002  1900.1   1997-10-03  2007  1004
+3003  5160.45  1997-10-03  2003  1002
+3004  1098.16  1997-10-03  2008  1007
+3005  1713.23  1997-10-04  2002  1003
+3006  75.75    1997-10-04  2004  1002
+3007  2500     1997-10-04  2009  1005
+3008  4723     1997-10-05  2006  1001
+3009  1309.95  1997-10-06  2004  1002
+3010  9891.88  1997-10-06  2006  1001
+(10 rows)</code></pre></div><div class="qa"><p><b>Q38. Orders with amounts smaller than any amount for a customer in 'London'.</b></p><pre><code>SELECT *
+FROM Orders
+WHERE amount &lt; ANY (SELECT o.amount
+                    FROM Orders o JOIN Customers c ON o.cnum = c.cnum
+                    WHERE c.city = 'London');</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>ONUM  AMOUNT   ODATE       CNUM  SNUM
+----  -------  ----------  ----  ----
+3001  767.19   1997-10-03  2001  1001
+3002  1900.1   1997-10-03  2007  1004
+3003  5160.45  1997-10-03  2003  1002
+3004  1098.16  1997-10-03  2008  1007
+3005  1713.23  1997-10-04  2002  1003
+3006  75.75    1997-10-04  2004  1002
+3007  2500     1997-10-04  2009  1005
+3008  4723     1997-10-05  2006  1001
+3009  1309.95  1997-10-06  2004  1002
+3011  0        1997-10-06  2009  1005
+(10 rows)</code></pre><p><i>&lt; ANY means smaller than at least one value, i.e. smaller than the maximum London order.</i></p></div><div class="qa"><p><b>Q39. Customers with a greater rating than every customer in 'Rome'.</b></p><pre><code>SELECT *
+FROM Customers
+WHERE rating &gt; ALL (SELECT rating FROM Customers WHERE city = 'Rome');</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CNUM  CNAME  CITY   RATING  SNUM
+----  -----  -----  ------  ----
+2004  Grass  Surat  300     1002
+(1 row)</code></pre><p><i>&gt; ALL means greater than every value, i.e. greater than the maximum rating in Rome (250).</i></p></div><h3>F. UNION</h3><div class="qa"><p><b>Q40. UNION of two queries: names, cities, ratings of all customers; rating &gt;= 200 shows 'HIGH RATING', otherwise 'LOW RATING'.</b></p><pre><code>SELECT cname, city, rating, 'HIGH RATING' AS remark
+FROM Customers
+WHERE rating &gt;= 200
+UNION
+SELECT cname, city, rating, 'LOW RATING'
+FROM Customers
+WHERE rating &lt; 200;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>CNAME     CITY    RATING  REMARK     
+--------  ------  ------  -----------
+Banks     Rome    100     LOW RATING 
+Chirag    Surat   200     HIGH RATING
+Cisneros  Rome    250     HIGH RATING
+Clemens   London  100     LOW RATING 
+Giovanni  Rome    200     HIGH RATING
+Grass     Surat   300     HIGH RATING
+Hoffman   London  100     LOW RATING 
+Liu       Surat   200     HIGH RATING
+Pereira   Rome    100     LOW RATING 
+(9 rows)</code></pre></div><div class="qa"><p><b>Q41. Name and number of each salesman and customer with more than one current order, alphabetical by name.</b></p><pre><code>SELECT snum AS num, sname AS name
+FROM Salesmen s
+WHERE (SELECT COUNT(*) FROM Orders o WHERE o.snum = s.snum) &gt; 1
+UNION
+SELECT cnum, cname
+FROM Customers c
+WHERE (SELECT COUNT(*) FROM Orders o WHERE o.cnum = c.cnum) &gt; 1
+ORDER BY name;</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>NUM   NAME   
+----  -------
+2009  Chirag 
+2006  Clemens
+2004  Grass  
+1001  Peel   
+1005  Sejal  
+1002  Serres 
+(6 rows)</code></pre><p><i>In Oracle use ORDER BY 2 (column position) after a UNION.</i></p></div><div class="qa"><p><b>Q42. UNION of three queries: salesmen in Surat (snum), customers in Surat (cnum), orders of 3rd Oct (onum) - duplicates retained between the last two only.</b></p><pre><code>SELECT snum AS num FROM Salesmen WHERE city = 'Surat'
+UNION
+(SELECT cnum FROM Customers WHERE city = 'Surat'
+ UNION ALL
+ SELECT onum FROM Orders WHERE odate = DATE '1997-10-03');</code></pre><p><b>Output</b> (with the sample data)</p><pre class='out'><code>NUM 
+----
+1002
+1005
+2003
+2004
+2009
+3001
+3002
+3003
+3004
+(9 rows)</code></pre><p><i>The brackets make the UNION ALL of the last two queries run first, so duplicates are kept between them but removed against the first query.</i></p></div><h3>G. Data modification: DELETE and UPDATE</h3><div class="qa"><p><b>Q43. Remove all orders from customer Chirag.</b></p><pre><code>DELETE FROM Orders
+WHERE cnum = (SELECT cnum FROM Customers WHERE cname = 'Chirag');</code></pre><p><b>Before:</b></p><pre class='out'><code>ONUM  CNUM  AMOUNT
+----  ----  ------
+3007  2009  2500  
+3011  2009  0     
+(2 rows)</code></pre><p><b>After</b> (2 rows affected):</p><pre class='out'><code>no rows selected</code></pre><p><i>Always check with a SELECT first, and use COMMIT / ROLLBACK to confirm or undo.</i></p></div><div class="qa"><p><b>Q44. Set the ratings of all customers of Piyush to 400.</b></p><pre><code>UPDATE Customers
+SET rating = 400
+WHERE snum = (SELECT snum FROM Salesmen WHERE sname = 'Piyush');</code></pre><p><b>Before:</b></p><pre class='out'><code>CNUM  CNAME  RATING  SNUM
+----  -----  ------  ----
+2005  Banks  100     1006
+(1 row)</code></pre><p><b>After</b> (1 row affected):</p><pre class='out'><code>CNUM  CNAME  RATING  SNUM
+----  -----  ------  ----
+2005  Banks  400     1006
+(1 row)</code></pre></div><div class="qa"><p><b>Q45. Increase the rating of all customers in Rome by 100.</b></p><pre><code>UPDATE Customers
+SET rating = rating + 100
+WHERE city = 'Rome';</code></pre><p><b>Before:</b></p><pre class='out'><code>CNUM  CNAME     CITY  RATING
+----  --------  ----  ------
+2002  Giovanni  Rome  200   
+2005  Banks     Rome  100   
+2007  Pereira   Rome  100   
+2008  Cisneros  Rome  250   
+(4 rows)</code></pre><p><b>After</b> (4 rows affected):</p><pre class='out'><code>CNUM  CNAME     CITY  RATING
+----  --------  ----  ------
+2002  Giovanni  Rome  300   
+2005  Banks     Rome  200   
+2007  Pereira   Rome  200   
+2008  Cisneros  Rome  350   
+(4 rows)</code></pre></div>
+
+ <h2 class="sec" style="margin-top:26px">4. Oracle vs MySQL differences</h2>
+ <table><tr><th>Task</th><th>Oracle</th><th>MySQL</th></tr>
+<tr><td>Text type</td><td><code>VARCHAR2(n)</code> (VARCHAR also works)</td><td><code>VARCHAR(n)</code></td></tr>
+<tr><td>Concatenation</td><td><code>a || b</code></td><td><code>CONCAT(a, b)</code></td></tr>
+<tr><td>Date literal</td><td><code>DATE '1997-10-03'</code> or <code>TO_DATE('03-OCT-1997','DD-MON-YYYY')</code></td><td><code>'1997-10-03'</code> or <code>DATE '1997-10-03'</code></td></tr>
+<tr><td>Substring</td><td><code>SUBSTR(s, 1, 1)</code></td><td><code>SUBSTRING(s, 1, 1)</code> or <code>LEFT(s, 1)</code></td></tr>
+<tr><td>Difference of sets</td><td><code>MINUS</code></td><td><code>EXCEPT</code> (8.0.31+) or NOT IN</td></tr>
+<tr><td>Table alias</td><td><code>Customers c</code> (no AS)</td><td><code>Customers c</code> or <code>AS c</code></td></tr>
+<tr><td>Run a script</td><td><code>@script.sql</code> in SQL*Plus</td><td><code>source script.sql;</code></td></tr>
+<tr><td>Show structure</td><td><code>DESC Orders;</code></td><td><code>DESCRIBE Orders;</code></td></tr>
+<tr><td>Undo / save</td><td><code>ROLLBACK;</code> / <code>COMMIT;</code></td><td>same (needs InnoDB, autocommit off)</td></tr></table>
+
+ <h2 class="sec" style="margin-top:26px">5. Quick SQL revision</h2>
+ <ul>
+<li>Order of clauses: <code>SELECT &rarr; FROM &rarr; WHERE &rarr; GROUP BY &rarr; HAVING &rarr; ORDER BY</code>.</li>
+<li>Patterns: <code>LIKE 'C%'</code>, <code>BETWEEN a AND b</code>, <code>IN (...)</code>, <code>IS NULL</code>.</li>
+<li>Aggregates: COUNT, SUM, AVG, MIN, MAX (ignore NULLs); use GROUP BY for per-group results.</li>
+<li>Joins: list tables with a join condition; self join uses two aliases of one table.</li>
+<li>Sub-queries: <code>IN</code>, <code>EXISTS</code>, <code>&gt; ANY</code> (greater than min), <code>&gt; ALL</code> (greater than max).</li>
+<li>Sets: <code>UNION</code> (no duplicates), <code>UNION ALL</code> (keeps duplicates), <code>INTERSECT</code>, <code>MINUS/EXCEPT</code>.</li>
+<li>DML: <code>INSERT</code>, <code>UPDATE ... SET ... WHERE</code>, <code>DELETE ... WHERE</code> &ndash; always use WHERE and finish with COMMIT/ROLLBACK.</li></ul>
+
+ <h2 class="sec" style="margin-top:26px">6. Viva questions</h2>
+ <div class="qa"><p><b>Q1. What is a DBMS? Name some popular ones.</b></p><p>Software that creates, stores, retrieves and controls access to a database. Examples: Oracle, MySQL, SQL Server, PostgreSQL, SQLite.</p></div><div class="qa"><p><b>Q2. What is the difference between DDL, DML, DCL and TCL?</b></p><p>DDL defines structure (CREATE, ALTER, DROP, TRUNCATE); DML manipulates data (SELECT, INSERT, UPDATE, DELETE); DCL controls access (GRANT, REVOKE); TCL manages transactions (COMMIT, ROLLBACK, SAVEPOINT).</p></div><div class="qa"><p><b>Q3. What is a primary key? How is it different from a unique key?</b></p><p>A primary key uniquely identifies each row, cannot be NULL and there is only one per table. A unique key also prevents duplicates but allows NULL (in most DBMS) and a table can have several.</p></div><div class="qa"><p><b>Q4. What is a foreign key?</b></p><p>A column that refers to the primary key of another table, enforcing referential integrity (e.g. Customers.snum refers to Salesmen.snum).</p></div><div class="qa"><p><b>Q5. Difference between WHERE and HAVING.</b></p><p>WHERE filters rows before grouping and cannot use aggregates; HAVING filters groups after GROUP BY and can use aggregates.</p></div><div class="qa"><p><b>Q6. Difference between DELETE, TRUNCATE and DROP.</b></p><p>DELETE removes selected rows (can be rolled back, fires triggers); TRUNCATE removes all rows quickly (structure stays, usually cannot be rolled back); DROP removes the whole table.</p></div><div class="qa"><p><b>Q7. What are the different types of joins?</b></p><p>INNER, LEFT OUTER, RIGHT OUTER, FULL OUTER, CROSS and SELF join (a table joined with itself, as in Q27).</p></div><div class="qa"><p><b>Q8. What is the difference between UNION and UNION ALL?</b></p><p>UNION removes duplicate rows from the combined result; UNION ALL keeps all rows and is faster.</p></div><div class="qa"><p><b>Q9. What is a sub-query? Correlated vs non-correlated?</b></p><p>A query inside another query. A non-correlated sub-query runs once; a correlated one refers to the outer query's columns and runs once per outer row (Q34).</p></div><div class="qa"><p><b>Q10. What do ANY and ALL mean?</b></p><p>x > ANY(set) is true if x is greater than at least one value (the minimum); x > ALL(set) is true if x is greater than every value (the maximum).</p></div><div class="qa"><p><b>Q11. How do you handle NULL values?</b></p><p>Use IS NULL / IS NOT NULL, and functions like NVL (Oracle), COALESCE or IFNULL. Comparisons with NULL give unknown, and aggregates ignore NULLs.</p></div><div class="qa"><p><b>Q12. Difference between COUNT(*), COUNT(column) and COUNT(DISTINCT column).</b></p><p>COUNT(*) counts all rows; COUNT(column) counts non-NULL values; COUNT(DISTINCT column) counts different non-NULL values.</p></div><div class="qa"><p><b>Q13. What is the use of GROUP BY?</b></p><p>It groups rows with the same value so aggregate functions (SUM, AVG, MAX, MIN, COUNT) are calculated for each group.</p></div><div class="qa"><p><b>Q14. What is a view?</b></p><p>A virtual table based on a SELECT query; it stores no data of its own and is used for security and simplicity.</p></div><div class="qa"><p><b>Q15. What are COMMIT and ROLLBACK?</b></p><p>COMMIT makes the changes of a transaction permanent; ROLLBACK undoes the changes since the last commit.</p></div><div class="qa"><p><b>Q16. What is normalization?</b></p><p>Organising tables to remove redundancy and update anomalies (1NF, 2NF, 3NF, BCNF).</p></div><div class="qa"><p><b>Q17. What does the LIKE operator do?</b></p><p>Pattern matching on text: % matches any number of characters, _ matches one character.</p></div><div class="qa"><p><b>Q18. How does the DISTINCT keyword work?</b></p><p>It removes duplicate rows from the result set (Q5, Q15).</p></div>
+
+ <h2 class="sec" style="margin-top:26px">7. Tips for the practical record and exam</h2>
+ <ul>
+  <li>For each query write: <b>aim / question, SQL statement, output</b> (screenshot or pasted text).</li>
+  <li>Include the table structures (<code>DESC</code>) and the table data at the start of the record.</li>
+  <li>Test with <code>SELECT</code> before running <code>DELETE</code> or <code>UPDATE</code>; use <code>ROLLBACK</code> to undo mistakes.</li>
+  <li>If you get <i>ORA-00904 invalid identifier</i> check column names; <i>ORA-00933</i> usually means a syntax error such as AS before a table alias.</li>
+  <li>Be ready to explain every clause in your query and to change a condition during the exam.</li>
+ </ul>
  <div class="pager"><a class="prev" href="mca204-u5.html"><small>← Previous</small>Unit V: jQuery</a><a class="next" href="mca206.html"><small>Next →</small>MCA 206 (P) · Advanced Web Technology Lab</a></div>
 </article></div></div>
 </main>
