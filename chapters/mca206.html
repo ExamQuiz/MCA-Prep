@@ -4,9 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MCA 206 (P) Advanced Web Technology Lab | MCA Year 2 Notes</title>
-<meta name="description" content="MCA 206 (P) Advanced Web Technology Lab — MCA Year 2">
+<meta name="description" content="MCA 206 (P) Advanced Web Technology Lab: 8 solved PHP, XML, DTD and AJAX programs with output and viva questions">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose pre.out{border-left:4px solid var(--brand2)}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:26px 0 6px;font-size:1.15rem}
+.prose h4{margin:16px 0 4px;font-size:.98rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem;display:block;overflow-x:auto}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0;background:var(--card)}
+.qa p{margin:6px 0;max-width:none}
+.prog{border:1px solid var(--line);border-radius:16px;padding:6px 18px 14px;margin:20px 0;background:var(--card)}
+.fname{display:inline-block;background:var(--brand);color:#fff;font-size:.8rem;font-weight:700;padding:2px 10px;border-radius:8px 8px 0 0;margin:12px 0 -6px}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+.prose p,.prose li{max-width:none}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -44,11 +61,592 @@
  <span class="tag">MCA 206 (P)</span>
  <h1>💻 Advanced Web Technology Lab</h1>
  <div class="chips"><span class="chip">Max / Min marks: 100 / 50</span><span class="chip">Practical</span></div>
- <p style="color:var(--muted)">PHP, XML, DTD and AJAX practicals.</p>
- 
- <h2 class="sec" style="margin-top:22px;font-size:1.15rem">Suggested practical list</h2>
- <ol style="padding-left:22px"><li>Design a PHP program to print the reverse of any number.</li><li>Design a PHP script for uploading a file to the server and displaying the uploaded file&#x27;s details.</li><li>Create a simple XML document to display an address book.</li><li>Create an XML document and database for importing and exporting an XML document into a database.</li><li>Create an XML program for internal DTD (Document Type Definition) creation.</li><li>Create a program to change the content of a web page using AJAX.</li><li>Create a program implementing asynchronous JavaScript and XML for a webpage login process.</li><li>Create a program in AJAX using JavaScript, DHTML and the XMLHttpRequest object to perform a GET or POST and return a result without reloading the HTML page.</li></ol>
- <div class="placeholder"><h3>Solutions &amp; notes (placeholder)</h3><p>Add solved programs, queries, outputs and viva questions here.</p></div>
+ <p style="color:var(--muted)">PHP, XML, DTD and AJAX practicals, with complete source code, how to run, expected output and viva questions.</p>
+
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This lab supports MCA 204 (Advanced Web Technology). The eight programs below are the university&rsquo;s suggested list: two PHP programs, three XML programs and three AJAX programs. Each program has the <b>aim, complete code, steps to run, expected output, an explanation and viva questions</b>. Theory for these programs is in MCA 204 Units II (XML), III (AJAX) and IV (PHP and AJAX with XML).</p>
+ <div class="note"><b>How to use:</b> type and run every program yourself; reading is not enough for a practical exam. Change something (a field name, an element, a message) and predict the result before running it.</div>
+
+ <h2 class="sec" style="margin-top:26px">1. Lab setup</h2>
+ <ol>
+<li>Install <b>XAMPP</b> (Apache + PHP + MySQL) from apachefriends.org.</li>
+<li>Open the XAMPP Control Panel and <b>Start Apache</b> (and <b>MySQL</b> for Program 4).</li>
+<li>Create a folder <code>mca206</code> inside <code>C:\xampp\htdocs\</code> (Linux/macOS: <code>/opt/lampp/htdocs/</code>) and save all programs there.</li>
+<li>Open programs in the browser as <code>http://localhost/mca206/filename</code>. <b>Do not</b> double-click the files (that opens <code>file://</code> and PHP/AJAX will not work).</li>
+<li>Use <b>phpMyAdmin</b> at <code>http://localhost/phpmyadmin</code> for the database. Default MySQL user is <code>root</code> with an empty password.</li>
+</ol>
+<table><tr><th>Program</th><th>Files</th><th>Needs</th></tr>
+<tr><td>1</td><td>reverse.php</td><td>Apache + PHP</td></tr>
+<tr><td>2</td><td>upload.html, upload.php</td><td>Apache + PHP (writable folder)</td></tr>
+<tr><td>3</td><td>addressbook.xml, addressbook.xsl</td><td>Browser via localhost</td></tr>
+<tr><td>4</td><td>setup.sql, db.php, import.php, export.php</td><td>Apache + PHP + MySQL</td></tr>
+<tr><td>5</td><td>students.xml, validate.php</td><td>xmllint or PHP (php_xml enabled)</td></tr>
+<tr><td>6</td><td>change.html, content.txt, news.html</td><td>Apache (any web server)</td></tr>
+<tr><td>7</td><td>login.html, login.php</td><td>Apache + PHP</td></tr>
+<tr><td>8</td><td>calc.html, calc.php</td><td>Apache + PHP</td></tr></table>
+
+ <h2 class="sec" style="margin-top:26px">2. Programs</h2>
+ <div class="prog"><h3>Program 1: PHP program to print the reverse of any number</h3><p><b>Aim:</b> To write a PHP program that reads a number and prints its reverse (12345 gives 54321).</p><h4>Source code</h4><span class="fname">reverse.php</span><pre><code>&lt;?php
+$result = &quot;&quot;;
+if ($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;) {
+    $n = trim($_POST[&quot;number&quot;]);
+    if (!preg_match(&#x27;/^-?\d+$/&#x27;, $n)) {
+        $result = &quot;Please enter a valid whole number.&quot;;
+    } else {
+        $num = (int)$n;
+        $negative = $num &lt; 0;
+        $num = abs($num);
+        $rev = 0;
+        while ($num &gt; 0) {
+            $digit = $num % 10;          // last digit
+            $rev = $rev * 10 + $digit;   // append it to the reversed number
+            $num = intdiv($num, 10);     // drop the last digit
+        }
+        if ($negative) { $rev = -$rev; }
+        $result = &quot;Reverse of $n is $rev&quot;;
+    }
+}
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;title&gt;Reverse a Number&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Reverse of a number&lt;/h2&gt;
+  &lt;form method=&quot;post&quot; action=&quot;&quot;&gt;
+    Enter a number: &lt;input type=&quot;text&quot; name=&quot;number&quot; required&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Reverse&quot;&gt;
+  &lt;/form&gt;
+  &lt;p&gt;&lt;b&gt;&lt;?php echo htmlspecialchars($result); ?&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><span class="fname">reverse_simple.php</span><pre><code>&lt;?php
+// Short version using built-in string functions
+$n = 12345;
+echo &quot;Number  : $n &lt;br&gt;&quot;;
+echo &quot;Reverse : &quot; . strrev((string)$n);     // 54321
+?&gt;
+</code></pre><h4>How to run</h4><p>Save in <code>htdocs/mca206/</code> and open <code>http://localhost/mca206/reverse.php</code>.</p><h4>Expected output</h4><p>Input <code>12345</code> &rarr; <b>Reverse of 12345 is 54321</b>. Input <code>1200</code> &rarr; <b>Reverse of 1200 is 21</b> (leading zeros disappear in a number). Input <code>abc</code> &rarr; &ldquo;Please enter a valid whole number.&rdquo;</p><h4>How it works</h4><ul><li><code>% 10</code> gives the last digit; <code>intdiv($num, 10)</code> removes it.</li><li><code>$rev * 10 + $digit</code> builds the reversed number one digit at a time.</li><li><code>preg_match</code> validates the input; <code>htmlspecialchars</code> protects the output from HTML injection.</li><li>The program is a single page: the form posts to itself and PHP runs when <code>REQUEST_METHOD</code> is POST.</li></ul><h4>Viva questions</h4><div class="qa"><p><b>Q1. What is the difference between GET and POST?</b></p><p>GET sends data in the URL (visible, limited length); POST sends it in the request body (not shown in the URL, larger data).</p></div><div class="qa"><p><b>Q2. What does <code>strrev()</code> do?</b></p><p>It reverses a string; it works on text, so a number must be treated as a string.</p></div><div class="qa"><p><b>Q3. What is the use of <code>$_SERVER['REQUEST_METHOD']</code>?</b></p><p>It tells whether the page was requested with GET or POST.</p></div></div><div class="prog"><h3>Program 2: PHP script to upload a file to the server and display its details</h3><p><b>Aim:</b> To upload a file from a form to the server and display its name, type, size and stored location.</p><h4>Source code</h4><span class="fname">upload.html</span><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;title&gt;File Upload&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Upload a file&lt;/h2&gt;
+  &lt;!-- enctype must be multipart/form-data for file uploads --&gt;
+  &lt;form action=&quot;upload.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+    Select file: &lt;input type=&quot;file&quot; name=&quot;myfile&quot; required&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><span class="fname">upload.php</span><pre><code>&lt;?php
+$dir = &quot;uploads/&quot;;                       // folder inside the project
+if (!is_dir($dir)) { mkdir($dir, 0755, true); }
+
+if ($_SERVER[&quot;REQUEST_METHOD&quot;] != &quot;POST&quot; || !isset($_FILES[&quot;myfile&quot;])) {
+    die(&quot;No file submitted.&quot;);
+}
+$f = $_FILES[&quot;myfile&quot;];
+
+if ($f[&quot;error&quot;] !== UPLOAD_ERR_OK) {
+    die(&quot;Upload failed. Error code: &quot; . $f[&quot;error&quot;]);
+}
+
+$allowed = array(&quot;jpg&quot;, &quot;jpeg&quot;, &quot;png&quot;, &quot;gif&quot;, &quot;pdf&quot;, &quot;txt&quot;, &quot;docx&quot;);
+$ext = strtolower(pathinfo($f[&quot;name&quot;], PATHINFO_EXTENSION));
+if (!in_array($ext, $allowed)) { die(&quot;File type not allowed.&quot;); }
+if ($f[&quot;size&quot;] &gt; 2 * 1024 * 1024) { die(&quot;File is too large (maximum 2 MB).&quot;); }
+
+// make the stored name safe and unique
+$safeName = time() . &quot;_&quot; . preg_replace(&quot;/[^A-Za-z0-9._-]/&quot;, &quot;_&quot;, basename($f[&quot;name&quot;]));
+$target = $dir . $safeName;
+
+if (move_uploaded_file($f[&quot;tmp_name&quot;], $target)) {
+    echo &quot;&lt;h3&gt;File uploaded successfully&lt;/h3&gt;&quot;;
+    echo &quot;&lt;table border=&#x27;1&#x27; cellpadding=&#x27;6&#x27;&gt;&quot;;
+    echo &quot;&lt;tr&gt;&lt;th&gt;Original name&lt;/th&gt;&lt;td&gt;&quot; . htmlspecialchars($f[&quot;name&quot;]) . &quot;&lt;/td&gt;&lt;/tr&gt;&quot;;
+    echo &quot;&lt;tr&gt;&lt;th&gt;Type&lt;/th&gt;&lt;td&gt;&quot; . htmlspecialchars($f[&quot;type&quot;]) . &quot;&lt;/td&gt;&lt;/tr&gt;&quot;;
+    echo &quot;&lt;tr&gt;&lt;th&gt;Size&lt;/th&gt;&lt;td&gt;&quot; . round($f[&quot;size&quot;] / 1024, 2) . &quot; KB&lt;/td&gt;&lt;/tr&gt;&quot;;
+    echo &quot;&lt;tr&gt;&lt;th&gt;Temporary file&lt;/th&gt;&lt;td&gt;&quot; . htmlspecialchars($f[&quot;tmp_name&quot;]) . &quot;&lt;/td&gt;&lt;/tr&gt;&quot;;
+    echo &quot;&lt;tr&gt;&lt;th&gt;Stored at&lt;/th&gt;&lt;td&gt;&quot; . htmlspecialchars($target) . &quot;&lt;/td&gt;&lt;/tr&gt;&quot;;
+    echo &quot;&lt;/table&gt;&quot;;
+    if (in_array($ext, array(&quot;jpg&quot;, &quot;jpeg&quot;, &quot;png&quot;, &quot;gif&quot;))) {
+        echo &quot;&lt;p&gt;&lt;img src=&#x27;&quot; . htmlspecialchars($target) . &quot;&#x27; width=&#x27;200&#x27; alt=&#x27;uploaded image&#x27;&gt;&lt;/p&gt;&quot;;
+    }
+} else {
+    echo &quot;Could not save the file. Check the folder permissions.&quot;;
+}
+?&gt;
+</code></pre><h4>How to run</h4><p>Put both files in <code>htdocs/mca206/</code>, open <code>http://localhost/mca206/upload.html</code>, choose a file and click Upload.</p><h4>Expected output</h4><p>A table such as: Original name <code>photo.png</code>, Type <code>image/png</code>, Size <code>48.2 KB</code>, Temporary file <code>C:\xampp\tmp\php1A2B.tmp</code>, Stored at <code>uploads/1731234567_photo.png</code>, followed by a preview of the image.</p><h4>How it works</h4><ul><li>The form needs <code>method=&quot;post&quot;</code> and <code>enctype=&quot;multipart/form-data&quot;</code>.</li><li>PHP puts file information in the superglobal <code>$_FILES</code>: <code>name</code>, <code>type</code>, <code>size</code>, <code>tmp_name</code>, <code>error</code>.</li><li><code>move_uploaded_file()</code> moves the file from the temporary folder to the target folder.</li><li>Always check extension, size and error code; never trust the original file name. Upload limits are set in <code>php.ini</code> (<code>upload_max_filesize</code>, <code>post_max_size</code>).</li></ul><h4>Viva questions</h4><div class="qa"><p><b>Q1. Which superglobal holds uploaded file information?</b></p><p><code>$_FILES</code>.</p></div><div class="qa"><p><b>Q2. Why is <code>enctype=&quot;multipart/form-data&quot;</code> required?</b></p><p>Without it the browser sends only the file name, not the file contents.</p></div><div class="qa"><p><b>Q3. What does <code>move_uploaded_file()</code> do and why not <code>copy()</code>?</b></p><p>It safely moves a file uploaded via HTTP POST and fails for files that were not really uploaded, which prevents path tricks.</p></div></div><div class="prog"><h3>Program 3: Simple XML document to display an address book</h3><p><b>Aim:</b> To create a well-formed XML document that stores an address book and display it in the browser using an XSLT stylesheet.</p><h4>Source code</h4><span class="fname">addressbook.xml</span><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;addressbook.xsl&quot;?&gt;
+&lt;addressbook&gt;
+  &lt;contact id=&quot;1&quot;&gt;
+    &lt;name&gt;&lt;first&gt;Asha&lt;/first&gt;&lt;last&gt;Verma&lt;/last&gt;&lt;/name&gt;
+    &lt;phone&gt;9876543210&lt;/phone&gt;
+    &lt;email&gt;asha.verma@example.com&lt;/email&gt;
+    &lt;address&gt;
+      &lt;street&gt;12 MG Road&lt;/street&gt;
+      &lt;city&gt;Indore&lt;/city&gt;
+      &lt;pincode&gt;452001&lt;/pincode&gt;
+    &lt;/address&gt;
+  &lt;/contact&gt;
+  &lt;contact id=&quot;2&quot;&gt;
+    &lt;name&gt;&lt;first&gt;Ravi&lt;/first&gt;&lt;last&gt;Sharma&lt;/last&gt;&lt;/name&gt;
+    &lt;phone&gt;9123456780&lt;/phone&gt;
+    &lt;email&gt;ravi.sharma@example.com&lt;/email&gt;
+    &lt;address&gt;
+      &lt;street&gt;45 Arera Colony&lt;/street&gt;
+      &lt;city&gt;Bhopal&lt;/city&gt;
+      &lt;pincode&gt;462016&lt;/pincode&gt;
+    &lt;/address&gt;
+  &lt;/contact&gt;
+  &lt;contact id=&quot;3&quot;&gt;
+    &lt;name&gt;&lt;first&gt;Neha&lt;/first&gt;&lt;last&gt;Patel&lt;/last&gt;&lt;/name&gt;
+    &lt;phone&gt;9988776655&lt;/phone&gt;
+    &lt;email&gt;neha.patel@example.com&lt;/email&gt;
+    &lt;address&gt;
+      &lt;street&gt;7 Freeganj&lt;/street&gt;
+      &lt;city&gt;Ujjain&lt;/city&gt;
+      &lt;pincode&gt;456010&lt;/pincode&gt;
+    &lt;/address&gt;
+  &lt;/contact&gt;
+&lt;/addressbook&gt;
+</code></pre><span class="fname">addressbook.xsl</span><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;
+  &lt;xsl:output method=&quot;html&quot; encoding=&quot;UTF-8&quot;/&gt;
+  &lt;xsl:template match=&quot;/&quot;&gt;
+    &lt;html&gt;
+      &lt;head&gt;
+        &lt;title&gt;Address Book&lt;/title&gt;
+        &lt;style&gt;
+          table { border-collapse: collapse; font-family: Arial; }
+          th, td { border: 1px solid #888; padding: 6px 10px; }
+          th { background: #4f46e5; color: #fff; }
+        &lt;/style&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+        &lt;h2&gt;Address Book&lt;/h2&gt;
+        &lt;table&gt;
+          &lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Phone&lt;/th&gt;&lt;th&gt;Email&lt;/th&gt;&lt;th&gt;City&lt;/th&gt;&lt;th&gt;Pincode&lt;/th&gt;&lt;/tr&gt;
+          &lt;xsl:for-each select=&quot;addressbook/contact&quot;&gt;
+            &lt;xsl:sort select=&quot;name/last&quot;/&gt;
+            &lt;tr&gt;
+              &lt;td&gt;&lt;xsl:value-of select=&quot;@id&quot;/&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;xsl:value-of select=&quot;name/first&quot;/&gt;&lt;xsl:text&gt; &lt;/xsl:text&gt;&lt;xsl:value-of select=&quot;name/last&quot;/&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;xsl:value-of select=&quot;phone&quot;/&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;xsl:value-of select=&quot;email&quot;/&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;xsl:value-of select=&quot;address/city&quot;/&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;xsl:value-of select=&quot;address/pincode&quot;/&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/xsl:for-each&gt;
+        &lt;/table&gt;
+        &lt;p&gt;Total contacts: &lt;xsl:value-of select=&quot;count(addressbook/contact)&quot;/&gt;&lt;/p&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</code></pre><h4>How to run</h4><p>Keep both files in the same folder under <code>htdocs</code> and open <code>http://localhost/mca206/addressbook.xml</code>. (Chrome blocks XSLT for <code>file://</code> pages, so always use <code>localhost</code>; Firefox and Edge also work.) To see the raw XML tree, open the file without the <code>xml-stylesheet</code> line.</p><h4>Expected output</h4><p>The browser shows a table sorted by last name (Patel, Sharma, Verma):<pre class='out'><code>ID  Name         Phone       Email                    City    Pincode
+--  -----------  ----------  -----------------------  ------  -------
+3   Neha Patel   9988776655  neha.patel@example.com   Ujjain  456010 
+2   Ravi Sharma  9123456780  ravi.sharma@example.com  Bhopal  462016 
+1   Asha Verma   9876543210  asha.verma@example.com   Indore  452001 
+
+Total contacts: 3</code></pre></p><h4>How it works</h4><ul><li>The XML has one root element (<code>addressbook</code>) and repeated <code>contact</code> elements with an <code>id</code> attribute.</li><li><code>&lt;?xml-stylesheet ...?&gt;</code> links the XSLT file so the browser transforms the data to HTML.</li><li><code>xsl:for-each</code> loops over contacts, <code>xsl:sort</code> orders them by last name, <code>xsl:value-of</code> prints values, and <code>count()</code> gives the total.</li><li>Rules for well-formed XML: one root, closed and properly nested tags, quoted attributes, case-sensitive names.</li></ul><h4>Viva questions</h4><div class="qa"><p><b>Q1. What is a well-formed XML document?</b></p><p>One that follows the XML syntax rules: single root, all tags closed and nested properly, attribute values quoted.</p></div><div class="qa"><p><b>Q2. Why do we use XSLT with XML?</b></p><p>XML only stores data; XSLT transforms it into HTML (or other formats) for display.</p></div><div class="qa"><p><b>Q3. Difference between an element and an attribute?</b></p><p>An element is a tag with content; an attribute is a name&ndash;value pair inside the start tag, like <code>id=&quot;1&quot;</code>.</p></div></div><div class="prog"><h3>Program 4: XML document and database: importing and exporting XML to/from a database</h3><p><b>Aim:</b> To import data from an XML document into a MySQL table, and to export the table data back to an XML document using PHP.</p><h4>Source code</h4><span class="fname">setup.sql</span><pre><code>CREATE DATABASE IF NOT EXISTS addressdb;
+USE addressdb;
+
+CREATE TABLE IF NOT EXISTS contacts (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  first_name  VARCHAR(40),
+  last_name   VARCHAR(40),
+  phone       VARCHAR(15),
+  email       VARCHAR(80),
+  street      VARCHAR(80),
+  city        VARCHAR(40),
+  pincode     VARCHAR(10)
+);
+</code></pre><span class="fname">db.php</span><pre><code>&lt;?php
+// db.php - common database connection
+$conn = new mysqli(&quot;localhost&quot;, &quot;root&quot;, &quot;&quot;, &quot;addressdb&quot;);   // host, user, password, database
+if ($conn-&gt;connect_error) {
+    die(&quot;Connection failed: &quot; . $conn-&gt;connect_error);
+}
+$conn-&gt;set_charset(&quot;utf8mb4&quot;);
+?&gt;
+</code></pre><span class="fname">import.php</span><pre><code>&lt;?php
+// import.php - read addressbook.xml and insert every &lt;contact&gt; into MySQL
+require &quot;db.php&quot;;
+
+$xml = simplexml_load_file(&quot;addressbook.xml&quot;);
+if ($xml === false) {
+    die(&quot;The XML file is missing or not well-formed.&quot;);
+}
+
+$sql = &quot;INSERT INTO contacts (first_name, last_name, phone, email, street, city, pincode)
+        VALUES (?, ?, ?, ?, ?, ?, ?)&quot;;
+$stmt = $conn-&gt;prepare($sql);
+
+$count = 0;
+foreach ($xml-&gt;contact as $c) {
+    $first   = (string)$c-&gt;name-&gt;first;
+    $last    = (string)$c-&gt;name-&gt;last;
+    $phone   = (string)$c-&gt;phone;
+    $email   = (string)$c-&gt;email;
+    $street  = (string)$c-&gt;address-&gt;street;
+    $city    = (string)$c-&gt;address-&gt;city;
+    $pincode = (string)$c-&gt;address-&gt;pincode;
+    $stmt-&gt;bind_param(&quot;sssssss&quot;, $first, $last, $phone, $email, $street, $city, $pincode);
+    $stmt-&gt;execute();
+    $count++;
+}
+echo &quot;$count contact(s) imported from XML into the database.&quot;;
+$stmt-&gt;close();
+$conn-&gt;close();
+?&gt;
+</code></pre><span class="fname">export.php</span><pre><code>&lt;?php
+// export.php - read the contacts table and write it out as an XML document
+require &quot;db.php&quot;;
+
+function addChild($dom, $parent, $tag, $text) {
+    $el = $dom-&gt;createElement($tag);
+    $el-&gt;appendChild($dom-&gt;createTextNode($text));   // text node escapes &amp;, &lt; and &gt;
+    $parent-&gt;appendChild($el);
+    return $el;
+}
+
+$result = $conn-&gt;query(&quot;SELECT * FROM contacts ORDER BY id&quot;);
+
+$dom = new DOMDocument(&quot;1.0&quot;, &quot;UTF-8&quot;);
+$dom-&gt;formatOutput = true;                            // indented, readable output
+$root = $dom-&gt;createElement(&quot;addressbook&quot;);
+$dom-&gt;appendChild($root);
+
+while ($row = $result-&gt;fetch_assoc()) {
+    $contact = $dom-&gt;createElement(&quot;contact&quot;);
+    $contact-&gt;setAttribute(&quot;id&quot;, $row[&quot;id&quot;]);
+
+    $name = $dom-&gt;createElement(&quot;name&quot;);
+    addChild($dom, $name, &quot;first&quot;, $row[&quot;first_name&quot;]);
+    addChild($dom, $name, &quot;last&quot;,  $row[&quot;last_name&quot;]);
+    $contact-&gt;appendChild($name);
+
+    addChild($dom, $contact, &quot;phone&quot;, $row[&quot;phone&quot;]);
+    addChild($dom, $contact, &quot;email&quot;, $row[&quot;email&quot;]);
+
+    $address = $dom-&gt;createElement(&quot;address&quot;);
+    addChild($dom, $address, &quot;street&quot;,  $row[&quot;street&quot;]);
+    addChild($dom, $address, &quot;city&quot;,    $row[&quot;city&quot;]);
+    addChild($dom, $address, &quot;pincode&quot;, $row[&quot;pincode&quot;]);
+    $contact-&gt;appendChild($address);
+
+    $root-&gt;appendChild($contact);
+}
+
+$dom-&gt;save(&quot;exported.xml&quot;);                           // also keep a copy on the server
+header(&quot;Content-Type: text/xml; charset=UTF-8&quot;);      // show as XML in the browser
+echo $dom-&gt;saveXML();
+$conn-&gt;close();
+?&gt;
+</code></pre><h4>How to run</h4><p>1) Start <b>Apache</b> and <b>MySQL</b> in XAMPP. 2) Open phpMyAdmin (<code>http://localhost/phpmyadmin</code>), go to the SQL tab and run <code>setup.sql</code>. 3) Keep <code>addressbook.xml</code> (from Program 3) in the same folder. 4) Run <code>http://localhost/mca206/import.php</code>, then <code>http://localhost/mca206/export.php</code>.</p><h4>Expected output</h4><p><b>import.php:</b> <code>3 contact(s) imported from XML into the database.</code> (the table <code>contacts</code> now has 3 rows). <b>export.php:</b> the browser shows the XML tree generated from the table: an <code>&lt;addressbook&gt;</code> root with three <code>&lt;contact id=&quot;1&quot;&gt;</code>&hellip; elements, and a file <code>exported.xml</code> is created on the server. Running import twice inserts duplicates.</p><h4>How it works</h4><ul><li><b>Import:</b> <code>simplexml_load_file()</code> loads the XML into an object; the loop reads each <code>contact</code> and inserts it using a <b>prepared statement</b> (safe against SQL injection).</li><li><b>Export:</b> <code>DOMDocument</code> builds the XML tree; <code>createTextNode()</code> makes sure special characters such as <code>&amp;</code> are escaped; <code>formatOutput</code> indents the result.</li><li><code>header('Content-Type: text/xml')</code> tells the browser to treat the output as XML; it must be sent before any other output.</li><li><code>db.php</code> keeps the connection code in one place and is included with <code>require</code>.</li></ul><h4>Viva questions</h4><div class="qa"><p><b>Q1. What is the difference between DOM and SimpleXML in PHP?</b></p><p>DOM gives full control to create and modify XML trees; SimpleXML is a simple object interface for reading XML.</p></div><div class="qa"><p><b>Q2. Why use prepared statements?</b></p><p>They separate SQL from data, preventing SQL injection and allowing the same statement to be reused.</p></div><div class="qa"><p><b>Q3. What is the purpose of the <code>Content-Type</code> header?</b></p><p>It tells the browser the type of data being sent, here XML instead of HTML.</p></div></div><div class="prog"><h3>Program 5: XML program for internal DTD (Document Type Definition) creation</h3><p><b>Aim:</b> To create an XML document that contains an internal DTD and check that the document is valid.</p><h4>Source code</h4><span class="fname">students.xml</span><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE students [
+  &lt;!ELEMENT students   (university, student+)&gt;
+  &lt;!ELEMENT university (#PCDATA)&gt;
+  &lt;!ELEMENT student    (name, roll, course, marks?)&gt;
+  &lt;!ATTLIST student
+            id     ID           #REQUIRED
+            gender (M|F)        &quot;M&quot;&gt;
+  &lt;!ELEMENT name   (#PCDATA)&gt;
+  &lt;!ELEMENT roll   (#PCDATA)&gt;
+  &lt;!ELEMENT course (#PCDATA)&gt;
+  &lt;!ELEMENT marks  (#PCDATA)&gt;
+  &lt;!ENTITY univ &quot;M.P. Bhoj (Open) University&quot;&gt;
+]&gt;
+&lt;students&gt;
+  &lt;university&gt;&amp;univ;&lt;/university&gt;
+  &lt;student id=&quot;s1&quot; gender=&quot;F&quot;&gt;
+    &lt;name&gt;Asha Verma&lt;/name&gt;
+    &lt;roll&gt;101&lt;/roll&gt;
+    &lt;course&gt;MCA&lt;/course&gt;
+    &lt;marks&gt;82&lt;/marks&gt;
+  &lt;/student&gt;
+  &lt;student id=&quot;s2&quot;&gt;
+    &lt;name&gt;Ravi Sharma&lt;/name&gt;
+    &lt;roll&gt;102&lt;/roll&gt;
+    &lt;course&gt;MCA&lt;/course&gt;
+  &lt;/student&gt;
+&lt;/students&gt;
+</code></pre><span class="fname">validate.php</span><pre><code>&lt;?php
+// validate.php - check the XML file against its internal DTD
+libxml_use_internal_errors(true);          // collect errors instead of printing warnings
+
+$dom = new DOMDocument();
+$dom-&gt;load(&quot;students.xml&quot;);
+
+if ($dom-&gt;validate()) {
+    echo &quot;students.xml is VALID (it follows its DTD).&quot;;
+} else {
+    echo &quot;students.xml is NOT valid:&lt;br&gt;&quot;;
+    foreach (libxml_get_errors() as $err) {
+        echo &quot;Line &quot; . $err-&gt;line . &quot;: &quot; . htmlspecialchars(trim($err-&gt;message)) . &quot;&lt;br&gt;&quot;;
+    }
+    libxml_clear_errors();
+}
+?&gt;
+</code></pre><h4>How to run</h4><p>Open <code>students.xml</code> in a validating tool: in the command line <code>xmllint --noout --valid students.xml</code>, or in an XML editor (Notepad++ XML Tools, Oxygen), or run <code>http://localhost/mca206/validate.php</code>. Browsers only check well-formedness, not the DTD.</p><h4>Expected output</h4><p><b>Valid file:</b> <code>xmllint --noout --valid students.xml</code> prints nothing (no errors) and <code>validate.php</code> shows &ldquo;students.xml is VALID&rdquo;.<br><br><b>Invalid file:</b> if the <code>&lt;roll&gt;</code> element of the second student is removed, validation fails with an error like:<pre class='out'><code>students_invalid.xml:26: element student: validity error : Element student content does not follow the DTD, expecting (name , roll , course , marks?), got (name course )
+  &lt;/student&gt;
+            ^</code></pre></p><h4>How it works</h4><ul><li>The DTD is written inside <code>&lt;!DOCTYPE students [ ... ]&gt;</code>, which makes it an <b>internal</b> DTD (an external one would use <code>SYSTEM &quot;file.dtd&quot;</code>).</li><li><code>&lt;!ELEMENT student (name, roll, course, marks?)&gt;</code>: a sequence in this order; <code>?</code> makes <code>marks</code> optional (<code>+</code> = one or more, <code>*</code> = zero or more).</li><li><code>&lt;!ATTLIST&gt;</code> declares attributes: <code>id</code> is a unique <code>ID</code> and required; <code>gender</code> is an enumeration with default M.</li><li><code>&lt;!ENTITY univ ...&gt;</code> defines a reusable entity, used as <code>&amp;univ;</code>.</li><li>A <b>valid</b> document is well-formed and also follows its DTD.</li></ul><h4>Viva questions</h4><div class="qa"><p><b>Q1. What is a DTD and why is it used?</b></p><p>A Document Type Definition lists the allowed elements, attributes and structure, so documents can be validated.</p></div><div class="qa"><p><b>Q2. Difference between internal and external DTD?</b></p><p>Internal DTD is inside the XML file; external DTD is a separate <code>.dtd</code> file referenced with SYSTEM or PUBLIC.</p></div><div class="qa"><p><b>Q3. What do <code>#PCDATA</code>, <code>?</code>, <code>*</code> and <code>+</code> mean?</b></p><p>Parsed character data (text); zero or one; zero or more; one or more occurrences.</p></div></div><div class="prog"><h3>Program 6: Program to change the content of a web page using AJAX</h3><p><b>Aim:</b> To change a part of a web page by fetching new content from the server with AJAX, without reloading the whole page.</p><h4>Source code</h4><span class="fname">change.html</span><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;AJAX: Change Page Content&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    #box { border: 1px solid #888; padding: 15px; margin-top: 15px; min-height: 50px; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;AJAX - change content without reloading the page&lt;/h2&gt;
+  &lt;button type=&quot;button&quot; onclick=&quot;loadContent(&#x27;content.txt&#x27;)&quot;&gt;Load text file&lt;/button&gt;
+  &lt;button type=&quot;button&quot; onclick=&quot;loadContent(&#x27;news.html&#x27;)&quot;&gt;Load HTML fragment&lt;/button&gt;
+  &lt;button type=&quot;button&quot; onclick=&quot;resetBox()&quot;&gt;Reset&lt;/button&gt;
+  &lt;div id=&quot;box&quot;&gt;Original content. Click a button to change me.&lt;/div&gt;
+
+  &lt;script&gt;
+    function resetBox() {
+      document.getElementById(&quot;box&quot;).innerHTML = &quot;Original content. Click a button to change me.&quot;;
+    }
+
+    function loadContent(url) {
+      var xhr = new XMLHttpRequest();                 // 1. create the object
+      var box = document.getElementById(&quot;box&quot;);
+      box.innerHTML = &quot;Loading...&quot;;
+
+      xhr.onreadystatechange = function () {          // 2. what to do when the state changes
+        if (xhr.readyState === 4) {                   //    4 = request finished
+          if (xhr.status === 200) {                   //    200 = OK
+            box.innerHTML = xhr.responseText;         // 3. update only this part of the page
+          } else {
+            box.innerHTML = &quot;Error &quot; + xhr.status + &quot;: &quot; + xhr.statusText;
+          }
+        }
+      };
+
+      xhr.open(&quot;GET&quot;, url, true);                     // true = asynchronous
+      xhr.send();                                     // 4. send the request
+    }
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><span class="fname">content.txt</span><pre><code>This text was loaded from content.txt using AJAX.
+The page was NOT reloaded.
+</code></pre><span class="fname">news.html</span><pre><code>&lt;h3&gt;Latest news&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;MCA lab examination on Monday&lt;/li&gt;
+  &lt;li&gt;Project synopsis due next week&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre><h4>How to run</h4><p>Keep the three files in one folder and open <code>http://localhost/mca206/change.html</code>. Open it through <code>localhost</code>; with <code>file://</code> the browser blocks the request (status 0).</p><h4>Expected output</h4><p>Initially the box shows <i>&ldquo;Original content&hellip;&rdquo;</i>. <b>Load text file</b> briefly shows &ldquo;Loading&hellip;&rdquo; and then the text of <code>content.txt</code>; <b>Load HTML fragment</b> shows the heading and list from <code>news.html</code>; <b>Reset</b> restores the original text. The URL and the rest of the page never reload.</p><h4>How it works</h4><ul><li>Steps: create <code>XMLHttpRequest</code> &rarr; set <code>onreadystatechange</code> &rarr; <code>open()</code> &rarr; <code>send()</code>.</li><li><code>readyState</code> goes 0&rarr;4; 4 means the response is complete. <code>status</code> 200 means success.</li><li><code>responseText</code> holds the server&rsquo;s reply, inserted with <code>innerHTML</code>.</li><li>Asynchronous (<code>true</code>) means the page stays responsive while waiting.</li></ul><h4>Viva questions</h4><div class="qa"><p><b>Q1. What is AJAX?</b></p><p>Asynchronous JavaScript And XML: a technique to exchange data with the server in the background and update parts of a page.</p></div><div class="qa"><p><b>Q2. What are the values of <code>readyState</code>?</b></p><p>0 unsent, 1 opened, 2 headers received, 3 loading, 4 done.</p></div><div class="qa"><p><b>Q3. Why does the program fail when opened with <code>file://</code>?</b></p><p>Browsers restrict XMLHttpRequest on local files for security; use a web server such as Apache.</p></div></div><div class="prog"><h3>Program 7: Asynchronous JavaScript and XML for a web page login process</h3><p><b>Aim:</b> To implement a login form that sends the username and password to the server with AJAX (POST) and shows the result without reloading the page.</p><h4>Source code</h4><span class="fname">login.html</span><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;AJAX Login&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    input { display: block; margin: 8px 0; padding: 6px; width: 220px; }
+    #msg { margin-top: 12px; font-weight: bold; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;AJAX login&lt;/h2&gt;
+  &lt;div id=&quot;loginForm&quot;&gt;
+    &lt;input type=&quot;text&quot; id=&quot;username&quot; placeholder=&quot;Username&quot;&gt;
+    &lt;input type=&quot;password&quot; id=&quot;password&quot; placeholder=&quot;Password&quot;&gt;
+    &lt;button type=&quot;button&quot; onclick=&quot;doLogin()&quot;&gt;Login&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;msg&quot;&gt;&lt;/div&gt;
+
+  &lt;script&gt;
+    function doLogin() {
+      var u = document.getElementById(&quot;username&quot;).value.trim();
+      var p = document.getElementById(&quot;password&quot;).value;
+      var msg = document.getElementById(&quot;msg&quot;);
+
+      if (u === &quot;&quot; || p === &quot;&quot;) {                     // client-side check
+        msg.style.color = &quot;red&quot;;
+        msg.textContent = &quot;Please enter both username and password.&quot;;
+        return;
+      }
+
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var r = xhr.responseText;
+            if (r.indexOf(&quot;OK:&quot;) === 0) {             // login success
+              msg.style.color = &quot;green&quot;;
+              msg.textContent = r.substring(3).trim();
+              document.getElementById(&quot;loginForm&quot;).style.display = &quot;none&quot;;
+            } else {                                  // login failed
+              msg.style.color = &quot;red&quot;;
+              msg.textContent = r.replace(&quot;ERROR:&quot;, &quot;&quot;).trim();
+            }
+          } else {
+            msg.style.color = &quot;red&quot;;
+            msg.textContent = &quot;Server error: &quot; + xhr.status;
+          }
+        }
+      };
+      xhr.open(&quot;POST&quot;, &quot;login.php&quot;, true);
+      xhr.setRequestHeader(&quot;Content-type&quot;, &quot;application/x-www-form-urlencoded&quot;);
+      xhr.send(&quot;username=&quot; + encodeURIComponent(u) + &quot;&amp;password=&quot; + encodeURIComponent(p));
+    }
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><span class="fname">login.php</span><pre><code>&lt;?php
+// login.php - checks the credentials and sends a short text answer back to AJAX
+session_start();
+header(&quot;Content-Type: text/plain; charset=UTF-8&quot;);
+
+if ($_SERVER[&quot;REQUEST_METHOD&quot;] !== &quot;POST&quot;) {
+    http_response_code(405);
+    exit(&quot;ERROR: Invalid request.&quot;);
+}
+
+$user = trim($_POST[&quot;username&quot;] ?? &quot;&quot;);
+$pass = $_POST[&quot;password&quot;] ?? &quot;&quot;;
+
+if ($user === &quot;&quot; || $pass === &quot;&quot;) {
+    exit(&quot;ERROR: Please fill in both fields.&quot;);
+}
+
+// Demo users. In a real project store hashed passwords in a database.
+$users = array(
+    &quot;admin&quot;   =&gt; &quot;admin123&quot;,
+    &quot;student&quot; =&gt; &quot;mca2026&quot;
+);
+
+if (isset($users[$user]) &amp;&amp; hash_equals($users[$user], $pass)) {
+    $_SESSION[&quot;user&quot;] = $user;                    // remember the login
+    echo &quot;OK: Welcome, &quot; . $user . &quot;! You are logged in.&quot;;
+} else {
+    echo &quot;ERROR: Invalid username or password.&quot;;
+}
+?&gt;
+</code></pre><span class="fname">login_db.php (optional)</span><pre><code>&lt;?php
+// Database version of the check (replace the $users array in login.php)
+require &quot;db.php&quot;;                                  // connection file, as in Program 4
+$stmt = $conn-&gt;prepare(&quot;SELECT password_hash FROM users WHERE username = ?&quot;);
+$stmt-&gt;bind_param(&quot;s&quot;, $user);
+$stmt-&gt;execute();
+$stmt-&gt;bind_result($hash);
+if ($stmt-&gt;fetch() &amp;&amp; password_verify($pass, $hash)) {
+    $_SESSION[&quot;user&quot;] = $user;
+    echo &quot;OK: Welcome, &quot; . $user . &quot;!&quot;;
+} else {
+    echo &quot;ERROR: Invalid username or password.&quot;;
+}
+// Table: CREATE TABLE users (username VARCHAR(30) PRIMARY KEY, password_hash VARCHAR(255));
+// Insert: INSERT INTO users VALUES (&#x27;admin&#x27;, &#x27;&lt;output of password_hash(&quot;admin123&quot;, PASSWORD_DEFAULT)&gt;&#x27;);
+?&gt;
+</code></pre><h4>How to run</h4><p>Place <code>login.html</code> and <code>login.php</code> in the same folder and open <code>http://localhost/mca206/login.html</code>. Test with <code>admin / admin123</code> and with a wrong password.</p><h4>Expected output</h4><p>Empty fields &rarr; red message &ldquo;Please enter both username and password.&rdquo; Wrong details &rarr; red &ldquo;Invalid username or password.&rdquo; Correct details (<code>admin</code> / <code>admin123</code>) &rarr; the form disappears and a green message &ldquo;Welcome, admin! You are logged in.&rdquo; is shown &ndash; all without a page reload.</p><h4>How it works</h4><ul><li>POST is used so the password is not placed in the URL; <code>Content-type: application/x-www-form-urlencoded</code> must be set with <code>setRequestHeader</code>.</li><li><code>encodeURIComponent()</code> safely encodes special characters before sending.</li><li>PHP reads <code>$_POST</code>, validates, starts a <b>session</b> on success and returns plain text starting with <code>OK:</code> or <code>ERROR:</code>; JavaScript decides what to display.</li><li><code>textContent</code> (not <code>innerHTML</code>) shows the message, avoiding script injection. Client-side checks improve usability; the real check is on the server.</li><li>For real applications store passwords with <code>password_hash()</code> and check them with <code>password_verify()</code> (see the optional DB version), and use HTTPS.</li></ul><h4>Viva questions</h4><div class="qa"><p><b>Q1. Why use POST instead of GET for login?</b></p><p>GET puts the data in the URL, where it appears in history and logs; POST sends it in the request body.</p></div><div class="qa"><p><b>Q2. What is a PHP session?</b></p><p>Server-side storage identified by a cookie, used to remember a user between requests (<code>session_start()</code>, <code>$_SESSION</code>).</p></div><div class="qa"><p><b>Q3. Why must validation also be done on the server?</b></p><p>Client-side JavaScript can be bypassed or disabled, so the server must always verify the data.</p></div></div><div class="prog"><h3>Program 8: AJAX using JavaScript, DHTML and XMLHttpRequest to perform a GET or POST and return a result without reloading the page</h3><p><b>Aim:</b> To send data to the server with either the GET or POST method using the XMLHttpRequest object and display the result on the same page without reloading it.</p><h4>Source code</h4><span class="fname">calc.html</span><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;AJAX GET and POST&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    input[type=text] { width: 80px; padding: 5px; }
+    #result { display: none; margin-top: 15px; padding: 12px; border: 1px solid #888; width: 320px; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;AJAX with JavaScript, DHTML and XMLHttpRequest&lt;/h2&gt;
+  First number: &lt;input type=&quot;text&quot; id=&quot;a&quot;&gt;
+  Second number: &lt;input type=&quot;text&quot; id=&quot;b&quot;&gt;&lt;br&gt;&lt;br&gt;
+  Method:
+  &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;method&quot; value=&quot;GET&quot; checked&gt; GET&lt;/label&gt;
+  &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;method&quot; value=&quot;POST&quot;&gt; POST&lt;/label&gt;
+  &lt;br&gt;&lt;br&gt;
+  &lt;button type=&quot;button&quot; onclick=&quot;calculate()&quot;&gt;Calculate&lt;/button&gt;
+  &lt;div id=&quot;result&quot;&gt;&lt;/div&gt;
+
+  &lt;script&gt;
+    function calculate() {
+      var a = encodeURIComponent(document.getElementById(&quot;a&quot;).value);
+      var b = encodeURIComponent(document.getElementById(&quot;b&quot;).value);
+      var method = document.querySelector(&#x27;input[name=&quot;method&quot;]:checked&#x27;).value;
+      var out = document.getElementById(&quot;result&quot;);
+      var params = &quot;a=&quot; + a + &quot;&amp;b=&quot; + b;
+
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        out.style.display = &quot;block&quot;;                              // DHTML: show the box
+        if (xhr.readyState &lt; 4) {
+          out.innerHTML = &quot;Processing... (readyState &quot; + xhr.readyState + &quot;)&quot;;
+        } else if (xhr.status === 200) {
+          out.innerHTML = xhr.responseText;                       // result from the server
+          out.style.backgroundColor = (method === &quot;GET&quot;) ? &quot;#e8f4ff&quot; : &quot;#fff4e0&quot;;   // DHTML: change style
+        } else {
+          out.innerHTML = &quot;Error &quot; + xhr.status;
+        }
+      };
+
+      if (method === &quot;GET&quot;) {
+        xhr.open(&quot;GET&quot;, &quot;calc.php?&quot; + params + &quot;&amp;t=&quot; + new Date().getTime(), true);   // t avoids caching
+        xhr.send();
+      } else {
+        xhr.open(&quot;POST&quot;, &quot;calc.php&quot;, true);
+        xhr.setRequestHeader(&quot;Content-type&quot;, &quot;application/x-www-form-urlencoded&quot;);
+        xhr.send(params);
+      }
+    }
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><span class="fname">calc.php</span><pre><code>&lt;?php
+// calc.php - works for both GET and POST requests
+$method = $_SERVER[&quot;REQUEST_METHOD&quot;];
+$src = ($method === &quot;POST&quot;) ? $_POST : $_GET;
+
+if (!isset($src[&quot;a&quot;], $src[&quot;b&quot;]) || !is_numeric($src[&quot;a&quot;]) || !is_numeric($src[&quot;b&quot;])) {
+    echo &quot;&lt;b&gt;Error:&lt;/b&gt; please enter two valid numbers.&quot;;
+    exit;
+}
+
+$a = $src[&quot;a&quot;] + 0;
+$b = $src[&quot;b&quot;] + 0;
+
+echo &quot;&lt;b&gt;Method used:&lt;/b&gt; $method&lt;br&gt;&quot;;
+echo &quot;$a + $b = &quot; . ($a + $b) . &quot;&lt;br&gt;&quot;;
+echo &quot;$a - $b = &quot; . ($a - $b) . &quot;&lt;br&gt;&quot;;
+echo &quot;$a &amp;times; $b = &quot; . ($a * $b) . &quot;&lt;br&gt;&quot;;
+echo &quot;$a &amp;divide; $b = &quot; . ($b != 0 ? round($a / $b, 4) : &quot;undefined (division by zero)&quot;) . &quot;&lt;br&gt;&quot;;
+echo &quot;&lt;small&gt;Server time: &quot; . date(&quot;d-m-Y H:i:s&quot;) . &quot;&lt;/small&gt;&quot;;
+?&gt;
+</code></pre><h4>How to run</h4><p>Put both files in <code>htdocs/mca206/</code> and open <code>http://localhost/mca206/calc.html</code>. Enter two numbers, choose GET or POST and click Calculate.</p><h4>Expected output</h4><p>For <code>12</code> and <code>4</code> with GET: a light-blue box shows <i>Method used: GET; 12 + 4 = 16; 12 &minus; 4 = 8; 12 &times; 4 = 48; 12 &divide; 4 = 3</i> and the server time. With POST the same result appears in a light-orange box with <i>Method used: POST</i>. The URL stays unchanged. Invalid input shows an error message.</p><h4>How it works</h4><ul><li><b>GET</b>: data is appended to the URL (<code>calc.php?a=12&amp;b=4</code>) and <code>send()</code> has no body; a timestamp parameter stops the browser from caching the answer.</li><li><b>POST</b>: the URL is plain; the data goes in <code>send(params)</code> and a <code>Content-type</code> header is required.</li><li><b>DHTML</b> (HTML + CSS + JavaScript + DOM): the script shows the result box, writes text with <code>innerHTML</code> and changes its colour using <code>style</code>.</li><li>The same PHP file reads <code>$_GET</code> or <code>$_POST</code> depending on <code>REQUEST_METHOD</code>.</li></ul><h4>Viva questions</h4><div class="qa"><p><b>Q1. When do you prefer GET and when POST?</b></p><p>GET for retrieving or searching (safe, bookmarkable, cacheable); POST for sending forms, passwords or changing data.</p></div><div class="qa"><p><b>Q2. What is DHTML?</b></p><p>Dynamic HTML: HTML, CSS and JavaScript working through the DOM to change a page after it has loaded.</p></div><div class="qa"><p><b>Q3. Why is the third argument of <code>open()</code> set to <code>true</code>?</b></p><p>It makes the request asynchronous so the browser does not freeze while waiting.</p></div></div>
+
+ <h2 class="sec" style="margin-top:26px">3. Common errors and fixes</h2>
+ <table><tr><th>Problem / message</th><th>Likely cause and fix</th></tr>
+<tr><td>PHP code is shown as text or the file downloads</td><td>Opened as <code>file://</code>; use <code>http://localhost/...</code> and save the file with a <code>.php</code> extension.</td></tr>
+<tr><td>AJAX gives status 0 or nothing happens</td><td>Page opened from the disk, wrong file name/path in <code>open()</code>, or Apache not running. Check the browser console (F12).</td></tr>
+<tr><td>Status 404 in AJAX</td><td>The requested file is not in the same folder or the name is misspelt (case matters on Linux).</td></tr>
+<tr><td><i>Warning: Cannot modify header information &ndash; headers already sent</i></td><td>Something was printed (even a blank line or space before <code>&lt;?php</code>) before <code>header()</code> or <code>session_start()</code>.</td></tr>
+<tr><td><i>Undefined index / array key</i></td><td>Reading <code>$_POST</code>/<code>$_GET</code> before the form is submitted; check with <code>isset()</code> or <code>??</code>.</td></tr>
+<tr><td><i>Access denied for user 'root'@'localhost'</i></td><td>Wrong MySQL password in <code>db.php</code>.</td></tr>
+<tr><td><i>Unknown database 'addressdb'</i></td><td><code>setup.sql</code> was not run in phpMyAdmin.</td></tr>
+<tr><td>File upload fails (error 1 or 2)</td><td>File larger than <code>upload_max_filesize</code>/<code>post_max_size</code> in <code>php.ini</code>; restart Apache after changing.</td></tr>
+<tr><td><i>Class 'DOMDocument' not found</i></td><td>Enable the <code>xml</code>/<code>dom</code> extensions in <code>php.ini</code>.</td></tr>
+<tr><td>XML shows an error: <i>XML Parsing Error</i></td><td>Not well-formed: unclosed or mismatched tag, unquoted attribute or a bare <code>&amp;</code>.</td></tr>
+<tr><td>XSLT does not apply in Chrome</td><td>Open via <code>localhost</code> (not <code>file://</code>) and keep the <code>.xsl</code> in the same folder.</td></tr></table>
+
+ <h2 class="sec" style="margin-top:26px">4. General viva questions</h2>
+ <div class="qa"><p><b>Q1. What is PHP? Is it client-side or server-side?</b></p><p>PHP is a server-side scripting language; the server runs the code and sends only HTML to the browser.</p></div><div class="qa"><p><b>Q2. What are superglobals? Name some.</b></p><p>Built-in variables available everywhere: <code>$_GET</code>, <code>$_POST</code>, <code>$_FILES</code>, <code>$_SESSION</code>, <code>$_COOKIE</code>, <code>$_SERVER</code>.</p></div><div class="qa"><p><b>Q3. Difference between <code>include</code> and <code>require</code>?</b></p><p>On a missing file, include gives a warning and continues; require stops the script with a fatal error.</p></div><div class="qa"><p><b>Q4. What is the difference between <code>echo</code> and <code>print</code>?</b></p><p>Both output text; echo can take several arguments and is slightly faster; print returns 1.</p></div><div class="qa"><p><b>Q5. What is XML? Where is it used?</b></p><p>A markup language to store and exchange data: configuration files, RSS, web services, document formats.</p></div><div class="qa"><p><b>Q6. What is the difference between well-formed and valid XML?</b></p><p>Well-formed follows syntax rules; valid is also checked against a DTD or schema.</p></div><div class="qa"><p><b>Q7. What is a DTD? What is XSD?</b></p><p>DTD defines structure with non-XML syntax and no data types; XML Schema (XSD) is XML-based with data types and namespaces.</p></div><div class="qa"><p><b>Q8. What are DOM and SAX parsers?</b></p><p>DOM loads the whole document as a tree in memory; SAX reads it as a stream of events with low memory use.</p></div><div class="qa"><p><b>Q9. What does XSLT do?</b></p><p>Transforms an XML document into HTML, text or another XML format using templates and XPath.</p></div><div class="qa"><p><b>Q10. What is AJAX? What are its advantages?</b></p><p>A technique to fetch data in the background; the page updates partially, so it is faster and smoother, with less bandwidth.</p></div><div class="qa"><p><b>Q11. List the properties and methods of XMLHttpRequest.</b></p><p>readyState, status, responseText, responseXML, onreadystatechange; open(), send(), setRequestHeader(), abort().</p></div><div class="qa"><p><b>Q12. What is the difference between synchronous and asynchronous requests?</b></p><p>Synchronous blocks the browser until the response arrives; asynchronous continues and calls a function when the response is ready.</p></div><div class="qa"><p><b>Q13. Which format is more popular with AJAX today, XML or JSON?</b></p><p>JSON, because it is lighter and maps directly to JavaScript objects (<code>JSON.parse()</code>).</p></div><div class="qa"><p><b>Q14. What is SQL injection and how do you prevent it?</b></p><p>Inserting malicious SQL through input; prevented with prepared statements and input validation.</p></div><div class="qa"><p><b>Q15. What is a session and a cookie?</b></p><p>A cookie is stored in the browser; a session stores data on the server and links it with a cookie ID.</p></div><div class="qa"><p><b>Q16. What is the same-origin policy?</b></p><p>Browsers block scripts from reading responses from another domain, protocol or port unless the server allows it (CORS).</p></div>
+
+ <h2 class="sec" style="margin-top:26px">5. Tips for the practical record and exam</h2>
+ <ul>
+  <li>For each program write: <b>aim, algorithm/steps, source code, output screenshot, conclusion</b>.</li>
+  <li>Keep every program in its own file with a meaningful name and add comments for the important lines.</li>
+  <li>Be ready to explain how the data travels: browser &rarr; XMLHttpRequest &rarr; PHP &rarr; response &rarr; JavaScript &rarr; DOM.</li>
+  <li>In the exam, first create the folder in <code>htdocs</code> and check Apache is running; most failures are setup problems, not code problems.</li>
+  <li>Know the difference between GET and POST, well-formed and valid XML, and synchronous and asynchronous requests; these are the most common viva questions.</li>
+ </ul>
  <div class="pager"><a class="prev" href="mca205.html"><small>← Previous</small>MCA 205 (P) · DBMS Lab</a><a class="next" href="mca207.html"><small>Next →</small>MCA 207 · Project</a></div>
 </article></div></div>
 </main>
