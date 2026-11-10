@@ -4,9 +4,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MCA 207 Project | MCA Year 2 Notes</title>
-<meta name="description" content="MCA 207 Project — MCA Year 2">
+<meta name="description" content="MCA 207 Project guide: topic ideas, synopsis template, design, testing, report format and viva preparation">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose pre.out{border-left:4px solid var(--brand2)}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:24px 0 6px;font-size:1.12rem}
+.prose h4{margin:16px 0 4px;font-size:.98rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem;display:block;overflow-x:auto}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0;background:var(--card)}
+.qa p{margin:6px 0;max-width:none}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+.prose p,.prose li{max-width:none}
+.check li{list-style:none;margin-left:-20px}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -44,11 +60,164 @@
  <span class="tag">MCA 207</span>
  <h1>🎓 Project</h1>
  <div class="chips"><span class="chip">Max / Min marks: 200 / 100</span><span class="chip">Project</span></div>
- <p style="color:var(--muted)">Final project work with report and viva.</p>
- 
- <h2 class="sec" style="margin-top:22px;font-size:1.15rem">Project checklist (placeholder)</h2>
- <ul style="padding-left:22px"><li>Project title and problem statement</li><li>Synopsis / proposal</li><li>Requirement analysis and design</li><li>Implementation</li><li>Testing</li><li>Project report</li><li>Presentation and viva</li></ul>
- <div class="placeholder"><h3>Solutions &amp; notes (placeholder)</h3><p>Add solved programs, queries, outputs and viva questions here.</p></div>
+ <p style="color:var(--muted)">Final project work with report and viva: a complete guide with templates, a worked example and viva preparation.</p>
+
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>The MCA 207 project is the largest component of the year (<b>200 marks, minimum 100</b>). It tests whether you can take a real problem and carry it through <b>analysis, design, implementation, testing and documentation</b> using what you learnt in MCA 201&ndash;206. This page is a complete guide: how to choose a topic, a synopsis template with a worked example, design and report formats, testing, and preparation for the presentation and viva.</p>
+<div class="note"><b>Important:</b> universities have their own project guidelines (format of synopsis, number of copies, guide approval, report layout, marks split between report, demonstration and viva). <b>Follow the official guidelines and your guide&rsquo;s instructions first</b>; use this page as a practical help and a checklist. Always build and write your own project &ndash; copied projects are rejected in the viva.</div>
+
+ <h2 class="sec" style="margin-top:26px">Project checklist</h2>
+ <ul class="check">
+<li>&#9744; Project title and problem statement (approved by your guide)</li>
+<li>&#9744; Synopsis / proposal submitted and approved</li>
+<li>&#9744; Requirement analysis (SRS) and feasibility study</li>
+<li>&#9744; Design: DFDs, ER diagram, database schema, UI layouts</li>
+<li>&#9744; Implementation (working modules, code with comments)</li>
+<li>&#9744; Testing (test cases, bug log, results)</li>
+<li>&#9744; Project report (bound, signed certificates, plagiarism-checked)</li>
+<li>&#9744; Presentation (PPT) and live demo ready</li>
+<li>&#9744; Viva preparation: every diagram, table and line of code explained</li></ul>
+
+ <h2 class="sec" style="margin-top:26px">1. Project stages at a glance</h2>
+ <table><tr><th>Stage</th><th>What you do</th><th>Output</th></tr><tr><td>1. Topic selection</td><td>Find a real problem; check scope, data availability and your skills; discuss with the guide.</td><td>Title and one-paragraph idea</td></tr><tr><td>2. Synopsis</td><td>Write objectives, scope, methodology, requirements, modules, timeline.</td><td>Approved synopsis</td></tr><tr><td>3. Analysis</td><td>Study the existing system, collect requirements, check feasibility, write the SRS.</td><td>SRS document</td></tr><tr><td>4. Design</td><td>DFDs, ER diagram, database schema, architecture, screen layouts, algorithms.</td><td>Design document</td></tr><tr><td>5. Implementation</td><td>Code module by module, use version control, review with the guide.</td><td>Working software</td></tr><tr><td>6. Testing</td><td>Unit, integration and system testing; fix bugs; user feedback.</td><td>Test report</td></tr><tr><td>7. Documentation</td><td>Write the project report with screenshots, code listings and references.</td><td>Final report</td></tr><tr><td>8. Presentation and viva</td><td>Demo, slides, answering questions.</td><td>Marks</td></tr></table>
+
+ <h2 class="sec" style="margin-top:26px">2. Choosing a topic</h2>
+ <ul>
+<li>Choose a problem you can <b>finish in the time available</b> and demonstrate fully; a smaller complete project beats a large unfinished one.</li>
+<li>Prefer a problem with a <b>real user</b> (your college office, a local shop, a clinic) &ndash; it gives genuine requirements and a good viva story.</li>
+<li>Combine at least <b>two areas</b> from the syllabus (for example database + web, or data analysis + machine learning).</li>
+<li>Check that data, software and hardware are available to you before you commit.</li>
+<li>Be able to say what is <b>new or useful</b> compared with existing systems.</li></ul>
+ <h3>Project ideas linked to your syllabus</h3>
+ <table><tr><th>Project idea</th><th>Technologies</th><th>Subjects used</th></tr><tr><td>Online library / student / hospital / inventory management system</td><td>PHP, MySQL, Bootstrap, jQuery/AJAX</td><td>MCA 201, 204</td></tr><tr><td>Online examination system with auto-evaluation and result analysis</td><td>PHP, MySQL, AJAX, Bootstrap</td><td>MCA 201, 204</td></tr><tr><td>Student attendance and performance tracking with reports</td><td>PHP/MySQL, charts (Chart.js)</td><td>MCA 201, 202, 204</td></tr><tr><td>Sales / customer analytics dashboard</td><td>R or Python, SQL, data warehouse star schema</td><td>MCA 201, 202</td></tr><tr><td>Customer segmentation with k-means; churn prediction with decision trees</td><td>Python (scikit-learn) or R</td><td>MCA 202, 203</td></tr><tr><td>Sentiment analysis of tweets / product reviews (Na&iuml;ve Bayes)</td><td>Python, NLTK, CSV/MongoDB</td><td>MCA 202, 203</td></tr><tr><td>Student result or placement predictor</td><td>Python, regression / classification</td><td>MCA 203</td></tr><tr><td>Spam or fake-news classifier</td><td>Python, text processing, Na&iuml;ve Bayes/SVM</td><td>MCA 203</td></tr><tr><td>Handwritten digit / simple image recognition</td><td>Python, Keras/TensorFlow (MNIST)</td><td>MCA 203</td></tr><tr><td>Rule-based expert system (crop disease or health advisory) with certainty factors</td><td>Python/PHP rules or CLIPS, web interface</td><td>MCA 203, 204</td></tr><tr><td>Chatbot for college enquiries (rule-based or NLP)</td><td>Python/PHP, JSON knowledge base, AJAX</td><td>MCA 203, 204</td></tr><tr><td>Log analysis / word-count with Hadoop or Spark on a large text data set</td><td>Hadoop/Spark (local or cloud), Hive</td><td>MCA 202</td></tr><tr><td>Weather / news / currency dashboard using public REST APIs</td><td>HTML, Bootstrap, jQuery AJAX, JSON/XML</td><td>MCA 204</td></tr><tr><td>XML-based content system (news feed or catalogue) with XSLT display</td><td>XML, DTD/XSD, XSLT, PHP</td><td>MCA 204</td></tr><tr><td>Responsive college or business website with admin panel</td><td>Bootstrap, PHP, MySQL, AJAX live search</td><td>MCA 201, 204</td></tr></table>
+
+ <h2 class="sec" style="margin-top:26px">3. Synopsis</h2>
+ <p>The synopsis is a short plan (usually 4&ndash;8 pages) that the guide and the university approve before you start. Use this structure:</p>
+ <table><tr><th>Section</th><th>What to write</th></tr><tr><td>1. Title</td><td>Short, clear and specific (not &ldquo;Management System&rdquo; alone).</td></tr><tr><td>2. Introduction and background</td><td>Domain, why the problem matters (half to one page).</td></tr><tr><td>3. Problem statement</td><td>The exact problem and the weaknesses of the current/manual system.</td></tr><tr><td>4. Objectives</td><td>3&ndash;6 measurable points beginning with a verb (to automate&hellip;, to generate&hellip;).</td></tr><tr><td>5. Scope and limitations</td><td>What the system will and will not do; users and platform.</td></tr><tr><td>6. Existing vs proposed system</td><td>Comparison table and the advantages of your solution.</td></tr><tr><td>7. Methodology</td><td>SDLC model, tools, techniques/algorithms.</td></tr><tr><td>8. Hardware and software requirements</td><td>Processor, RAM, OS, language, DBMS, browser, tools.</td></tr><tr><td>9. Modules</td><td>List of modules with a two-line description each.</td></tr><tr><td>10. Database design (preliminary)</td><td>Main tables and attributes or the data set to be used.</td></tr><tr><td>11. Feasibility study</td><td>Technical, economic and operational.</td></tr><tr><td>12. Expected outcome</td><td>Deliverables and benefits.</td></tr><tr><td>13. Timeline</td><td>Weekly or monthly plan (Gantt table).</td></tr><tr><td>14. References</td><td>Books, papers, websites in a consistent format.</td></tr></table>
+ <h3>Worked example of a synopsis</h3>
+ <h4>Title: Online Student Attendance Management System</h4>
+<p><b>Introduction.</b> Colleges still record attendance on paper registers, which is slow, error-prone and makes it hard to report shortages. A web-based system can record, store and analyse attendance centrally.</p>
+<p><b>Problem statement.</b> Manual registers cause calculation mistakes, delayed defaulter lists, no instant access for students or parents, and difficulty in producing monthly reports.</p>
+<p><b>Objectives.</b></p>
+<ul><li>To record daily subject-wise attendance online by teachers.</li><li>To calculate attendance percentage automatically and flag students below 75%.</li><li>To let students view their attendance and teachers/admins download reports.</li><li>To keep data secure with role-based login.</li></ul>
+<p><b>Scope and limitations.</b> Web application for one college (admin, teacher, student roles) used on desktop and mobile browsers. Biometric devices and SMS gateway integration are outside the scope.</p>
+<p><b>Methodology.</b> Waterfall model; PHP and MySQL for the back end, HTML/CSS/Bootstrap and jQuery AJAX for the interface; XAMPP for development; Git for version control.</p>
+<p><b>Requirements.</b> Hardware: Intel i3 or above, 4 GB RAM, 250 GB disk. Software: Windows/Linux, Apache, PHP 8, MySQL 8, Chrome/Firefox, VS Code.</p>
+<p><b>Modules.</b> (1) Login and role management, (2) Master data (courses, subjects, students, teachers), (3) Attendance entry, (4) Reports and defaulter list, (5) Student dashboard, (6) Administration and backup.</p>
+<p><b>Feasibility.</b> Technical: all tools are free and known to the team. Economic: no licence cost, runs on a normal PC/server. Operational: simple interface, minimal training.</p>
+<p><b>Expected outcome.</b> A working system that reduces attendance work and produces accurate reports instantly.</p>
+ <h4>Sample timeline (16 weeks)</h4>
+ <table><tr><th>Weeks</th><th>Activity</th></tr><tr><td>1&ndash;2</td><td>Topic finalisation, synopsis writing and approval</td></tr><tr><td>3&ndash;4</td><td>Requirement gathering, feasibility study, SRS</td></tr><tr><td>5&ndash;6</td><td>Design: DFDs, ER diagram, database schema, screen layouts</td></tr><tr><td>7&ndash;11</td><td>Coding of modules (login, master data, attendance, reports)</td></tr><tr><td>12&ndash;13</td><td>Testing, bug fixing, user feedback</td></tr><tr><td>14&ndash;15</td><td>Report writing, screenshots, review by guide</td></tr><tr><td>16</td><td>Final report, presentation and viva practice</td></tr></table>
+ <h4>Choosing a development model</h4>
+ <table><tr><th>Model</th><th>Idea</th><th>Use when</th></tr><tr><td>Waterfall</td><td>Phases done in strict order: analysis &rarr; design &rarr; code &rarr; test</td><td>Requirements are clear and fixed (most college projects)</td></tr><tr><td>Incremental</td><td>Build and deliver the system module by module</td><td>Large system that can be released in parts</td></tr><tr><td>Prototype</td><td>Build a quick mock-up, get feedback, refine</td><td>Requirements are unclear; the user interface is important</td></tr><tr><td>Agile / Scrum</td><td>Short sprints, continuous feedback and change</td><td>Requirements change often; you work in a team</td></tr></table>
+
+ <h2 class="sec" style="margin-top:26px">4. System analysis</h2>
+ <p>Study how the work is done now (interviews, observation, forms and registers), list the problems, and write the <b>Software Requirements Specification (SRS)</b>.</p>
+ <table><tr><th>SRS section</th><th>Contents</th></tr><tr><td>1. Introduction</td><td>Purpose, scope, definitions and abbreviations, references, overview</td></tr><tr><td>2. Overall description</td><td>Product perspective and functions, user classes, operating environment, constraints, assumptions</td></tr><tr><td>3. Specific requirements</td><td>Functional requirements, external interfaces (user, hardware, software), performance, security and other non-functional requirements</td></tr><tr><td>4. Appendices</td><td>Data dictionary, use-case descriptions, glossary</td></tr></table>
+ <h4>Example functional requirements</h4>
+ <table><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr><tr><td>FR-1</td><td>The system shall allow users to log in with a username and password and shall show pages according to their role.</td><td>High</td></tr><tr><td>FR-2</td><td>The teacher shall be able to mark a student present or absent for a subject and date.</td><td>High</td></tr><tr><td>FR-3</td><td>The system shall calculate attendance percentage per student and subject.</td><td>High</td></tr><tr><td>FR-4</td><td>The system shall list students below 75% attendance.</td><td>Medium</td></tr><tr><td>FR-5</td><td>The admin shall be able to export reports in CSV or PDF format.</td><td>Medium</td></tr></table>
+ <h4>Non-functional requirements</h4>
+ <ul><li><b>Performance:</b> a page should load within 3 seconds for 200 concurrent users.</li><li><b>Security:</b> hashed passwords, prepared statements, session timeout, role-based access.</li><li><b>Usability:</b> responsive layout; a teacher can mark a class in under 2 minutes.</li><li><b>Reliability and backup:</b> daily database backup; no data loss on power failure.</li><li><b>Maintainability:</b> modular, commented code; documented database.</li></ul>
+ <p><b>Feasibility study:</b> <i>technical</i> (do we have the skills, tools and hardware?), <i>economic</i> (cost versus benefit) and <i>operational</i> (will users accept and use it?).</p>
+
+ <h2 class="sec" style="margin-top:26px">5. System design</h2>
+ <ul>
+<li><b>System architecture:</b> three-tier &ndash; browser (HTML/CSS/JS) &rarr; web server (PHP) &rarr; database (MySQL).</li>
+<li><b>Data flow diagrams (DFD):</b> context diagram, then Level 1 (and Level 2 for complex processes). Use consistent symbols (processes, data stores, external entities, data flows).</li>
+<li><b>ER diagram and database design:</b> entities, attributes, keys, relationships and cardinalities; convert to tables and normalise to 3NF (MCA 201 Unit I and III).</li>
+<li><b>UML (optional):</b> use-case diagram (actors and use cases), class diagram, sequence diagram for key scenarios.</li>
+<li><b>Data dictionary:</b> for every table list column, data type, size, constraint and description.</li>
+<li><b>Interface design:</b> sketch each screen (login, dashboard, forms, reports) before coding; keep navigation consistent.</li>
+<li><b>Algorithms / models</b> (data and AI projects): describe data set, pre-processing, model, evaluation measure (accuracy, precision, recall, RMSE) and flowchart.</li></ul>
+ <h4>Example: context diagram and Level 1 processes</h4>
+ <pre class="out"><code>Context diagram (Level 0)
+
+ [Admin]  --- master data, reports request ---&amp;gt; +-------------------+ --- reports, lists ---&amp;gt; [Admin]
+ [Teacher]--- attendance entries --------------&amp;gt; |  ATTENDANCE       | --- class sheets ------&amp;gt; [Teacher]
+ [Student]--- login, view request -------------&amp;gt; |  MANAGEMENT       | --- own attendance ----&amp;gt; [Student]
+                                                +---------+---------+
+                                                          |
+                                                     ( Database )
+
+Level 1 processes:  1.0 Login/Authentication   2.0 Manage master data
+                    3.0 Mark attendance        4.0 Generate reports
+Data stores:        D1 Users   D2 Students   D3 Subjects   D4 Attendance</code></pre>
+ <h4>Example: database design</h4>
+ <pre class="out"><code>users      (user_id PK, username UNIQUE, password_hash, role)
+courses    (course_id PK, course_name)
+students   (student_id PK, user_id FK, roll_no UNIQUE, name, course_id FK, semester)
+subjects   (subject_id PK, subject_name, course_id FK, semester)
+teachers   (teacher_id PK, user_id FK, name, email)
+attendance (att_id PK, student_id FK, subject_id FK, att_date, status CHAR(1))
+           UNIQUE (student_id, subject_id, att_date)
+
+Relationships:  course 1---N students,  course 1---N subjects,
+                student 1---N attendance,  subject 1---N attendance</code></pre>
+ <h4>Example: a report query</h4>
+ <pre><code>-- Attendance percentage of each student in each subject
+SELECT s.roll_no, s.name, sub.subject_name,
+       ROUND(100 * SUM(a.status = &#x27;P&#x27;) / COUNT(*), 2) AS percentage
+FROM attendance a
+JOIN students s   ON a.student_id = s.student_id
+JOIN subjects sub ON a.subject_id = sub.subject_id
+GROUP BY s.roll_no, s.name, sub.subject_name
+HAVING percentage &lt; 75;          -- defaulter list</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">6. Implementation</h2>
+ <h4>Choosing technologies (from MCA 201&ndash;206)</h4>
+ <table><tr><th>Need</th><th>Options from the syllabus</th></tr><tr><td>Front end</td><td>HTML5, CSS3, Bootstrap (responsive), JavaScript, jQuery</td></tr><tr><td>Server side</td><td>PHP (or Python/Node.js if allowed)</td></tr><tr><td>Database</td><td>MySQL / Oracle (SQL, PL/SQL triggers, views); MongoDB or HBase for NoSQL projects</td></tr><tr><td>Dynamic pages</td><td>AJAX with XMLHttpRequest or jQuery <code>$.ajax()</code>; JSON or XML responses</td></tr><tr><td>Data / ML</td><td>R or Python (pandas, scikit-learn, Keras), Hadoop/Spark/Hive for big data</td></tr><tr><td>Tools</td><td>VS Code, XAMPP, phpMyAdmin, Git and GitHub, draw.io (diagrams), Postman (API testing)</td></tr></table>
+ <ul>
+<li>Build the system <b>module by module</b> and test each module before moving on.</li>
+<li>Use <b>Git</b> from day one (a private GitHub repository) &ndash; commit small and often; it also proves your own work.</li>
+<li>Suggested folder structure: <code>config/</code> (database connection), <code>includes/</code> (header, footer, functions), <code>assets/</code> (css, js, images), <code>modules/</code> (feature pages), <code>sql/</code> (schema and sample data).</li>
+<li><b>Security basics:</b> prepared statements (no SQL injection), <code>password_hash()</code>, validate input on server and client, escape output with <code>htmlspecialchars()</code>, check the user&rsquo;s role on every page, never keep passwords in code that you share.</li>
+<li>Write clear <b>comments</b>, meaningful names and consistent indentation; keep one function for one task.</li>
+<li>Keep a <b>backup</b> of code and database in two places (pen drive/cloud).</li></ul>
+
+ <h2 class="sec" style="margin-top:26px">7. Testing</h2>
+ <table><tr><th>Type</th><th>Purpose</th></tr><tr><td>Unit testing</td><td>Test each function or module on its own</td></tr><tr><td>Integration testing</td><td>Check that modules work together (e.g. attendance entry updates reports)</td></tr><tr><td>System testing</td><td>Test the complete system against the requirements</td></tr><tr><td>Acceptance testing</td><td>The user checks that it solves the real problem</td></tr><tr><td>Black-box testing</td><td>Check inputs and outputs without looking at code (equivalence classes, boundary values)</td></tr><tr><td>White-box testing</td><td>Test internal paths, conditions and loops</td></tr><tr><td>Security / performance testing</td><td>Check SQL injection, access control, response time with many records</td></tr></table>
+ <h4>Sample test-case table (use this format in the report)</h4>
+ <table><tr><th>TC ID</th><th>Description</th><th>Input</th><th>Expected result</th><th>Actual result</th><th>Status</th></tr><tr><td>TC-01</td><td>Valid login</td><td>admin / correct password</td><td>Admin dashboard opens</td><td>As expected</td><td>Pass</td></tr><tr><td>TC-02</td><td>Invalid password</td><td>admin / wrong</td><td>Error message, stay on login</td><td>As expected</td><td>Pass</td></tr><tr><td>TC-03</td><td>Empty fields</td><td>blank username</td><td>&ldquo;Required&rdquo; message</td><td>As expected</td><td>Pass</td></tr><tr><td>TC-04</td><td>SQL injection attempt</td><td>' OR '1'='1</td><td>Login rejected</td><td>As expected</td><td>Pass</td></tr><tr><td>TC-05</td><td>Mark attendance twice for same date</td><td>Same student, subject, date</td><td>Duplicate prevented</td><td>As expected</td><td>Pass</td></tr><tr><td>TC-06</td><td>Percentage calculation</td><td>18 present of 20</td><td>90%</td><td>90%</td><td>Pass</td></tr><tr><td>TC-07</td><td>Defaulter list</td><td>Student with 14 of 20</td><td>Listed (70% &lt; 75%)</td><td>As expected</td><td>Pass</td></tr></table>
+ <p>Record every bug you found (description, module, how it was fixed). A short <b>bug log</b> in the report shows real testing.</p>
+
+ <h2 class="sec" style="margin-top:26px">8. Project report</h2>
+ <table><tr><th>Part</th><th>Contents</th></tr><tr><td>Preliminary pages</td><td>Title page, certificate (guide and institute), declaration, acknowledgement, abstract, table of contents, list of figures and tables</td></tr><tr><td>Chapter 1: Introduction</td><td>Background, problem statement, objectives, scope, organisation of the report</td></tr><tr><td>Chapter 2: System analysis</td><td>Existing system, proposed system, requirement specification, feasibility study</td></tr><tr><td>Chapter 3: System design</td><td>Architecture, DFDs, ER diagram, database design and data dictionary, UI design, algorithms</td></tr><tr><td>Chapter 4: Implementation</td><td>Tools and technologies, module descriptions, important code snippets, challenges faced</td></tr><tr><td>Chapter 5: Testing</td><td>Test plan, test cases and results, bug fixes</td></tr><tr><td>Chapter 6: Results</td><td>Screenshots with explanation, sample reports/outputs, analysis of results (for data/ML projects)</td></tr><tr><td>Chapter 7: Conclusion and future scope</td><td>What was achieved, limitations, possible enhancements</td></tr><tr><td>References and appendices</td><td>Books, papers, websites; user manual; additional code listings; synopsis copy</td></tr></table>
+ <h4>Formatting and submission tips</h4>
+ <ul>
+<li>Typical layout: A4 paper, 1&ndash;1.5 line spacing, 12 pt Times New Roman (or Arial 11), margins about 1 inch (1.5 inch left for binding), headings numbered, page numbers at the bottom. <b>Check your university&rsquo;s exact format.</b></li>
+<li>Every figure and table needs a number and caption (Figure 3.2: ER diagram).</li>
+<li>Use your own words; give references for text, images and ideas taken from elsewhere. Run a plagiarism check if your institute requires it.</li>
+<li>Print screenshots clearly; keep code listings to the important parts and put long listings in the appendix.</li>
+<li>Get signatures on the certificate before final binding, and keep a soft copy and the working software on a CD/pen drive if asked.</li></ul>
+
+ <h2 class="sec" style="margin-top:26px">9. Presentation</h2>
+ <p>Aim for about 10&ndash;12 slides and a demo of 5&ndash;7 minutes. Keep slides mostly diagrams and screenshots, with few words.</p>
+ <table><tr><th>Slide</th><th>Content</th></tr><tr><td>1</td><td>Title, your name and roll number, guide, institute</td></tr><tr><td>2</td><td>Introduction and problem statement</td></tr><tr><td>3</td><td>Objectives and scope</td></tr><tr><td>4</td><td>Existing system and proposed system</td></tr><tr><td>5</td><td>Technologies and tools used</td></tr><tr><td>6</td><td>System architecture and DFD</td></tr><tr><td>7</td><td>ER diagram / database design (or data set and model design)</td></tr><tr><td>8&ndash;9</td><td>Modules with screenshots</td></tr><tr><td>10</td><td>Testing summary</td></tr><tr><td>11</td><td>Results, advantages and limitations</td></tr><tr><td>12</td><td>Conclusion, future scope and thank-you / questions</td></tr></table>
+ <ul><li>Demo flow: login &rarr; main feature &rarr; report &rarr; one error case (to show validation).</li><li>Have a recorded demo and screenshots as a backup if the system fails.</li></ul>
+
+ <h2 class="sec" style="margin-top:26px">10. Viva questions</h2>
+ <div class="qa"><p><b>Q1. Why did you choose this project?</b></p><p>Explain the real problem you observed, who needs the solution, and why the topic suits your skills. Avoid &ldquo;I found it easy&rdquo;.</p></div><div class="qa"><p><b>Q2. What is the objective and what problem does your system solve?</b></p><p>State the problem in one sentence, then 3&ndash;4 objectives. Compare with the manual/existing system.</p></div><div class="qa"><p><b>Q3. Which SDLC model did you follow and why?</b></p><p>For example Waterfall because the requirements were clear and fixed; describe the phases you actually followed.</p></div><div class="qa"><p><b>Q4. Explain your ER diagram / database design.</b></p><p>Name the entities, keys and relationships; justify each table and mention normalisation up to 3NF.</p></div><div class="qa"><p><b>Q5. Explain the DFD of your system.</b></p><p>Walk from external entities to processes and data stores; explain what data flows in each arrow.</p></div><div class="qa"><p><b>Q6. How have you ensured security?</b></p><p>Role-based login, hashed passwords, prepared statements against SQL injection, input validation, session handling.</p></div><div class="qa"><p><b>Q7. How did you test your project? Show test cases.</b></p><p>Describe unit, integration and system tests with a few cases and the bugs you found and fixed.</p></div><div class="qa"><p><b>Q8. What are the limitations of your project?</b></p><p>Be honest and specific (e.g. no SMS integration, tested with limited data) and link them to future scope.</p></div><div class="qa"><p><b>Q9. What is the future scope?</b></p><p>Realistic enhancements: mobile app, notifications, analytics, cloud deployment.</p></div><div class="qa"><p><b>Q10. What challenges did you face and how did you solve them?</b></p><p>Give one or two real technical problems (e.g. duplicate entries, slow query) and your solution.</p></div><div class="qa"><p><b>Q11. What would happen if the number of users increases to one lakh?</b></p><p>Discuss indexing, query optimisation, caching, a stronger server, load balancing and database replication.</p></div><div class="qa"><p><b>Q12. Explain one important module or algorithm line by line.</b></p><p>Be ready to walk through your own code; practise with the most complex module.</p></div><div class="qa"><p><b>Q13. Why did you use this language/database and not another?</b></p><p>Compare on cost, familiarity, community support, suitability for the application.</p></div><div class="qa"><p><b>Q14. (Data/ML projects) How did you evaluate your model?</b></p><p>Explain train/test split, metric (accuracy, precision, recall, RMSE), overfitting checks and results.</p></div><div class="qa"><p><b>Q15. (Data/ML projects) Where did you get the data and how did you clean it?</b></p><p>Name the source, cleaning steps (missing values, outliers, encoding, scaling) and any limitations.</p></div><div class="qa"><p><b>Q16. What is your own contribution?</b></p><p>Describe exactly what you designed, coded and tested; mention open-source libraries you used and give them credit.</p></div>
+
+ <h2 class="sec" style="margin-top:26px">11. Common mistakes to avoid</h2>
+ <ul>
+<li>Choosing a topic that is too large, or one copied from the internet that you cannot explain.</li>
+<li>Starting the report only in the last week; write each chapter as you finish the phase.</li>
+<li>Diagrams that do not match the implemented system (ER diagram different from the actual tables).</li>
+<li>No test cases or a test table in which everything passes without evidence.</li>
+<li>Poor input validation and storing plain-text passwords.</li>
+<li>Not keeping a backup, or a demo that depends on internet access you may not have in the hall.</li>
+<li>Being unable to explain your own code in the viva.</li></ul>
+
+ <h2 class="sec" style="margin-top:26px">12. Final submission checklist</h2>
+ <ul class="check">
+<li>&#9744; Synopsis approved and signed by the guide</li>
+<li>&#9744; Software runs on a clean machine; database script and sample data included</li>
+<li>&#9744; Report proof-read; figure/table numbers, references and page numbers correct</li>
+<li>&#9744; Certificates and declaration signed; report bound as required</li>
+<li>&#9744; Presentation (12 slides) and a 5-minute demo flow rehearsed</li>
+<li>&#9744; Screenshots and a short screen recording as a backup for the demo</li>
+<li>&#9744; Answers prepared for the viva questions above</li></ul>
+
  <div class="pager"><a class="prev" href="mca206.html"><small>← Previous</small>MCA 206 (P) · Advanced Web Technology Lab</a><a class="next" href="../toc.html"><small>The end →</small>Back to Table of Index</a></div>
 </article></div></div>
 </main>
