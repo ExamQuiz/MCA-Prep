@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 204 Unit V: jQuery">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,109 @@
  <h1>jQuery</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">JavaScript DOM objects: Window, History, Location, Document, Form</span><span class="chip">Fundamentals of jQuery</span><span class="chip">Loading and using jQuery</span><span class="chip">Using jQuery library files</span><span class="chip">Call-back functions</span><span class="chip">jQuery selectors</span><span class="chip">Methods to access HTML attributes</span><span class="chip">Methods of traversing</span><span class="chip">jQuery manipulators</span><span class="chip">jQuery events</span><span class="chip">jQuery effects</span><span class="chip">jQuery with AJAX</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca204-u4.html"><small>← Previous</small>Unit IV: Handling XML Data using PHP and AJAX; Web Services</a><a class="next" href="mca205.html"><small>Next →</small>MCA 205 (P) · DBMS Lab</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p><b>jQuery</b> is a fast, small JavaScript library that makes DOM selection, event handling, animation and AJAX much shorter (&ldquo;write less, do more&rdquo;). The unit begins with the core JavaScript DOM objects and then covers jQuery selectors, attribute methods, traversing, manipulation, events, effects and AJAX.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. JavaScript DOM objects</h3>
+<ul><li><b>Window:</b> top-level browser object; <code>alert()</code>, <code>confirm()</code>, <code>prompt()</code>, <code>open()</code>, <code>close()</code>, <code>setTimeout()</code>, <code>setInterval()</code>, <code>innerWidth</code>, <code>innerHeight</code>.</li><li><b>History:</b> pages visited; <code>history.back()</code>, <code>forward()</code>, <code>go(n)</code>, <code>length</code>.</li><li><b>Location:</b> current URL; properties <code>href</code>, <code>protocol</code>, <code>hostname</code>, <code>port</code>, <code>pathname</code>, <code>search</code>, <code>hash</code>; methods <code>reload()</code>, <code>assign(url)</code>, <code>replace(url)</code>.</li><li><b>Document:</b> the loaded page; <code>getElementById()</code>, <code>getElementsByTagName()</code>, <code>querySelector()</code>, <code>write()</code>, <code>createElement()</code>, <code>title</code>, <code>cookie</code>, <code>forms</code>.</li><li><b>Form:</b> <code>document.forms[0]</code> or by name; <code>elements</code>, <code>value</code>, <code>checked</code>, <code>submit()</code>, <code>reset()</code>, events <code>onsubmit</code>, <code>onchange</code>; used for validation.</li></ul>
+<h3>2. Fundamentals of jQuery</h3>
+<p>jQuery is a cross-browser library (John Resig, 2006). Basic syntax: <b><code>$(selector).action()</code></b> &ndash; <code>$</code> (alias of <code>jQuery</code>) selects elements and an action method works on them. <b>Method chaining:</b> <code>$("p").css("color","red").slideUp();</code>. Advantages: short code, cross-browser, many plugins, built-in effects and AJAX. The <b>document-ready</b> event makes sure the DOM is loaded: <code>$(document).ready(function(){ &hellip; });</code> or the shorthand <code>$(function(){ &hellip; });</code>.</p>
+<h3>3. Loading and using jQuery</h3>
+<p>Include the library in <code>&lt;head&gt;</code> or before <code>&lt;/body&gt;</code>, <b>before</b> any script that uses it: from a <b>CDN</b> (Google, Microsoft, jQuery CDN &ndash; cached, fast) or a <b>local copy</b> downloaded from jquery.com. If another library also uses <code>$</code>, call <code>jQuery.noConflict()</code>.</p>
+<h3>4. Using jQuery library files</h3>
+<p>Two versions: <b>uncompressed (development)</b> <code>jquery-x.y.z.js</code> (readable, for debugging) and <b>minified (production)</b> <code>jquery-x.y.z.min.js</code> (smaller, faster). Related files: <b>jQuery UI</b> (widgets: datepicker, dialog, tabs), jQuery Mobile and many plugins; keep them in a <code>js/</code> folder and link with <code>&lt;script src="js/jquery.min.js"&gt;</code>. Use a local fallback if the CDN fails.</p>
+<h3>5. Call-back functions</h3>
+<p>A <b>callback</b> is a function passed as an argument and executed <b>after</b> the current action finishes. JavaScript statements run line by line, so with animations the next line could run before the effect ends; a callback guarantees order: <code>$("p").hide(1000, function(){ alert("Hidden"); });</code>. Callbacks are also used for event handlers and AJAX completion.</p>
+<h3>6. jQuery selectors</h3>
+<table><tr><th>Selector</th><th>Selects</th></tr>
+<tr><td><code>$("p")</code></td><td>All &lt;p&gt; elements</td></tr>
+<tr><td><code>$("#id")</code></td><td>Element with that id</td></tr>
+<tr><td><code>$(".class")</code></td><td>Elements with that class</td></tr>
+<tr><td><code>$("*")</code></td><td>All elements</td></tr>
+<tr><td><code>$("p, h1")</code></td><td>Multiple selection</td></tr>
+<tr><td><code>$("div p")</code> / <code>$("div &gt; p")</code></td><td>Descendants / direct children</td></tr>
+<tr><td><code>$("input[type='text']")</code></td><td>Attribute selector</td></tr>
+<tr><td><code>:first</code>, <code>:last</code>, <code>:even</code>, <code>:odd</code>, <code>:eq(n)</code></td><td>Position filters</td></tr>
+<tr><td><code>:contains('x')</code>, <code>:hidden</code>, <code>:visible</code>, <code>:input</code>, <code>:checked</code></td><td>Content/state filters</td></tr></table>
+<h3>7. Methods to access HTML attributes</h3>
+<ul><li><code>attr("name")</code> / <code>attr("name","value")</code>, <code>removeAttr()</code>, <code>prop()</code> (for checked, disabled).</li><li>Content: <code>text()</code> (plain text), <code>html()</code> (HTML markup), <code>val()</code> (form value).</li><li>Classes/CSS: <code>addClass()</code>, <code>removeClass()</code>, <code>toggleClass()</code>, <code>hasClass()</code>, <code>css("prop","value")</code>; sizes: <code>width()</code>, <code>height()</code>; <code>data()</code>.</li></ul>
+<h3>8. Methods of traversing</h3>
+<p><b>Ancestors:</b> <code>parent()</code>, <code>parents()</code>, <code>closest()</code>. <b>Descendants:</b> <code>children()</code>, <code>find()</code>. <b>Siblings:</b> <code>siblings()</code>, <code>next()</code>, <code>prev()</code>, <code>nextAll()</code>. <b>Filtering:</b> <code>first()</code>, <code>last()</code>, <code>eq(n)</code>, <code>filter()</code>, <code>not()</code>. Looping: <code>each()</code>.</p>
+<h3>9. jQuery manipulators</h3>
+<p><b>Insert inside:</b> <code>append()</code>, <code>prepend()</code>. <b>Insert outside:</b> <code>after()</code>, <code>before()</code>. <b>Remove:</b> <code>remove()</code> (element and its data), <code>empty()</code> (children only). Others: <code>clone()</code>, <code>wrap()</code>, <code>replaceWith()</code>, <code>html()</code>, <code>text()</code>.</p>
+<h3>10. jQuery events</h3>
+<p>Mouse: <code>click</code>, <code>dblclick</code>, <code>mouseenter</code>, <code>mouseleave</code>, <code>hover</code>; keyboard: <code>keydown</code>, <code>keyup</code>, <code>keypress</code>; form: <code>submit</code>, <code>change</code>, <code>focus</code>, <code>blur</code>; document/window: <code>ready</code>, <code>resize</code>, <code>scroll</code>. Attach with <code>.click(fn)</code> or <code>.on("click", fn)</code>; remove with <code>.off()</code>; <b>delegated events</b> for dynamically added elements: <code>$(parent).on("click", "child", fn)</code>. The event object offers <code>preventDefault()</code>, <code>stopPropagation()</code>, <code>target</code>, <code>which</code>; inside a handler, <code>$(this)</code> is the element.</p>
+<h3>11. jQuery effects</h3>
+<ul><li><b>Show/hide:</b> <code>show()</code>, <code>hide()</code>, <code>toggle()</code> (speed: "slow", "fast" or milliseconds).</li><li><b>Fading:</b> <code>fadeIn()</code>, <code>fadeOut()</code>, <code>fadeToggle()</code>, <code>fadeTo()</code>.</li><li><b>Sliding:</b> <code>slideDown()</code>, <code>slideUp()</code>, <code>slideToggle()</code>.</li><li><b>Custom:</b> <code>animate({properties}, speed, callback)</code> (numeric CSS only); control with <code>stop()</code>, <code>delay()</code>.</li></ul>
+<h3>12. jQuery with AJAX</h3>
+<ul><li><code>$(sel).load(url [, data] [, callback])</code> &ndash; loads server content into elements.</li><li><code>$.get(url, data, callback)</code> and <code>$.post(url, data, callback)</code> &ndash; shorthand requests.</li><li><code>$.getJSON(url, callback)</code> &ndash; JSON.</li><li><code>$.ajax({url, type, data, dataType, success, error, complete})</code> &ndash; full control.</li><li><code>$(form).serialize()</code> builds the query string from a form.</li></ul>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<pre><code>&lt;script src="https://code.jquery.com/jquery-3.7.1.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+$(document).ready(function () {
+
+  // Selectors + events + effects
+  $("#btn").click(function () {
+    $("p.note").slideToggle("slow");
+  });
+  $("li:even").css("background", "#eee");
+
+  // Attributes and manipulation
+  $("#img1").attr("src", "new.png");
+  $("ul").append("&lt;li&gt;New item&lt;/li&gt;");
+  $("#box").addClass("highlight").fadeIn(500);
+
+  // Callback after animation
+  $("#panel").hide(1000, function () { alert("Panel hidden"); });
+
+  // Traversing
+  $("li").first().next().css("color", "red");
+  $("li").each(function (i) { $(this).text((i + 1) + ". " + $(this).text()); });
+
+  // Delegated event for dynamic elements
+  $("#list").on("click", "li", function () { $(this).toggleClass("done"); });
+
+  // Custom animation
+  $("#ball").animate({ left: "250px", opacity: 0.5 }, 1500);
+});
+&lt;/script&gt;</code></pre>
+<p><b>jQuery AJAX examples</b></p>
+<pre><code>// load(): put server content into a div
+$("#result").load("data.txt");
+
+// $.get(): username check with PHP
+$("#user").keyup(function () {
+  $.get("check.php", { u: $(this).val() }, function (data) {
+    $("#msg").html(data);
+  });
+});
+
+// $.post(): submit a form
+$("#myform").submit(function (e) {
+  e.preventDefault();
+  $.post("save.php", $(this).serialize(), function (resp) { alert(resp); });
+});
+
+// $.ajax(): full control with JSON
+$.ajax({
+  url: "students.php", type: "GET", data: { id: 1 }, dataType: "json",
+  success: function (s) { $("#out").text(s.name + " - " + s.marks); },
+  error: function () { alert("Request failed"); }
+});</code></pre>
+<pre><code>// Plain JavaScript DOM objects
+document.getElementById("demo").innerHTML = location.hostname;
+function goBack() { history.back(); }
+var f = document.forms[0];
+if (f.elements['email'].value == '') { alert('Email required'); }</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Explain the Window, History, Location, Document and Form objects of the JavaScript DOM.</b></p><p>Describe each with its main properties and methods, e.g. history.back(), location.href, document.getElementById(), form.submit().</p></div><div class="qa"><p><b>Q2. What is jQuery? Explain its advantages and how to load it.</b></p><p>A JavaScript library for DOM, events, effects and AJAX; load from a CDN or a local file before use; syntax $(selector).action().</p></div><div class="qa"><p><b>Q3. What is a callback function in jQuery? Give an example.</b></p><p>A function run after an action completes, e.g. <code>$('p').hide(1000, function(){alert('done');})</code>.</p></div><div class="qa"><p><b>Q4. Explain jQuery selectors with examples.</b></p><p>Element, #id, .class, attribute, descendant/child and filters like :first, :even.</p></div><div class="qa"><p><b>Q5. Differentiate <code>append()</code>, <code>prepend()</code>, <code>after()</code> and <code>before()</code>.</b></p><p>append/prepend insert inside an element at end/start; after/before insert outside, following/preceding it.</p></div><div class="qa"><p><b>Q6. Explain jQuery effects.</b></p><p>show/hide/toggle, fade*, slide* and animate() with speed and callback.</p></div><div class="qa"><p><b>Q7. Explain jQuery AJAX methods with examples.</b></p><p>load(), $.get(), $.post(), $.getJSON() and $.ajax() with success and error callbacks.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>DOM objects: window, history, location, document, forms.</li><li>jQuery: <code>$(selector).action()</code>; <code>$(document).ready()</code>; chaining.</li><li>Load from CDN or a local .js (min.js for production).</li><li>Callback = function run after an action finishes.</li><li>Selectors: tag, #id, .class, [attr], :first/:even.</li><li>attr/prop/val/text/html/css; parent/children/find/siblings/next.</li><li>append/prepend (inside), after/before (outside), remove/empty.</li><li>Events: click, hover, keyup, submit, on()/off(); effects: show/hide, fade, slide, animate.</li><li>AJAX: load, $.get, $.post, $.getJSON, $.ajax.</li></ul>
+ <div class="pager"><a class="prev" href="mca204-u4.html"><small>&larr; Previous</small>Unit IV: Handling XML Data using PHP and AJAX; Web Services</a><a class="next" href="mca205.html"><small>Next &rarr;</small>MCA 205 (P) · DBMS Lab</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

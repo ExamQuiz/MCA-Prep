@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 204 Unit II: XML">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,96 @@
  <h1>XML</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">Introduction to XML</span><span class="chip">Comparing XML with HTML</span><span class="chip">Structure of XML: declaration, elements, attributes, comments, CDATA</span><span class="chip">XML entity references</span><span class="chip">Parsers</span><span class="chip">Document Type Definitions (DTD)</span><span class="chip">Using XSLT with XML</span><span class="chip">xsl:template, xsl:apply-templates, xsl:import, xsl:include</span><span class="chip">xsl:element, xsl:attribute, xsl:value-of</span><span class="chip">Conditional statements</span><span class="chip">Sorting elements</span><span class="chip">XSLT functions</span><span class="chip">Creating well-formed and valid documents</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca204-u1.html"><small>← Previous</small>Unit I: Responsive Web Design and Introduction to Bootstrap</a><a class="next" href="mca204-u3.html"><small>Next →</small>Unit III: Introduction to AJAX</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p><b>XML</b> (eXtensible Markup Language) describes and carries data using tags you define yourself. This unit covers XML structure, how to check a document with a <b>DTD</b>, how to process it with <b>parsers</b>, and how to transform it into other formats with <b>XSLT</b>. Writing a DTD and an XSLT stylesheet are the most common exam tasks.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. Introduction to XML</h3>
+<p>XML is a W3C standard, <b>text-based, self-descriptive</b> language for <b>storing and transporting data</b>. Tags are not predefined: authors invent them (<code>&lt;student&gt;</code>, <code>&lt;marks&gt;</code>). It is platform- and software-independent, human and machine readable, and widely used in configuration files, data exchange, RSS feeds, web services (SOAP) and document formats.</p>
+<h3>2. Comparing XML with HTML</h3>
+<table><tr><th>HTML</th><th>XML</th></tr>
+<tr><td>Displays data and decides <i>how it looks</i></td><td>Describes and carries data; decides <i>what it is</i></td></tr>
+<tr><td>Predefined tags</td><td>User-defined tags</td></tr>
+<tr><td>Not case-sensitive</td><td>Case-sensitive</td></tr>
+<tr><td>Closing tags may be omitted (<code>&lt;br&gt;</code>)</td><td>Every tag must be closed</td></tr>
+<tr><td>Attribute values may be unquoted</td><td>Attribute values must be quoted</td></tr>
+<tr><td>Browsers are forgiving of errors</td><td>Parsers stop at the first error</td></tr></table>
+<h3>3. Structure of XML</h3>
+<ul><li><b>Declaration (prolog):</b> <code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code> &ndash; optional, must be first.</li><li><b>Elements:</b> <code>&lt;name&gt;content&lt;/name&gt;</code>; exactly one <b>root element</b>; properly nested; empty element <code>&lt;br/&gt;</code>.</li><li><b>Attributes:</b> name&ndash;value pairs in the start tag: <code>&lt;book id="101"&gt;</code>.</li><li><b>Comments:</b> <code>&lt;!-- comment --&gt;</code>.</li><li><b>CDATA sections:</b> <code>&lt;![CDATA[ raw text with &lt; and &amp; ]]&gt;</code> &ndash; not parsed.</li><li><b>Processing instructions:</b> <code>&lt;?xml-stylesheet type="text/xsl" href="s.xsl"?&gt;</code>.</li></ul>
+<p>Naming rules: begin with a letter or underscore, no spaces, case-sensitive, don&rsquo;t start with &ldquo;xml&rdquo;.</p>
+<h3>4. XML entity references</h3>
+<p>Five predefined entities represent reserved characters: <code>&amp;lt;</code> (&lt;), <code>&amp;gt;</code> (&gt;), <code>&amp;amp;</code> (&amp;), <code>&amp;quot;</code> (&quot;), <code>&amp;apos;</code> (&apos;). Character references such as <code>&amp;#169;</code> give Unicode characters. Custom entities can be defined in a DTD: <code>&lt;!ENTITY cp "Copyright 2026"&gt;</code>, used as <code>&amp;cp;</code>.</p>
+<h3>5. Parsers</h3>
+<p>An <b>XML parser</b> reads a document, checks it and exposes its content to programs. <b>Non-validating</b> parsers check only well-formedness; <b>validating</b> parsers also check against a DTD/schema. Types: <b>DOM</b> (loads the whole tree into memory; random access, can modify; heavy for large files), <b>SAX</b> (event-driven, streaming, low memory, read-only, forward-only) and <b>pull parsers (StAX)</b>. PHP offers <code>DOMDocument</code>, <code>SimpleXML</code> and <code>XMLReader</code>.</p>
+<h3>6. Document Type Definitions (DTD)</h3>
+<p>A DTD defines the legal building blocks and structure of a document. It can be <b>internal</b> (inside <code>&lt;!DOCTYPE root [ &hellip; ]&gt;</code>) or <b>external</b> (<code>&lt;!DOCTYPE root SYSTEM "file.dtd"&gt;</code>). Declarations:</p>
+<ul><li><code>&lt;!ELEMENT name (content)&gt;</code> &ndash; content models: <code>(#PCDATA)</code> text, <code>EMPTY</code>, <code>ANY</code>, sequence <code>(a,b)</code>, choice <code>(a|b)</code>, with occurrence indicators <code>?</code> (0 or 1), <code>*</code> (0 or more), <code>+</code> (1 or more).</li><li><code>&lt;!ATTLIST element attr type default&gt;</code> &ndash; types: CDATA, ID, IDREF, NMTOKEN, enumerated <code>(a|b)</code>; defaults: <code>#REQUIRED</code>, <code>#IMPLIED</code>, <code>#FIXED "v"</code> or a literal default.</li><li><code>&lt;!ENTITY name "value"&gt;</code>.</li></ul>
+<p>Limits: not XML syntax itself, no data types, no namespaces &ndash; XML Schema (XSD) overcomes these.</p>
+<h3>7. Using XSLT with XML</h3>
+<p><b>XSLT</b> (eXtensible Stylesheet Language Transformations) is an XML-based language that <b>transforms</b> an XML document into HTML, plain text or other XML. It uses <b>XPath</b> to select nodes and <b>templates</b> to produce output. A stylesheet starts with <code>&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;</code> and is linked to the XML with <code>&lt;?xml-stylesheet&gt;</code>.</p>
+<h3>8. xsl:template, apply-templates, import, include</h3>
+<ul><li><code>&lt;xsl:template match="XPath"&gt;</code> &ndash; defines output for matching nodes (<code>match="/"</code> = root).</li><li><code>&lt;xsl:apply-templates select="..."/&gt;</code> &ndash; processes child nodes by applying the matching templates.</li><li><code>&lt;xsl:include href="a.xsl"/&gt;</code> &ndash; inserts another stylesheet at the same precedence.</li><li><code>&lt;xsl:import href="b.xsl"/&gt;</code> &ndash; imports a stylesheet whose rules have <b>lower precedence</b> (can be overridden); must come first.</li></ul>
+<h3>9. xsl:element, xsl:attribute, xsl:value-of</h3>
+<ul><li><code>&lt;xsl:element name="p"&gt;&hellip;&lt;/xsl:element&gt;</code> &ndash; creates an element dynamically.</li><li><code>&lt;xsl:attribute name="href"&gt;&hellip;&lt;/xsl:attribute&gt;</code> &ndash; adds an attribute to the enclosing element.</li><li><code>&lt;xsl:value-of select="title"/&gt;</code> &ndash; outputs the text value of the selected node. <code>&lt;xsl:for-each select="catalog/book"&gt;</code> loops over nodes.</li></ul>
+<h3>10. Conditional statements</h3>
+<p><code>&lt;xsl:if test="price &amp;gt; 300"&gt;&hellip;&lt;/xsl:if&gt;</code> (no else part) and <code>&lt;xsl:choose&gt;</code> with <code>&lt;xsl:when test=""&gt;</code> and <code>&lt;xsl:otherwise&gt;</code> for if&ndash;else-if&ndash;else. Operators <code>&lt;</code> and <code>&amp;</code> must be written as entities in tests.</p>
+<h3>11. Sorting elements</h3>
+<p><code>&lt;xsl:sort select="name" order="ascending|descending" data-type="text|number"/&gt;</code> placed inside <code>xsl:for-each</code> or <code>xsl:apply-templates</code>.</p>
+<h3>12. XSLT functions</h3>
+<p>XPath/XSLT functions: <b>node-set</b> &ndash; <code>count()</code>, <code>position()</code>, <code>last()</code>; <b>string</b> &ndash; <code>concat()</code>, <code>contains()</code>, <code>starts-with()</code>, <code>substring()</code>, <code>string-length()</code>, <code>normalize-space()</code>, <code>translate()</code>; <b>number</b> &ndash; <code>sum()</code>, <code>round()</code>, <code>floor()</code>, <code>ceiling()</code>; <b>boolean</b> &ndash; <code>not()</code>, <code>true()</code>; XSLT-specific &ndash; <code>format-number()</code>, <code>current()</code>, <code>generate-id()</code>.</p>
+<h3>13. Well-formed and valid documents</h3>
+<p><b>Well-formed</b> = obeys XML syntax: one root, all tags closed and properly nested, quoted attribute values, case-matched tags, escaped special characters, unique attribute names in an element. <b>Valid</b> = well-formed <i>and</i> conforms to a DTD or schema. Every valid document is well-formed, but not vice versa.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>books.xml</b> with an internal DTD and a stylesheet link:</p>
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;?xml-stylesheet type="text/xsl" href="books.xsl"?&gt;
+&lt;!DOCTYPE library [
+  &lt;!ELEMENT library (book+)&gt;
+  &lt;!ELEMENT book (title, author, price)&gt;
+  &lt;!ATTLIST book id CDATA #REQUIRED&gt;
+  &lt;!ELEMENT title (#PCDATA)&gt;
+  &lt;!ELEMENT author (#PCDATA)&gt;
+  &lt;!ELEMENT price (#PCDATA)&gt;
+]&gt;
+&lt;library&gt;
+  &lt;book id="1"&gt;&lt;title&gt;DBMS&lt;/title&gt;&lt;author&gt;Korth&lt;/author&gt;&lt;price&gt;450&lt;/price&gt;&lt;/book&gt;
+  &lt;book id="2"&gt;&lt;title&gt;AI&lt;/title&gt;&lt;author&gt;Rich&lt;/author&gt;&lt;price&gt;320&lt;/price&gt;&lt;/book&gt;
+&lt;/library&gt;</code></pre>
+<p><b>books.xsl</b> &ndash; table with sorting and a conditional:</p>
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+&lt;xsl:template match="/"&gt;
+  &lt;html&gt;&lt;body&gt;
+    &lt;h2&gt;Library&lt;/h2&gt;
+    &lt;table border="1"&gt;
+      &lt;tr&gt;&lt;th&gt;Title&lt;/th&gt;&lt;th&gt;Author&lt;/th&gt;&lt;th&gt;Price&lt;/th&gt;&lt;/tr&gt;
+      &lt;xsl:for-each select="library/book"&gt;
+        &lt;xsl:sort select="price" data-type="number" order="descending"/&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;xsl:value-of select="title"/&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;xsl:value-of select="author"/&gt;&lt;/td&gt;
+          &lt;td&gt;
+            &lt;xsl:choose&gt;
+              &lt;xsl:when test="price &amp;gt; 400"&gt;&lt;b&gt;&lt;xsl:value-of select="price"/&gt;&lt;/b&gt;&lt;/xsl:when&gt;
+              &lt;xsl:otherwise&gt;&lt;xsl:value-of select="price"/&gt;&lt;/xsl:otherwise&gt;
+            &lt;/xsl:choose&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/xsl:for-each&gt;
+    &lt;/table&gt;
+    &lt;p&gt;Total books: &lt;xsl:value-of select="count(library/book)"/&gt;&lt;/p&gt;
+  &lt;/body&gt;&lt;/html&gt;
+&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</code></pre>
+<div class="note"><b>Lab link:</b> this matches the MCA 206 practicals on XML address books and internal DTD creation.</div>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. Differentiate between XML and HTML.</b></p><p>XML describes data with user-defined, case-sensitive, strictly closed tags; HTML displays data with predefined, forgiving tags.</p></div><div class="qa"><p><b>Q2. Explain the structure of an XML document with an example.</b></p><p>Prolog, single root, elements, attributes, comments and CDATA, as in books.xml above.</p></div><div class="qa"><p><b>Q3. What is a DTD? Write a DTD for a student record.</b></p><p>A set of declarations defining legal elements and attributes via ELEMENT and ATTLIST; show an internal DTD.</p></div><div class="qa"><p><b>Q4. Differentiate well-formed and valid XML documents.</b></p><p>Well-formed follows syntax rules; valid is also checked against a DTD/schema.</p></div><div class="qa"><p><b>Q5. Explain XSLT with <code>xsl:template</code>, <code>xsl:for-each</code>, <code>xsl:sort</code> and <code>xsl:if</code>.</b></p><p>Templates match nodes, for-each loops, sort orders output, if/choose give conditions; show the stylesheet.</p></div><div class="qa"><p><b>Q6. What are DOM and SAX parsers?</b></p><p>DOM builds an in-memory tree (random access), SAX streams events (low memory, forward-only).</p></div><div class="qa"><p><b>Q7. Differentiate <code>xsl:import</code> and <code>xsl:include</code>.</b></p><p>Include merges at equal precedence; import has lower precedence and can be overridden.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>XML: user-defined tags, case-sensitive, one root, all tags closed, attribute values quoted.</li><li>Entities: &amp;lt; &amp;gt; &amp;amp; &amp;quot; &amp;apos;; CDATA is not parsed.</li><li>DOM = tree in memory; SAX = event-based.</li><li>DTD: ELEMENT, ATTLIST, ENTITY; <code>? * +</code> occurrence.</li><li>XSLT: template, apply-templates, value-of, for-each, if, choose, sort.</li><li>Valid &rArr; well-formed (not the reverse).</li></ul>
+ <div class="pager"><a class="prev" href="mca204-u1.html"><small>&larr; Previous</small>Unit I: Responsive Web Design and Introduction to Bootstrap</a><a class="next" href="mca204-u3.html"><small>Next &rarr;</small>Unit III: Introduction to AJAX</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 204 Unit III: Introduction to AJAX">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,107 @@
  <h1>Introduction to AJAX</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">AJAX web application model</span><span class="chip">Working of AJAX</span><span class="chip">Asynchronous data transfer with XMLHttpRequest</span><span class="chip">Creating the XMLHttpRequest object</span><span class="chip">XMLHttpRequest properties and methods</span><span class="chip">Using XMLHttpRequest in different browsers</span><span class="chip">Reading a file synchronously</span><span class="chip">Reading a file asynchronously</span><span class="chip">Performing tasks using XMLHttpRequest</span><span class="chip">Integrating PHP and AJAX: sending data from a web application to a server</span><span class="chip">Validating a field using AJAX and PHP</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca204-u2.html"><small>← Previous</small>Unit II: XML</a><a class="next" href="mca204-u4.html"><small>Next →</small>Unit IV: Handling XML Data using PHP and AJAX; Web Services</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p><b>AJAX</b> (Asynchronous JavaScript And XML) lets a web page talk to the server in the background and update only part of the page, without a full reload. This unit explains the AJAX model, the <b>XMLHttpRequest</b> object, synchronous and asynchronous requests, and combining AJAX with <b>PHP</b> for tasks such as live field validation.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. AJAX web application model</h3>
+<p>AJAX is <b>not a language</b> but a technique that combines: HTML/CSS (presentation), the <b>DOM</b> (dynamic update), <b>JavaScript</b> (logic), <b>XMLHttpRequest</b> (asynchronous communication) and data formats (XML, <b>JSON</b>, text).</p>
+<table><tr><th>Classic web model</th><th>AJAX model</th></tr>
+<tr><td>Each action sends a request and reloads the <b>whole page</b></td><td>Only the <b>needed data</b> is exchanged; part of the page is updated</td></tr>
+<tr><td>User waits and loses context</td><td>Page stays usable (asynchronous)</td></tr>
+<tr><td>More bandwidth and server load</td><td>Less data, faster, desktop-like feel</td></tr>
+<tr><td>Synchronous, click&ndash;wait&ndash;click</td><td>An AJAX engine (JavaScript) sits between browser UI and server</td></tr></table>
+<p>Uses: Google Suggest/Maps, live search, form validation, chat, auto-refreshing feeds. Drawbacks: back-button and bookmarking issues, needs JavaScript, SEO and security (XSS) concerns.</p>
+<h3>2. Working of AJAX</h3>
+<ol><li>An <b>event</b> occurs on the page (click, keyup, timer).</li><li>JavaScript <b>creates an XMLHttpRequest</b> object.</li><li>It is configured with <code>open()</code> and sent with <code>send()</code>.</li><li>The <b>server</b> (PHP/ASP/JSP) processes the request.</li><li>The server returns a response (text, XML or JSON).</li><li>A <b>callback</b> function (<code>onreadystatechange</code>) reads the response and updates the page through the DOM.</li></ol>
+<h3>3. Asynchronous data transfer with XMLHttpRequest</h3>
+<p>With <b>asynchronous</b> transfer (<code>async = true</code>) the script continues running while the request is processed and the callback fires when the response arrives, so the UI does not freeze.</p>
+<h3>4. Creating the XMLHttpRequest object</h3>
+<p><code>var xhr = new XMLHttpRequest();</code> works in all modern browsers.</p>
+<h3>5. XMLHttpRequest properties and methods</h3>
+<table><tr><th>Member</th><th>Purpose</th></tr>
+<tr><td><code>readyState</code></td><td>0 unsent, 1 opened, 2 headers received, 3 loading, <b>4 done</b></td></tr>
+<tr><td><code>status</code> / <code>statusText</code></td><td>HTTP code (200 OK, 404 Not Found, 500 error) and its text</td></tr>
+<tr><td><code>responseText</code></td><td>Response as a string</td></tr>
+<tr><td><code>responseXML</code></td><td>Response as an XML DOM document</td></tr>
+<tr><td><code>onreadystatechange</code></td><td>Function called on each readyState change</td></tr>
+<tr><td><code>open(method, url, async)</code></td><td>Initialises the request (GET/POST)</td></tr>
+<tr><td><code>send(data)</code></td><td>Sends it (data used for POST)</td></tr>
+<tr><td><code>setRequestHeader(name, value)</code></td><td>Sets a header, e.g. Content-Type</td></tr>
+<tr><td><code>getResponseHeader()</code>, <code>getAllResponseHeaders()</code></td><td>Reads response headers</td></tr>
+<tr><td><code>abort()</code></td><td>Cancels the request</td></tr></table>
+<h3>6. Using XMLHttpRequest in different browsers</h3>
+<p>Modern browsers (Chrome, Firefox, Safari, Edge, IE7+) support the native <code>XMLHttpRequest</code>. Old Internet Explorer 5/6 used <b>ActiveX</b>: <code>new ActiveXObject("Microsoft.XMLHTTP")</code>. Use <b>feature detection</b>: <code>if (window.XMLHttpRequest) {&hellip;} else if (window.ActiveXObject) {&hellip;}</code>. Newer alternative: the <code>fetch()</code> API.</p>
+<h3>7. Reading a file synchronously</h3>
+<p>With <code>open("GET", "data.txt", <b>false</b>)</code> the call to <code>send()</code> <b>blocks</b> until the response is complete, so no callback is needed: read <code>xhr.responseText</code> right after <code>send()</code>. It freezes the browser while waiting and is deprecated on the main thread &ndash; avoid except for demonstration.</p>
+<h3>8. Reading a file asynchronously</h3>
+<p>Use <code>open("GET", "data.txt", <b>true</b>)</code> and set <code>onreadystatechange</code>; process the data only when <code>readyState == 4 &amp;&amp; status == 200</code>. This is the standard approach.</p>
+<h3>9. Performing tasks using XMLHttpRequest</h3>
+<p><b>GET</b> sends data in the URL query string (visible, cacheable, size-limited, for retrieval): add a random parameter or timestamp to avoid cached responses. <b>POST</b> sends data in the body (not in the URL, larger, for changes/forms) and needs <code>setRequestHeader("Content-type", "application/x-www-form-urlencoded")</code>. Typical tasks: loading text/HTML into a <code>&lt;div&gt;</code>, live search suggestions, auto-complete, refreshing data periodically with <code>setInterval()</code>, submitting forms.</p>
+<h3>10. Integrating PHP and AJAX</h3>
+<p>The browser sends data with the request; PHP receives it in <code>$_GET</code> or <code>$_POST</code>, processes it (database, files) and <code>echo</code>es the answer, which becomes <code>responseText</code>. Always encode values with <code>encodeURIComponent()</code> and sanitise input on the server (<code>htmlspecialchars</code>, prepared statements).</p>
+<h3>11. Validating a field using AJAX and PHP</h3>
+<p>Typical case: <b>username availability</b>. On <code>keyup</code>/<code>blur</code>, JavaScript sends the entered value to a PHP script; PHP checks the database (or a list) and returns &ldquo;available&rdquo; or &ldquo;taken&rdquo;; JavaScript shows the message beside the field without reloading the form. Client-side validation is for convenience; <b>server-side validation is still required</b>.</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>Asynchronous GET &ndash; load a file into a div</b></p>
+<pre><code>&lt;div id="result"&gt;Click the button&lt;/div&gt;
+&lt;button onclick="loadData()"&gt;Load&lt;/button&gt;
+&lt;script&gt;
+function loadData() {
+  var xhr;
+  if (window.XMLHttpRequest) xhr = new XMLHttpRequest();
+  else xhr = new ActiveXObject("Microsoft.XMLHTTP");   // old IE
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) {
+      document.getElementById("result").innerHTML = xhr.responseText;
+    }
+  };
+  xhr.open("GET", "data.txt", true);     // true = asynchronous
+  xhr.send();
+}
+&lt;/script&gt;</code></pre>
+<p><b>Synchronous read</b> (blocks):</p>
+<pre><code>var xhr = new XMLHttpRequest();
+xhr.open("GET", "data.txt", false);   // false = synchronous
+xhr.send();
+alert(xhr.responseText);</code></pre>
+<p><b>Username validation with PHP (GET)</b></p>
+<pre><code>&lt;!-- form.html --&gt;
+&lt;input type="text" id="user" onkeyup="check(this.value)"&gt; &lt;span id="msg"&gt;&lt;/span&gt;
+&lt;script&gt;
+function check(name) {
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 &amp;&amp; xhr.status == 200)
+      document.getElementById("msg").innerHTML = xhr.responseText;
+  };
+  xhr.open("GET", "check.php?u=" + encodeURIComponent(name), true);
+  xhr.send();
+}
+&lt;/script&gt;</code></pre>
+<pre><code>&lt;?php
+// check.php
+$taken = array("admin", "root", "guest");
+$u = isset($_GET['u']) ? trim($_GET['u']) : '';
+if ($u === '') echo "";
+elseif (in_array(strtolower($u), $taken)) echo "&lt;span style='color:red'&gt;Username taken&lt;/span&gt;";
+else echo "&lt;span style='color:green'&gt;Available&lt;/span&gt;";
+?&gt;</code></pre>
+<p><b>POST request</b></p>
+<pre><code>xhr.open("POST", "login.php", true);
+xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xhr.send("user=" + encodeURIComponent(u) + "&amp;pass=" + encodeURIComponent(p));
+// login.php reads $_POST['user'], $_POST['pass']</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. What is AJAX? Explain the AJAX web application model and how it differs from the classic model.</b></p><p>Asynchronous JavaScript and XML; only part of the page is updated without reload, unlike full-page reloads in the classic model.</p></div><div class="qa"><p><b>Q2. Explain the working of AJAX with a diagram or steps.</b></p><p>Event, create XHR, open/send, server processes, response, callback updates the DOM.</p></div><div class="qa"><p><b>Q3. Explain the properties and methods of the XMLHttpRequest object.</b></p><p>readyState (0&ndash;4), status, responseText, responseXML, onreadystatechange; open, send, setRequestHeader, abort.</p></div><div class="qa"><p><b>Q4. Differentiate synchronous and asynchronous requests with code.</b></p><p>Synchronous (async=false) blocks until complete; asynchronous uses a callback when readyState is 4.</p></div><div class="qa"><p><b>Q5. Differentiate GET and POST in AJAX.</b></p><p>GET puts data in the URL (limited, cacheable); POST puts it in the body and needs a Content-Type header.</p></div><div class="qa"><p><b>Q6. Write an AJAX and PHP program to validate a username field.</b></p><p>Use onkeyup, XHR GET to check.php, and display the returned message.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>AJAX = HTML/CSS + DOM + JavaScript + XMLHttpRequest + XML/JSON.</li><li>Steps: event &rarr; XHR object &rarr; open() &rarr; send() &rarr; server &rarr; callback &rarr; DOM update.</li><li>readyState 0&ndash;4 (4 = done); status 200 = OK.</li><li>open(method, url, async): true = asynchronous, false = blocks.</li><li>GET data in the URL; POST needs setRequestHeader.</li><li>PHP reads <code>$_GET</code>/<code>$_POST</code> and echoes the response; always validate on the server too.</li></ul>
+ <div class="pager"><a class="prev" href="mca204-u2.html"><small>&larr; Previous</small>Unit II: XML</a><a class="next" href="mca204-u4.html"><small>Next &rarr;</small>Unit IV: Handling XML Data using PHP and AJAX; Web Services</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">

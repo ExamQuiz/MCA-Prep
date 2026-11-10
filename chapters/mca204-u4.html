@@ -7,6 +7,18 @@
 <meta name="description" content="MCA 204 Unit IV: Handling XML Data using PHP and AJAX; Web Services">
 <meta name="theme-color" content="#4f46e5">
 <link rel="stylesheet" href="../assets/style.css">
+<style>
+.prose pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:.88rem;line-height:1.5;max-width:100%}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-soft);padding:1px 6px;border-radius:6px;font-size:.88em}
+.prose pre code{background:none;padding:0}
+.prose h3{margin:22px 0 6px;font-size:1.08rem}
+.prose table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--brand-soft)}
+.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+.qa p{margin:4px 0}
+.note{border-left:4px solid var(--brand);background:var(--brand-soft);padding:10px 14px;border-radius:8px;margin:12px 0}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -45,12 +57,91 @@
  <h1>Handling XML Data using PHP and AJAX; Web Services</h1>
  <h2 class="sec" style="margin-top:20px;font-size:1.15rem">Syllabus topics</h2>
  <div class="chips"><span class="chip">JavaScript properties for extracting with nodeValue</span><span class="chip">Accessing XML elements by name</span><span class="chip">Accessing attribute values in XML elements</span><span class="chip">Validating XML documents in AJAX applications</span><span class="chip">Retrieving data from a database using PHP and AJAX</span><span class="chip">Consuming web services using AJAX</span><span class="chip">Web service protocols: SOAP, WSDL, UDDI, REST</span></div>
- <div class="placeholder"><h3>Overview (placeholder)</h3><p>Add a short summary of this unit here: what you will learn and why it matters.</p></div>
- <div class="placeholder"><h3>Detailed notes (placeholder)</h3><p>Add detailed explanations for each topic listed above, one heading per topic.</p></div>
- <div class="placeholder"><h3>Diagrams &amp; examples (placeholder)</h3><p>Add diagrams, worked examples, code or SQL snippets here.</p></div>
- <div class="placeholder"><h3>Important questions (placeholder)</h3><p>Add likely exam questions and model answers here.</p></div>
- <div class="placeholder"><h3>Quick revision (placeholder)</h3><p>Add a short bullet summary for last-minute revision.</p></div>
- <div class="pager"><a class="prev" href="mca204-u3.html"><small>← Previous</small>Unit III: Introduction to AJAX</a><a class="next" href="mca204-u5.html"><small>Next →</small>Unit V: jQuery</a></div>
+ <h2 class="sec" style="margin-top:26px">Overview</h2>
+ <p>This unit continues AJAX with <b>XML data</b>: reading XML responses with DOM properties, validating them, fetching <b>database</b> records with PHP, and <b>consuming web services</b>. It ends with the main web service protocols: <b>SOAP, WSDL, UDDI and REST</b>.</p>
+ <h2 class="sec" style="margin-top:26px">Detailed notes</h2>
+ 
+<h3>1. JavaScript properties for extracting with nodeValue</h3>
+<p>When the server returns XML, <code>xhr.responseXML</code> is a DOM document. Useful node properties: <code>nodeName</code> (tag name), <code>nodeType</code> (1 element, 2 attribute, 3 text, 9 document), <code>nodeValue</code>, <code>childNodes</code>, <code>firstChild</code>, <code>lastChild</code>, <code>parentNode</code>, <code>nextSibling</code>, <code>attributes</code>, and <code>textContent</code>. <b>Important:</b> an element&rsquo;s own <code>nodeValue</code> is <b>null</b>; its text lives in a child <b>text node</b>, so use <code>element.childNodes[0].nodeValue</code> (or <code>firstChild.nodeValue</code>). Whitespace between tags also creates text nodes in some browsers.</p>
+<h3>2. Accessing XML elements by name</h3>
+<p><code>responseXML.getElementsByTagName("title")</code> returns a node list; use an index and <code>.length</code>: <code>x[0].childNodes[0].nodeValue</code>. Loop over the list to show all records. <code>documentElement</code> gives the root.</p>
+<h3>3. Accessing attribute values in XML elements</h3>
+<p><code>element.getAttribute("id")</code> returns the value; <code>element.attributes.getNamedItem("id").nodeValue</code> or <code>element.attributes[0].nodeValue</code> are alternatives; <code>hasAttribute()</code>, <code>setAttribute()</code> for checks and changes.</p>
+<h3>4. Validating XML documents in AJAX applications</h3>
+<ul><li><b>Check for success:</b> <code>responseXML</code> is <b>null</b> if the response is not XML or not well-formed (the server must send <code>Content-Type: text/xml</code>); browsers may add a <code>parsererror</code> element.</li><li><b>Well-formedness</b> is checked automatically by the parser. <b>DTD/schema validity</b> is usually checked on the <b>server</b> with PHP: <code>$dom-&gt;validate()</code> (DTD) or <code>$dom-&gt;schemaValidate("file.xsd")</code>.</li><li>Always handle errors (<code>status != 200</code>) and sanitise data before inserting it into the page.</li></ul>
+<h3>5. Retrieving data from a database using PHP and AJAX</h3>
+<p>Flow: user action &rarr; AJAX request with a parameter &rarr; PHP connects to <b>MySQL</b> (<code>mysqli</code> or <b>PDO</b>), runs a <b>prepared statement</b> (prevents SQL injection) &rarr; PHP outputs results as <b>XML</b> (with <code>header("Content-Type: text/xml")</code>), <b>JSON</b> (<code>json_encode</code>) or HTML &rarr; JavaScript reads the response and updates the page (e.g. a table or drop-down). Example uses: choosing a student from a list to show details, dependent drop-downs, live search.</p>
+<h3>6. Consuming web services using AJAX</h3>
+<p>A <b>web service</b> is a software component accessible over a network (HTTP) by other applications, using standard formats (XML/JSON). AJAX can call <b>REST</b> services directly (GET/POST returning JSON or XML) and can call SOAP services by posting an XML envelope. Browser limit: the <b>same-origin policy</b> blocks requests to another domain. Solutions: <b>CORS</b> (server sends <code>Access-Control-Allow-Origin</code>), <b>JSONP</b>, or a <b>server-side proxy</b> (PHP script on your own server that calls the service via cURL and relays the result).</p>
+<h3>7. Web service protocols</h3>
+<ul><li><b>SOAP</b> (Simple Object Access Protocol): XML-based messaging protocol, usually over HTTP. A message = <code>Envelope</code> (root) &rarr; optional <code>Header</code> &rarr; <code>Body</code> (request/response) &rarr; <code>Fault</code> (errors). Platform- and language-neutral, strongly typed with WSDL, supports security and transactions (WS-*) but verbose and heavy.</li><li><b>WSDL</b> (Web Services Description Language): XML document describing a service: <code>types</code> (data types), <code>message</code>, <code>portType</code> (operations), <code>binding</code> (protocol/format) and <code>service</code> (endpoint address). Clients read it to know how to call the service.</li><li><b>UDDI</b> (Universal Description, Discovery and Integration): a <b>registry</b> where providers publish services and requesters search for them (white, yellow, green pages).</li><li><b>REST</b> (Representational State Transfer): an architectural style using <b>URIs for resources</b> and standard <b>HTTP methods</b>: GET (read), POST (create), PUT (update), DELETE (remove). <b>Stateless</b>, cacheable, lightweight; data in JSON or XML.</li></ul>
+<table><tr><th>SOAP</th><th>REST</th></tr>
+<tr><td>Protocol with strict rules</td><td>Architectural style</td></tr>
+<tr><td>XML only</td><td>JSON, XML, text, HTML</td></tr>
+<tr><td>Described by WSDL</td><td>Simple URLs (WADL optional)</td></tr>
+<tr><td>Heavier, more secure standards</td><td>Lightweight, faster, easy with AJAX</td></tr></table>
+<p><b>Web service model:</b> <i>service provider</i> publishes to the <i>registry</i> (UDDI); <i>requester</i> finds it, reads the WSDL and binds to call it using SOAP/REST (publish&ndash;find&ndash;bind).</p>
+
+ <h2 class="sec" style="margin-top:26px">Diagrams &amp; examples</h2>
+ 
+<p><b>Reading an XML response</b></p>
+<pre><code>&lt;!-- students.xml (returned by server) --&gt;
+&lt;students&gt;
+  &lt;student id="1"&gt;&lt;name&gt;Asha&lt;/name&gt;&lt;marks&gt;82&lt;/marks&gt;&lt;/student&gt;
+  &lt;student id="2"&gt;&lt;name&gt;Ravi&lt;/name&gt;&lt;marks&gt;74&lt;/marks&gt;&lt;/student&gt;
+&lt;/students&gt;
+
+// JavaScript
+xhr.onreadystatechange = function () {
+  if (xhr.readyState == 4 &amp;&amp; xhr.status == 200) {
+    var xml = xhr.responseXML;
+    if (!xml) { alert("Not valid XML"); return; }
+    var list = xml.getElementsByTagName("student");
+    var out = "";
+    for (var i = 0; i &lt; list.length; i++) {
+      var id   = list[i].getAttribute("id");
+      var name = list[i].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+      var m    = list[i].getElementsByTagName("marks")[0].childNodes[0].nodeValue;
+      out += id + ". " + name + " - " + m + "&lt;br&gt;";
+    }
+    document.getElementById("out").innerHTML = out;
+  }
+};</code></pre>
+<p><b>PHP: retrieve database rows as XML</b></p>
+<pre><code>&lt;?php
+header("Content-Type: text/xml");
+$id = (int) $_GET['id'];
+$db = new mysqli("localhost", "root", "", "college");
+$st = $db-&gt;prepare("SELECT name, marks FROM student WHERE id = ?");
+$st-&gt;bind_param("i", $id);
+$st-&gt;execute();
+$st-&gt;bind_result($name, $marks);
+echo "&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;students&gt;";
+while ($st-&gt;fetch()) {
+  echo "&lt;student&gt;&lt;name&gt;" . htmlspecialchars($name) . "&lt;/name&gt;&lt;marks&gt;$marks&lt;/marks&gt;&lt;/student&gt;";
+}
+echo "&lt;/students&gt;";
+?&gt;</code></pre>
+<p><b>Calling a REST service with AJAX</b></p>
+<pre><code>var xhr = new XMLHttpRequest();
+xhr.open("GET", "https://api.example.com/users/5", true);
+xhr.onload = function () {
+  if (xhr.status == 200) { var user = JSON.parse(xhr.responseText); alert(user.name); }
+};
+xhr.send();</code></pre>
+<p><b>SOAP message skeleton</b></p>
+<pre><code>&lt;soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"&gt;
+  &lt;soap:Header/&gt;
+  &lt;soap:Body&gt;
+    &lt;GetPrice&gt;&lt;Item&gt;Apples&lt;/Item&gt;&lt;/GetPrice&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</code></pre>
+
+ <h2 class="sec" style="margin-top:26px">Important questions</h2>
+ <div class="qa"><p><b>Q1. How do you extract data from an XML response using <code>nodeValue</code>?</b></p><p>Get the element with getElementsByTagName and read childNodes[0].nodeValue, because the text is in a child text node.</p></div><div class="qa"><p><b>Q2. How do you read attribute values from XML elements in JavaScript?</b></p><p>Use getAttribute('id') or attributes.getNamedItem('id').nodeValue.</p></div><div class="qa"><p><b>Q3. How can XML be validated in an AJAX application?</b></p><p>Check responseXML is not null (well-formedness) and validate against DTD/schema on the server with PHP.</p></div><div class="qa"><p><b>Q4. Explain how data is retrieved from a database using PHP and AJAX.</b></p><p>AJAX request with a parameter, PHP queries MySQL with a prepared statement and returns XML/JSON, JavaScript updates the page.</p></div><div class="qa"><p><b>Q5. Explain SOAP, WSDL and UDDI.</b></p><p>SOAP is the XML messaging protocol, WSDL describes the service, UDDI is the registry to publish and find services.</p></div><div class="qa"><p><b>Q6. Differentiate SOAP and REST.</b></p><p>SOAP is a heavy XML protocol with WSDL; REST is a lightweight style using URIs and HTTP verbs with JSON/XML.</p></div><div class="qa"><p><b>Q7. What is the same-origin policy and how can it be overcome?</b></p><p>Browsers block cross-domain AJAX; use CORS headers, JSONP or a server-side proxy.</p></div>
+ <h2 class="sec" style="margin-top:26px">Quick revision</h2>
+ <ul><li>XML response = <code>responseXML</code>; text = <code>childNodes[0].nodeValue</code> (element nodeValue is null).</li><li><code>getElementsByTagName()</code>, <code>getAttribute()</code>.</li><li>Server sends <code>Content-Type: text/xml</code>; validate (DTD/XSD) on the server.</li><li>PHP + MySQL: prepared statement &rarr; XML/JSON output.</li><li>SOAP: Envelope, Header, Body, Fault. WSDL: describes. UDDI: registry.</li><li>REST: URIs + GET/POST/PUT/DELETE, stateless, JSON.</li><li>Cross-domain: CORS, JSONP, proxy.</li></ul>
+ <div class="pager"><a class="prev" href="mca204-u3.html"><small>&larr; Previous</small>Unit III: Introduction to AJAX</a><a class="next" href="mca204-u5.html"><small>Next &rarr;</small>Unit V: jQuery</a></div>
 </article></div></div>
 </main>
 <footer class="site-footer">
