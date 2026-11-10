@@ -81,7 +81,8 @@ details.subject summary small{display:block;color:var(--muted);font-weight:500}
 .unit-list .num{flex:0 0 auto;min-width:56px;text-align:center;background:var(--brand-soft);color:var(--brand);font-weight:700;font-size:.78rem;border-radius:8px;padding:3px 6px}
 
 /* Book layout */
-.book{display:grid;grid-template-columns:290px 1fr;gap:24px;padding:26px 0}
+.book{display:grid;grid-template-columns:290px minmax(0,1fr);gap:24px;padding:26px 0}
+.book>*{min-width:0}
 .sidebar{position:sticky;top:120px;align-self:start;max-height:calc(100vh - 140px);overflow:auto}
 .sidebar h4{margin:0 0 10px;font-size:.95rem}
 .sidebar a{display:block;padding:8px 10px;border-radius:8px;color:var(--text);font-size:.9rem}
@@ -110,7 +111,7 @@ details.subject summary small{display:block;color:var(--muted);font-weight:500}
 @media (max-width:900px){
   .grid.cols-4{grid-template-columns:repeat(2,1fr)}
   .grid.cols-3{grid-template-columns:repeat(2,1fr)}
-  .book{grid-template-columns:1fr}
+  .book{grid-template-columns:minmax(0,1fr)}
   .sidebar{position:static;max-height:none}
   .sidebar-card{display:none}
   .sidebar-card.open{display:block}
@@ -147,6 +148,7 @@ table.marks{display:block;width:100%;max-width:100%;overflow-x:auto;border-colla
 table.marks th,table.marks td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line)}
 table.marks th{background:var(--brand-soft);font-weight:700}
 table.marks tr:last-child td{border-bottom:0}
+.prose table{display:block;max-width:100%;overflow-x:auto}
 pre{max-width:100%;overflow-x:auto}
 .prose ul,.prose ol{max-width:80ch}
 .prose li{margin:4px 0}
