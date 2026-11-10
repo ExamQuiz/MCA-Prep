@@ -16,6 +16,7 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;-webkit-text-size-adjust:100%}
+img,video,iframe{max-width:100%}
 a{color:var(--brand);text-decoration:none}
 a:hover{text-decoration:underline}
 .container{width:100%;max-width:1120px;margin:0 auto;padding:0 16px}
@@ -56,6 +57,7 @@ h2.sec{font-size:1.5rem;margin:0 0 16px;letter-spacing:-.02em}
 .grid.cols-4{grid-template-columns:repeat(4,1fr)}
 .grid.cols-3{grid-template-columns:repeat(3,1fr)}
 .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+.grid>*{min-width:0}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
 .card h3{margin:0 0 6px;font-size:1.08rem}
 .card p{margin:0;color:var(--muted);font-size:.93rem}
@@ -116,6 +118,11 @@ details.subject summary small{display:block;color:var(--muted);font-weight:500}
 }
 @media (min-width:901px){.sb-toggle{display:none}}
 @media (max-width:640px){
+  .container{padding-right:12px;padding-left:12px}
+  .topbar{flex-wrap:wrap}
+  .brand{min-width:0}
+  .brand .title-text{min-width:0}
+  .topbar>div{flex-wrap:wrap;justify-content:flex-end;gap:6px!important}
   .menu-btn{display:inline-block}
   .navrow{display:none;padding-bottom:12px}
   .navrow.open{display:block}
@@ -130,12 +137,17 @@ details.subject summary small{display:block;color:var(--muted);font-weight:500}
   .clock{font-size:.72rem}
   .clock b{font-size:.8rem}
 }
+@media (max-width:380px){
+  .hero-inner{padding:24px 16px}
+  .grid.cols-4{grid-template-columns:1fr}
+}
 
 /* Tables */
-table.marks{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:.95rem}
+table.marks{display:block;width:100%;max-width:100%;overflow-x:auto;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:.95rem}
 table.marks th,table.marks td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line)}
 table.marks th{background:var(--brand-soft);font-weight:700}
 table.marks tr:last-child td{border-bottom:0}
+pre{max-width:100%;overflow-x:auto}
 .prose ul,.prose ol{max-width:80ch}
 .prose li{margin:4px 0}
 .sidebar a{margin-bottom:2px}
